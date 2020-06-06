@@ -37,6 +37,7 @@ namespace intrapp.Controllers
         {
             var summoner_info = new Summoner();
             summoner_info.Json = "Empty";
+            var temp = "test";
 
             using (var client = new HttpClient())
             {
