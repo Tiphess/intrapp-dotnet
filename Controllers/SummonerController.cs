@@ -11,7 +11,7 @@ using System.Web.Configuration;
 
 namespace intrapp.Controllers
 {
-    public class HomeController : Controller
+    public class SummonerController : Controller
     {
 
         private string urlSummoner = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/";

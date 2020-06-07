@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Configuration
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -9,22 +10,24 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
+            @Html.ActionLink(WebConfigurationManager.AppSettings["APPLICATION_NAME"], "Index", "Summoner", new { area = "" }, new { @class = "navbar-brand" })
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-elements"
+                        aria-controls="navbar-elements" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                @Html.ActionLink("Nom d'application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
-                    <li>@Html.ActionLink("À propos de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            <div id="navbar-elements" class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">@Html.ActionLink("Champions", "Index", "Champion", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Statistics", "Index", "Statistic", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Leaderboards", "Index", "Leaderboard", null, new { @class = "nav-link" })</li>
                 </ul>
+                <form class="form-inline my-2 my-md-0">
+                    <input class="form-control" type="text" placeholder="Enter a Summoner name" aria-label="Search"/>
+                </form>
             </div>
         </div>
     </div>
@@ -32,7 +35,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mon application ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Intrapp</p>
         </footer>
     </div>
 
