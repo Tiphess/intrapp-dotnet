@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Intrapp";
+}
+
+<h3 class="text-center" style="margin-bottom:20px;">Intrapp</h3>
+<p class="text-center" style="margin-bottom: 50px;">
+    Intrapp is a web app that provides League of Legends Statistics
+    on different champions, ranked ladders, and your own summoner.<br>
+
+    This is a personnal project made strictly for learning purposes of consuming third party APIs with ASP.NET.
+</p>
+
+@using (Html.BeginForm("SummonerInfo", "Summoner", FormMethod.Post, new { id = "SummonerNameFormIndex", @class = "form-inline justify-content-center" }))
+{
+    @Html.TextBox("summonerName", "", new { @class = "form-control", placeholder = "Enter a summoner name", style = "margin-right: 5px;" });
+    <input type="submit" class="btn btn-primary" value="Submit" />
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($("#SummonerNameFormIndex").length) {
+                $("#SummonerNameFormNavbar").hide();
+            }
+        });
+    </script>
+}

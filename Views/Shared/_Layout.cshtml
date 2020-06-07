@@ -1,18 +1,19 @@
-﻿@using System.Web.Configuration
+﻿@using intrapp.DataAccess
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Mon application ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    
 </head>
 <body>
     <div class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink(WebConfigurationManager.AppSettings["APPLICATION_NAME"], "Index", "Summoner", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink(ConfigWrapper.AppName, "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <div class="navbar-header">
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-elements"
                         aria-controls="navbar-elements" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,9 +26,11 @@
                     <li class="nav-item">@Html.ActionLink("Statistics", "Index", "Statistic", null, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Leaderboards", "Index", "Leaderboard", null, new { @class = "nav-link" })</li>
                 </ul>
-                <form class="form-inline my-2 my-md-0">
-                    <input class="form-control" type="text" placeholder="Enter a Summoner name" aria-label="Search"/>
-                </form>
+                @using (Html.BeginForm("SummonerInfo", "Summoner", FormMethod.Post, new { id = "SummonerNameFormNavbar", @class = "form-inline justify-content-center" }))
+                {
+                    @Html.TextBox("summonerName", "", new { @class = "form-control", placeholder = "Enter a summoner name", style = "margin-right: 5px;" });
+                    <input type="submit" class="btn btn-primary" value="Submit" />
+                }
             </div>
         </div>
     </div>
@@ -38,7 +41,6 @@
             <p>&copy; @DateTime.Now.Year - Intrapp</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
