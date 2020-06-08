@@ -133,8 +133,20 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DLL\DLLSummoner.cs" />
+    <Compile Include="Models\Ban.cs" />
+    <Compile Include="Models\DLL\DLLSummonerInfo.cs" />
+    <Compile Include="Models\LeagueEntry.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\MatchReference.cs" />
+    <Compile Include="Models\MatchList.cs" />
+    <Compile Include="Models\Participant.cs" />
+    <Compile Include="Models\ParticipantIdentity.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Stats.cs" />
     <Compile Include="Models\Summoner.cs" />
+    <Compile Include="Models\Team.cs" />
+    <Compile Include="Models\Timeline.cs" />
+    <Compile Include="Models\ViewModels\SummonerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

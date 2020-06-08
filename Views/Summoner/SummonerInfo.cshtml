@@ -1,12 +1,49 @@
-﻿@model intrapp.Models.Summoner
+﻿@model intrapp.Models.ViewModels.SummonerInfo
 @{
     ViewBag.Title = "Home Page";
 }
-<div class="row">
-    <div class="col-md-4">
-        <h2>RESULT</h2>
-        <p>
-            @Model.Json
-        </p>
+
+<div class="row" style="margin-bottom: 20px;">
+    <div class="col-md-12">
+        <h2 class="float-left">Summoner information</h2>
+        <div id="waiting-div" style="text-align: center; display: none; margin-top: 10px;" class="float-right">
+            <span class="loader"><span class="loader-inner"></span></span>
+        </div>
     </div>
 </div>
+<div class="row" style="margin-bottom: 20px;">
+    <div class="col-md-1">
+        <img src="@Model.ProfileIconUrl" alt="Image unavailable" height="75" width="75" />
+    </div>
+    <div class="col-md-2">
+        <b>@Model.Summoner.Name</b>
+    </div>
+    <div class="col-md-9" style="border: 1px red solid;">
+        League entries here
+    </div>
+</div>
+<hr />
+<div class="row">
+    <h4>Match history</h4>
+</div>
+<div class="row">
+    @foreach (var match in Model.MatchHistory)
+    {
+        <div style="border: 1px red solid;">
+            @foreach (var identity in match.ParticipantIdentities)
+            {
+                <span><a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@identity.Player.SummonerName">@identity.Player.SummonerName</a></span>
+            }
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("a[name='playerLink']").click(function () {
+                $('#waiting-div').show();
+            });
+        });
+    </script>
+}

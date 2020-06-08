@@ -17,22 +17,43 @@ namespace intrapp.DataAccess.RiotGamesApi
             {
                 var response = client.GetAsync(new Uri(DataDragonUrlPaths.GET_DDRAGON_VERSIONS));
                 response.Wait();
-
                 if (response.Result.IsSuccessStatusCode)
                 {
                     var readData = response.Result.Content.ReadAsStringAsync();
                     readData.Wait();
-
                     ddragon_versions = JsonConvert.DeserializeObject<List<string>>(readData.Result);
                 }
             }
-            return DataDragonUrlPaths.GET_DDRAGON_VERSIONS + ddragon_versions.First() + "/";
+            return DataDragonUrlPaths.DDRAGON_BASE_CDN + ddragon_versions.First() + "/";
         }
 
         public string GetSummonerByNameUrl(string name)
         {
             var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
-            return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_SUMMONER_BY_NAME + name + ApiUrlPaths.API_KEY_QUERY_PARAMETER + ConfigWrapper.ApiKey;
+            return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_SUMMONER_BY_NAME + name;
+        }
+
+        public string GetMatchListOfSummonerByAccountIdUrl(string accountId)
+        {
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_HISTORY_BY_ACCOUNTID + accountId + ApiUrlPaths.PARAMETER_DEFAULT_ENDINDEX;
+        }
+
+        public string GetMatchByGameIdUrl(long gameId)
+        {
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_BY_GAMEID + gameId.ToString();
+        }
+
+        public string GetLeagueEntriesBySummonerIdUrl(string summonerId)
+        {
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_LEAGUE_ENTRY_BY_SUMMONERID + summonerId;
+        }
+
+        public string GetProfileIconUrl(int profileIconId)
+        {
+            return GetDDragonCdn() + DataDragonUrlPaths.DDRAGON_PROFILEICON + profileIconId.ToString() + ".png";
         }
     }
 }

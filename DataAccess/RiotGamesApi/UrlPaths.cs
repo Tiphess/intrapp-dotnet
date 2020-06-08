@@ -41,8 +41,7 @@ namespace intrapp.DataAccess.RiotGamesApi
     {
         internal readonly static string GET_DDRAGON_VERSIONS = "https://ddragon.leagueoflegends.com/api/versions.json";
         internal readonly static string DDRAGON_BASE_CDN = "https://ddragon.leagueoflegends.com/cdn/";
-        internal readonly static string DDRAGON_IMG = "img/";
-        internal readonly static string DDRAGON_PROFILEICON = "profileicon/";
+        internal readonly static string DDRAGON_PROFILEICON = "img/profileicon/";
     }
 
     internal static class ApiUrlPaths
@@ -52,5 +51,7 @@ namespace intrapp.DataAccess.RiotGamesApi
         internal readonly static string GET_MATCH_HISTORY_BY_ACCOUNTID = "/lol/match/v4/matchlists/by-account/";
         internal readonly static string GET_MATCH_BY_GAMEID = "/lol/match/v4/matches/";
         internal readonly static string GET_LEAGUE_ENTRY_BY_SUMMONERID = "/lol/league/v4/entries/by-summoner/";
+
+        internal readonly static string PARAMETER_DEFAULT_ENDINDEX = "?endIndex=5";
     }
 }

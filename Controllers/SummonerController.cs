@@ -10,16 +10,17 @@ using intrapp.Models;
 using System.Web.Configuration;
 using intrapp.DataAccess.RiotGamesApi;
 using intrapp.Models.DLL;
+using intrapp.Models.ViewModels;
 
 namespace intrapp.Controllers
 {
     public class SummonerController : Controller
     {
-        private DLLSummoner dllSummoner = new DLLSummoner();
+        private DLLSummonerInfo dllSummonerInfo = new DLLSummonerInfo();
 
         public ActionResult SummonerInfo(string summonerName)
         {
-            var model = dllSummoner.getSummonerByName(summonerName);
+            var model = dllSummonerInfo.GetSummoner(summonerName);
             return View(model);
         }
     }
