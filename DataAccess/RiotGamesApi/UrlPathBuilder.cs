@@ -39,6 +39,12 @@ namespace intrapp.DataAccess.RiotGamesApi
             return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_HISTORY_BY_ACCOUNTID + accountId + ApiUrlPaths.PARAMETER_DEFAULT_ENDINDEX;
         }
 
+        public string GetMatchListOfSummonerByAccountIdUrl(string accountId, int startIndex, int endIndex)
+        {
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_HISTORY_BY_ACCOUNTID + accountId + "?endIndex=" + endIndex + "&beginIndex=" + startIndex;
+        }
+
         public string GetMatchByGameIdUrl(long gameId)
         {
             var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);

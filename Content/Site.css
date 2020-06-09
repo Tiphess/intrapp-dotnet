@@ -84,3 +84,21 @@ textarea {
     }
 }
 /* PAGE LOADER END */
+
+/* LINK APPEARANCE FOR BUTTONS*/
+.input-link-style {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: #3490dc;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+    .input-link-style:hover {
+        text-decoration: underline;
+    }
+
+/* LINK APPEARANCE FOR BUTTONS END*/

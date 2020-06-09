@@ -28,6 +28,37 @@ namespace intrapp.Models.DLL
             return summonerInfo;
         }
 
+        public List<Match> FetchMoreMatches(string accountId, int startIndex, int endIndex)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            var matchList = GetMatchListOfSummoner(accountId, startIndex, endIndex);
+            var matches = new List<Match>();
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                foreach (var matchRef in matchList.Matches)
+                {
+                    var response = client.GetAsync(new Uri(pathBuilder.GetMatchByGameIdUrl(matchRef.GameId)));
+                    response.Wait();
+
+                    var result = response.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readData = result.Content.ReadAsStringAsync();
+                        readData.Wait();
+
+                        var match = JsonConvert.DeserializeObject<Match>(readData.Result);
+                        foreach (var participant in match.Participants)
+                            SetTimeLineStatsOfParticipant(participant, match, readData.Result);
+
+                        matches.Add(match);
+                    }
+                }
+            }
+            return matches;
+        }
+
         private Summoner GetSummonerByName(string name)
         {
             var pathBuilder = new UrlPathBuilder();
@@ -50,11 +81,15 @@ namespace intrapp.Models.DLL
             }
             return summoner;
         }
-        private List<Match> GetMatchHistoryOfSummoner(string accountId)
+        private MatchHistory GetMatchHistoryOfSummoner(string accountId)
         {
             var pathBuilder = new UrlPathBuilder();
             var matchList = GetMatchListOfSummoner(accountId);
-            var matchHistory = new List<Match>();
+            var matchHistory = new MatchHistory()
+            {
+                StartIndex = 0,
+                EndIndex = 5,
+            };
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
@@ -73,7 +108,7 @@ namespace intrapp.Models.DLL
                         foreach (var participant in match.Participants)
                             SetTimeLineStatsOfParticipant(participant, match, readData.Result);
 
-                        matchHistory.Add(match);
+                        matchHistory.Matches.Add(match);
                     }
                 }
             }
@@ -112,6 +147,28 @@ namespace intrapp.Models.DLL
             {
                 client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
                 var response = client.GetAsync(new Uri(pathBuilder.GetMatchListOfSummonerByAccountIdUrl(accountId)));
+                response.Wait();
+
+                var result = response.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readData = result.Content.ReadAsStringAsync();
+                    readData.Wait();
+
+                    matchList = JsonConvert.DeserializeObject<MatchList>(readData.Result);
+                }
+            }
+            return matchList;
+        }
+
+        private MatchList GetMatchListOfSummoner(string accountId, int startIndex, int endIndex)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            var matchList = new MatchList();
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                var response = client.GetAsync(new Uri(pathBuilder.GetMatchListOfSummonerByAccountIdUrl(accountId, startIndex, endIndex)));
                 response.Wait();
 
                 var result = response.Result;

@@ -27,22 +27,35 @@
     <h4>Match history</h4>
 </div>
 <div class="row">
-    @foreach (var match in Model.MatchHistory)
-    {
-        <div style="border: 1px red solid;">
-            @foreach (var identity in match.ParticipantIdentities)
-            {
-                <span><a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@identity.Player.SummonerName">@identity.Player.SummonerName</a></span>
-            }
-        </div>
-    }
+    <div id="matchHistory">
+        @Html.Partial("_MatchHistory", Model.MatchHistory.Matches)
+    </div>
+    <button id="loadBtn" class="input-link-style">Load more</button>
 </div>
 
 @section scripts{
     <script type="text/javascript">
         $(document).ready(function () {
+            var startIndex = @Model.MatchHistory.StartIndex;
+            var endIndex = @Model.MatchHistory.EndIndex;
+
             $("a[name='playerLink']").click(function () {
                 $('#waiting-div').show();
+            });
+
+            $("#loadBtn").click(function () {
+                startIndex += 5;
+                endIndex += 5;
+                $('#waiting-div').show();
+                $.ajax({
+                    url: "/Summoner/_MatchHistory",
+                    type: "POST",
+                    data: { accountId: "@Model.Summoner.AccountId", startIndex: startIndex, endIndex: endIndex },
+                    success: function(data) {
+                        $("#matchHistory").append(data);
+                        $('#waiting-div').hide();
+                    }
+                });
             });
         });
     </script>

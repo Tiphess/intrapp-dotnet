@@ -1,0 +1,10 @@
+﻿@model List<intrapp.Models.Match>
+@foreach (var match in Model)
+{
+    <div style="border: 1px red solid;">
+        @foreach (var identity in match.ParticipantIdentities)
+        {
+            <span><a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@identity.Player.SummonerName">@identity.Player.SummonerName</a></span>
+        }
+    </div>
+}

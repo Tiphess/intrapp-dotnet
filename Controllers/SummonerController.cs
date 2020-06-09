@@ -23,5 +23,11 @@ namespace intrapp.Controllers
             var model = dllSummonerInfo.GetSummoner(summonerName);
             return View(model);
         }
+
+        public ActionResult _MatchHistory(string accountId, int startIndex, int endIndex)
+        {
+            var model = dllSummonerInfo.FetchMoreMatches(accountId, startIndex, endIndex);
+            return PartialView(model);
+        }
     }
 }
