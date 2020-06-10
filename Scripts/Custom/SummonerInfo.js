@@ -2,7 +2,7 @@
     var startIndex = 0;
     var endIndex = 5;
 
-    function fetchMoreMatches(accountId) {
+    function getMatches(accountId) {
         startIndex += 5;
         endIndex += 5;
         $('#waiting-div').show();
@@ -18,8 +18,8 @@
     }
 
     return {
-        getMatches: function (accountId) {
-            fetchMoreMatches(accountId);
+        fetchMoreMatches: function (accountId) {
+            getMatches(accountId);
         }
     }
 })();
@@ -29,6 +29,6 @@ function SetSummonerInfoHandlers(accountId) {
         $('#waiting-div').show();
     });
     $("#loadBtn").click(function () {
-        matchHistory.getMatches(accountId);
+        matchHistory.fetchMoreMatches(accountId);
     });
 }

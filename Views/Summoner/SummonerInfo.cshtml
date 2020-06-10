@@ -18,8 +18,8 @@
     <div class="col-md-2">
         <b>@Model.Summoner.Name</b>
     </div>
-    <div class="col-md-9" style="border: 1px red solid;">
-        League entries here
+    <div class="col-md-9">
+        @Html.Partial("_LeagueEntries", Model.LeagueEntries)
     </div>
 </div>
 <hr />

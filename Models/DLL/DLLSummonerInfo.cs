@@ -25,6 +25,9 @@ namespace intrapp.Models.DLL
             summonerInfo.LeagueEntries = GetLeagueEntriesOfSummoner(summonerInfo.Summoner.Id);
             summonerInfo.ProfileIconUrl = pathBuilder.GetProfileIconUrl(summonerInfo.Summoner.ProfileIconId);
 
+            foreach (var leagueEntry in summonerInfo.LeagueEntries) 
+                leagueEntry.WinRate = Convert.ToInt32(leagueEntry.Wins / (leagueEntry.Wins + leagueEntry.Losses) * 100);
+
             return summonerInfo;
         }
 
@@ -135,7 +138,6 @@ namespace intrapp.Models.DLL
                     leagueEntries = JsonConvert.DeserializeObject<List<LeagueEntry>>(readData.Result);
                 }
             }
-
             return leagueEntries;
         }
 

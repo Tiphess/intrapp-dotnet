@@ -20,5 +20,17 @@ namespace intrapp.Models
         public bool Inactive { get; set; }
         public bool FreshBlood { get; set; }
         public bool HotStreak { get; set; }
+        public MiniSeries MiniSeries { get; set; }
+
+
+        public int WinRate { get; set; }
+    }
+
+    public class MiniSeries
+    {
+        public int Target { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public string Progress { get; set; }
     }
 }
