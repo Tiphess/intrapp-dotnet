@@ -21,5 +21,8 @@ namespace intrapp.Models
         public IList<Team> Teams { get; set; }
         public IList<Participant> Participants { get; set; }
         public IList<ParticipantIdentity> ParticipantIdentities { get; set; }
+
+
+        public long Timestamp { get; set; }
     }
 }

@@ -102,3 +102,24 @@ textarea {
     }
 
 /* LINK APPEARANCE FOR BUTTONS END*/
+
+/* LEVEL CSS */
+.level {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -10px;
+    width: 44px;
+    height: 24px;
+    padding-top: 3px;
+    box-sizing: border-box;
+    background: url('../DataAccess/RiotGamesApi/Images/Misc/level-box.png');
+    background-size: 100%;
+    line-height: 17px;
+    font-family: Helvetica,AppleSDGothic,"Apple SD Gothic Neo",AppleGothic,Arial,Tahoma;
+    font-size: 14px;
+    text-align: center;
+    color: #eabd56;
+}
+/* LEVEL CSS END */

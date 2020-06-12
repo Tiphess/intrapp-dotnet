@@ -9,8 +9,11 @@ namespace intrapp.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Index(string message = null, string region = null)
         {
+            if (message != null) ViewBag.ErrorMessage = message;
+            if (region != null) ViewBag.SelectedRegion = region;
+
             ViewBag.Regions = new Dictionary<string, string>()
             {
                 { "BR1", "BR" },
@@ -25,6 +28,7 @@ namespace intrapp.Controllers
                 { "TR1", "TR" },
                 { "RU", "RU" },
             };
+
             return View();
         }
     }

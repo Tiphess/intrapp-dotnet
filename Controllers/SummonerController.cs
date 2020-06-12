@@ -18,16 +18,44 @@ namespace intrapp.Controllers
     {
         private DLLSummonerInfo dllSummonerInfo = new DLLSummonerInfo();
 
-        public ActionResult SummonerInfo(string summonerName)
+        public ActionResult SummonerInfo(string summonerName, string region)
         {
-            var model = dllSummonerInfo.GetSummoner(summonerName);
+            var model = dllSummonerInfo.GetSummoner(summonerName, region);
+            if (model == null)
+            {
+                var errorMessage = "Data not found - Please enter a summoner name.";
+                if (!string.IsNullOrWhiteSpace(summonerName))
+                    errorMessage = "Data not found - Summoner with the name '" + summonerName + "' in the region '" + region.Replace("1", "") + "' does not exist.";
+
+                return RedirectToAction("Index", "Home", new { message = errorMessage, region = region });
+            }
+            
+            SetRegions();
             return View(model);
         }
 
-        public ActionResult _MatchHistory(string accountId, int startIndex, int endIndex)
+        public ActionResult _MatchHistory(string accountId, int startIndex, int endIndex, string region)
         {
-            var model = dllSummonerInfo.FetchMoreMatches(accountId, startIndex, endIndex);
+            var model = dllSummonerInfo.FetchMoreMatches(accountId, startIndex, endIndex, region);
             return PartialView(model);
+        }
+
+        public void SetRegions()
+        {
+            ViewBag.Regions = new Dictionary<string, string>()
+            {
+                { "BR1", "BR" },
+                { "EUN1", "EUN" },
+                { "EUW1", "EUW" },
+                { "JP1", "JP" },
+                { "KR", "KR" },
+                { "LA1", "LAN" },
+                { "LA2", "LAS" },
+                { "NA1", "NA" },
+                { "OC1", "OCE" },
+                { "TR1", "TR" },
+                { "RU", "RU" },
+            };
         }
     }
 }

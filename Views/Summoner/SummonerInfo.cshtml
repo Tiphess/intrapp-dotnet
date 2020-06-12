@@ -5,38 +5,59 @@
 
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-md-12">
-        <h2 class="float-left">Summoner information</h2>
         <div id="waiting-div" style="text-align: center; display: none; margin-top: 10px;" class="float-right">
             <span class="loader"><span class="loader-inner"></span></span>
         </div>
     </div>
 </div>
 <div class="row" style="margin-bottom: 20px;">
-    <div class="col-md-1">
-        <img src="@Model.ProfileIconUrl" alt="Image unavailable" height="75" width="75" />
-    </div>
-    <div class="col-md-2">
-        <b>@Model.Summoner.Name</b>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <b>Summoner Information</b>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div>
+                            <img src="@Model.ProfileIconUrl" alt="Image unavailable" height="75" width="75" />
+                            <span class="level">@Model.Summoner.SummonerLevel</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <b>@Model.Summoner.Name</b><br />
+                        @Model.LastPlayed
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-9">
-        @Html.Partial("_LeagueEntries", Model.LeagueEntries)
+        <div class="card">
+            <div class="card-header">
+                <b>League Entries</b>
+            </div>
+            <div class="card-body">
+                @Html.Partial("_LeagueEntries", Model.LeagueEntries)
+            </div>
+        </div>
     </div>
 </div>
-<hr />
 <div class="row">
-    <h4>Match history</h4>
+    <h4 style="margin-left: 15px;">Match history</h4>
 </div>
 <div class="row">
-    <div id="matchHistory">
+    <div id="matchHistory" style="margin-left: 15px;">
         @Html.Partial("_MatchHistory", Model.MatchHistory.Matches)
     </div>
-    <button id="loadBtn" class="input-link-style">Load more</button>
+    <button id="loadBtn" class="input-link-style" style="margin-left: 15px;">Load more</button>
 </div>
 
 @section scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            SetSummonerInfoHandlers("@Model.Summoner.AccountId");
+            SetSummonerInfoHandlers("@Model.Summoner.AccountId", "@Model.Region");
+            $("#summonerName").val("");
         });
     </script>
 }

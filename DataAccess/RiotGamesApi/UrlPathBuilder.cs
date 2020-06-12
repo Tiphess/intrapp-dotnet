@@ -27,33 +27,33 @@ namespace intrapp.DataAccess.RiotGamesApi
             return DataDragonUrlPaths.DDRAGON_BASE_CDN + ddragon_versions.First() + "/";
         }
 
-        public string GetSummonerByNameUrl(string name)
+        public string GetSummonerByNameUrl(string name, string region)
         {
-            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == region);
             return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_SUMMONER_BY_NAME + name;
         }
 
-        public string GetMatchListOfSummonerByAccountIdUrl(string accountId)
+        public string GetMatchListOfSummonerByAccountIdUrl(string accountId, string region)
         {
-            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == region);
             return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_HISTORY_BY_ACCOUNTID + accountId + ApiUrlPaths.PARAMETER_DEFAULT_ENDINDEX;
         }
 
-        public string GetMatchListOfSummonerByAccountIdUrl(string accountId, int startIndex, int endIndex)
+        public string GetMatchListOfSummonerByAccountIdUrl(string accountId, int startIndex, int endIndex, string region)
         {
-            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == region);
             return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_HISTORY_BY_ACCOUNTID + accountId + "?endIndex=" + endIndex + "&beginIndex=" + startIndex;
         }
 
-        public string GetMatchByGameIdUrl(long gameId)
+        public string GetMatchByGameIdUrl(long gameId, string region)
         {
-            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == region);
             return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_BY_GAMEID + gameId.ToString();
         }
 
-        public string GetLeagueEntriesBySummonerIdUrl(string summonerId)
+        public string GetLeagueEntriesBySummonerIdUrl(string summonerId, string region)
         {
-            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == BaseUrlPaths.DEFAULT_PLATFORM);
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == region);
             return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_LEAGUE_ENTRY_BY_SUMMONERID + summonerId;
         }
 

@@ -2,14 +2,14 @@
     var startIndex = 0;
     var endIndex = 5;
 
-    function getMatches(accountId) {
+    function getMatches(accountId, region) {
         startIndex += 5;
         endIndex += 5;
         $('#waiting-div').show();
         $.ajax({
             url: "/Summoner/_MatchHistory",
             type: "POST",
-            data: { accountId: accountId, startIndex: startIndex, endIndex: endIndex },
+            data: { accountId: accountId, startIndex: startIndex, endIndex: endIndex, region: region },
             success: function (data) {
                 $("#matchHistory").append(data);
                 $('#waiting-div').hide();
@@ -18,17 +18,17 @@
     }
 
     return {
-        fetchMoreMatches: function (accountId) {
-            getMatches(accountId);
+        fetchMoreMatches: function (accountId, region) {
+            getMatches(accountId, region);
         }
     }
 })();
 
-function SetSummonerInfoHandlers(accountId) {
+function SetSummonerInfoHandlers(accountId, region) {
     $("a[name='playerLink']").click(function () {
         $('#waiting-div').show();
     });
     $("#loadBtn").click(function () {
-        matchHistory.fetchMoreMatches(accountId);
+        matchHistory.fetchMoreMatches(accountId, region);
     });
 }

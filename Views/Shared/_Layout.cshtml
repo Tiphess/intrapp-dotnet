@@ -5,10 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mon application ASP.NET</title>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
+
 </head>
 <body>
     <div class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,8 +29,11 @@
                 </ul>
                 @using (Html.BeginForm("SummonerInfo", "Summoner", FormMethod.Post, new { id = "SummonerNameFormNavbar", @class = "form-inline justify-content-center" }))
                 {
+                    @Html.DropDownList("region", new SelectList(ViewBag.Regions, "Key", "Value"), new { @class = "form-control", style = "margin-right: 5px;" })
                     @Html.TextBox("summonerName", "", new { @class = "form-control", placeholder = "Enter a summoner name", style = "margin-right: 5px;" });
-                    <input type="submit" class="btn btn-primary" value="Submit" />
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
                 }
             </div>
         </div>

@@ -15,34 +15,75 @@ namespace intrapp.Models.DLL
     public class DLLSummonerInfo
     {
 
-        public SummonerInfo GetSummoner(string name)
+        public SummonerInfo GetSummoner(string name, string region)
         {
             var pathBuilder = new UrlPathBuilder();
             var summonerInfo = new SummonerInfo();
 
-            summonerInfo.Summoner = GetSummonerByName(name);
-            summonerInfo.MatchHistory = GetMatchHistoryOfSummoner(summonerInfo.Summoner.AccountId);
-            summonerInfo.LeagueEntries = GetLeagueEntriesOfSummoner(summonerInfo.Summoner.Id);
-            summonerInfo.ProfileIconUrl = pathBuilder.GetProfileIconUrl(summonerInfo.Summoner.ProfileIconId);
+            summonerInfo.Summoner = GetSummonerByName(name, region);
+            if (summonerInfo.Summoner.AccountId == null)
+                return null;
 
-            foreach (var leagueEntry in summonerInfo.LeagueEntries) 
-                leagueEntry.WinRate = Convert.ToInt32(leagueEntry.Wins / (leagueEntry.Wins + leagueEntry.Losses) * 100);
+            summonerInfo.MatchHistory = GetMatchHistoryOfSummoner(summonerInfo.Summoner.AccountId, region);
+            summonerInfo.LeagueEntries = GetLeagueEntriesOfSummoner(summonerInfo.Summoner.Id, region);
+            summonerInfo.ProfileIconUrl = pathBuilder.GetProfileIconUrl(summonerInfo.Summoner.ProfileIconId);
+            summonerInfo.Region = region;
+            summonerInfo.LastPlayed = GetLastTimePlayedStr(summonerInfo.MatchHistory);
+
+
+            foreach (var leagueEntry in summonerInfo.LeagueEntries)
+                leagueEntry.WinRate = (int)Math.Round((double) leagueEntry.Wins / (leagueEntry.Wins + leagueEntry.Losses) * 100);
 
             return summonerInfo;
         }
 
-        public List<Match> FetchMoreMatches(string accountId, int startIndex, int endIndex)
+        public List<Match> FetchMoreMatches(string accountId, int startIndex, int endIndex, string region)
         {
             var pathBuilder = new UrlPathBuilder();
-            var matchList = GetMatchListOfSummoner(accountId, startIndex, endIndex);
+            var matchList = GetMatchListOfSummoner(accountId, startIndex, endIndex, region);
             var matches = new List<Match>();
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
-                foreach (var matchRef in matchList.Matches)
+                try
                 {
-                    var response = client.GetAsync(new Uri(pathBuilder.GetMatchByGameIdUrl(matchRef.GameId)));
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    foreach (var matchRef in matchList.Matches)
+                    {
+                        var response = client.GetAsync(new Uri(pathBuilder.GetMatchByGameIdUrl(matchRef.GameId, region)));
+                        response.Wait();
+
+                        var result = response.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var readData = result.Content.ReadAsStringAsync();
+                            readData.Wait();
+
+                            var match = JsonConvert.DeserializeObject<Match>(readData.Result);
+                            foreach (var participant in match.Participants)
+                                SetTimeLineStatsOfParticipant(participant, match, readData.Result);
+
+                            match.Timestamp = matchRef.Timestamp;
+                            matches.Add(match);
+                        }
+                    }
+                }
+                catch (Exception) {}
+            }
+            return matches;
+        }
+
+        private Summoner GetSummonerByName(string name, string region)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            var summoner = new Summoner();
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    var response = client.GetAsync(new Uri(pathBuilder.GetSummonerByNameUrl(name, region)));
                     response.Wait();
 
                     var result = response.Result;
@@ -51,43 +92,18 @@ namespace intrapp.Models.DLL
                         var readData = result.Content.ReadAsStringAsync();
                         readData.Wait();
 
-                        var match = JsonConvert.DeserializeObject<Match>(readData.Result);
-                        foreach (var participant in match.Participants)
-                            SetTimeLineStatsOfParticipant(participant, match, readData.Result);
-
-                        matches.Add(match);
+                        summoner = JsonConvert.DeserializeObject<Summoner>(readData.Result);
                     }
                 }
-            }
-            return matches;
-        }
-
-        private Summoner GetSummonerByName(string name)
-        {
-            var pathBuilder = new UrlPathBuilder();
-            var summoner = new Summoner();
-
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
-                var response = client.GetAsync(new Uri(pathBuilder.GetSummonerByNameUrl(name)));
-                response.Wait();
-
-                var result = response.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readData = result.Content.ReadAsStringAsync();
-                    readData.Wait();
-
-                    summoner = JsonConvert.DeserializeObject<Summoner>(readData.Result);
-                }
+                catch (Exception) {}
             }
             return summoner;
         }
-        private MatchHistory GetMatchHistoryOfSummoner(string accountId)
+
+        private MatchHistory GetMatchHistoryOfSummoner(string accountId, string region)
         {
             var pathBuilder = new UrlPathBuilder();
-            var matchList = GetMatchListOfSummoner(accountId);
+            var matchList = GetMatchListOfSummoner(accountId, region);
             var matchHistory = new MatchHistory()
             {
                 StartIndex = 0,
@@ -95,10 +111,45 @@ namespace intrapp.Models.DLL
             };
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
-                foreach (var matchRef in matchList.Matches)
+                try
                 {
-                    var response = client.GetAsync(new Uri(pathBuilder.GetMatchByGameIdUrl(matchRef.GameId)));
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    foreach (var matchRef in matchList.Matches)
+                    {
+                        var response = client.GetAsync(new Uri(pathBuilder.GetMatchByGameIdUrl(matchRef.GameId, region)));
+                        response.Wait();
+
+                        var result = response.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var readData = result.Content.ReadAsStringAsync();
+                            readData.Wait();
+
+                            var match = JsonConvert.DeserializeObject<Match>(readData.Result);
+                            foreach (var participant in match.Participants)
+                                SetTimeLineStatsOfParticipant(participant, match, readData.Result);
+
+                            match.Timestamp = matchRef.Timestamp;
+                            matchHistory.Matches.Add(match);
+                        }
+                    }
+                }
+                catch (Exception) {}
+            }
+            return matchHistory;
+        }
+
+        private List<LeagueEntry> GetLeagueEntriesOfSummoner(string summonerId, string region)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            var leagueEntries = new List<LeagueEntry>();
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    var response = client.GetAsync(new Uri(pathBuilder.GetLeagueEntriesBySummonerIdUrl(summonerId, region)));
                     response.Wait();
 
                     var result = response.Result;
@@ -107,82 +158,75 @@ namespace intrapp.Models.DLL
                         var readData = result.Content.ReadAsStringAsync();
                         readData.Wait();
 
-                        var match = JsonConvert.DeserializeObject<Match>(readData.Result);
-                        foreach (var participant in match.Participants)
-                            SetTimeLineStatsOfParticipant(participant, match, readData.Result);
-
-                        matchHistory.Matches.Add(match);
+                        leagueEntries = JsonConvert.DeserializeObject<List<LeagueEntry>>(readData.Result);
                     }
                 }
-            }
-            return matchHistory;
-        }
-
-        private List<LeagueEntry> GetLeagueEntriesOfSummoner(string summonerId)
-        {
-            var pathBuilder = new UrlPathBuilder();
-            var leagueEntries = new List<LeagueEntry>();
-
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
-                var response = client.GetAsync(new Uri(pathBuilder.GetLeagueEntriesBySummonerIdUrl(summonerId)));
-                response.Wait();
-
-                var result = response.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readData = result.Content.ReadAsStringAsync();
-                    readData.Wait();
-
-                    leagueEntries = JsonConvert.DeserializeObject<List<LeagueEntry>>(readData.Result);
-                }
+                catch (Exception) {}
             }
             return leagueEntries;
         }
 
-        private MatchList GetMatchListOfSummoner(string accountId)
+        private MatchList GetMatchListOfSummoner(string accountId, string region)
         {
             var pathBuilder = new UrlPathBuilder();
             var matchList = new MatchList();
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
-                var response = client.GetAsync(new Uri(pathBuilder.GetMatchListOfSummonerByAccountIdUrl(accountId)));
-                response.Wait();
-
-                var result = response.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var readData = result.Content.ReadAsStringAsync();
-                    readData.Wait();
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    var response = client.GetAsync(new Uri(pathBuilder.GetMatchListOfSummonerByAccountIdUrl(accountId, region)));
+                    response.Wait();
 
-                    matchList = JsonConvert.DeserializeObject<MatchList>(readData.Result);
+                    var result = response.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readData = result.Content.ReadAsStringAsync();
+                        readData.Wait();
+
+                        matchList = JsonConvert.DeserializeObject<MatchList>(readData.Result);
+                    }
                 }
+                catch (Exception) {}
             }
             return matchList;
         }
 
-        private MatchList GetMatchListOfSummoner(string accountId, int startIndex, int endIndex)
+        private MatchList GetMatchListOfSummoner(string accountId, int startIndex, int endIndex, string region)
         {
             var pathBuilder = new UrlPathBuilder();
             var matchList = new MatchList();
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
-                var response = client.GetAsync(new Uri(pathBuilder.GetMatchListOfSummonerByAccountIdUrl(accountId, startIndex, endIndex)));
-                response.Wait();
-
-                var result = response.Result;
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    var readData = result.Content.ReadAsStringAsync();
-                    readData.Wait();
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    var response = client.GetAsync(new Uri(pathBuilder.GetMatchListOfSummonerByAccountIdUrl(accountId, startIndex, endIndex, region)));
+                    response.Wait();
 
-                    matchList = JsonConvert.DeserializeObject<MatchList>(readData.Result);
+                    var result = response.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readData = result.Content.ReadAsStringAsync();
+                        readData.Wait();
+
+                        matchList = JsonConvert.DeserializeObject<MatchList>(readData.Result);
+                    }
                 }
+                catch (Exception) {}
             }
             return matchList;
+        }
+
+        private string GetLastTimePlayedStr(MatchHistory matchHistory)
+        {
+            var matchTimestmap = matchHistory.Matches.First().Timestamp;
+
+            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            DateTime lastMatchTime = date.AddMilliseconds(matchTimestmap).ToLocalTime();
+            var difference = (DateTime.Now - lastMatchTime).Hours;
+
+            return "Played " + difference + " hours ago";
         }
 
         //Seems really ugly but it'll do for now

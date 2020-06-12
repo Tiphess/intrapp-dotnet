@@ -11,6 +11,7 @@ namespace intrapp.Models.ViewModels
         public MatchHistory MatchHistory { get; set; }
         public List<LeagueEntry> LeagueEntries { get; set; }
         public string ProfileIconUrl { get; set; }
-
+        public string Region { get; set; }
+        public string LastPlayed { get; set; }
     }
 }
