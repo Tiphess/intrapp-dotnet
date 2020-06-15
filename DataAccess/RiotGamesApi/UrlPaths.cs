@@ -46,7 +46,6 @@ namespace intrapp.DataAccess.RiotGamesApi
 
     internal static class ApiUrlPaths
     {
-        internal readonly static string API_KEY_QUERY_PARAMETER = "?api_key=";
         internal readonly static string GET_SUMMONER_BY_NAME = "/lol/summoner/v4/summoners/by-name/";
         internal readonly static string GET_MATCH_HISTORY_BY_ACCOUNTID = "/lol/match/v4/matchlists/by-account/";
         internal readonly static string GET_MATCH_BY_GAMEID = "/lol/match/v4/matches/";

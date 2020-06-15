@@ -106,8 +106,7 @@ textarea {
 /* LEVEL CSS */
 .level {
     position: absolute;
-    top: 100%;
-    left: 50%;
+    left: 35%;
     margin-top: -12px;
     margin-left: -10px;
     width: 44px;
@@ -121,5 +120,11 @@ textarea {
     font-size: 14px;
     text-align: center;
     color: #eabd56;
+}
+
+.image-container {
+    position: relative;
+    height: 75px;
+    width: 75px;
 }
 /* LEVEL CSS END */

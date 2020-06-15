@@ -12,19 +12,19 @@
 </div>
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-md-3">
-        <div class="card">
+        <div class="card" style="margin-bottom: 5px;">
             <div class="card-header">
                 <b>Summoner Information</b>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div>
+                    <div class="col-3 col-sm-3 col-md-12 col-lg-6 col-xl-5">
+                        <div class="image-container">
                             <img src="@Model.ProfileIconUrl" alt="Image unavailable" height="75" width="75" />
                             <span class="level">@Model.Summoner.SummonerLevel</span>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-7 col-sm-7 col-md-12 col-lg-12 col-xl-7">
                         <b>@Model.Summoner.Name</b><br />
                         @Model.LastPlayed
                     </div>

@@ -3,12 +3,12 @@
     @foreach (var leagueEntry in Model)
     {
 
-        <div class="col-md-6">
+        <div class="col-md-6 w-50">
             <div class="row">
-                <div class="col-md-3">
-                    <img src="~/DataAccess/RiotGamesApi/Images/Emblems/Emblem_Challenger.png" alt="Image unavailable" height="80" width="80" />
+                <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                    <img src="~/DataAccess/RiotGamesApi/Images/Emblems/Emblem_@(leagueEntry.Tier.Substring(0, 1) + leagueEntry.Tier.Substring(1).ToLower()).png" alt="Image unavailable" height="80" width="80" />
                 </div>
-                <div class="col-md-9">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5">
                     @if (leagueEntry.QueueType == "RANKED_SOLO_5x5")
                     {
                         <span style="display: block;"><small>Ranked solo</small></span>
