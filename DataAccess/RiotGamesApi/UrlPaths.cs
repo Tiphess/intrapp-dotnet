@@ -37,11 +37,19 @@ namespace intrapp.DataAccess.RiotGamesApi
         internal readonly static string DEFAULT_PLATFORM = "NA1";
     }
 
-    internal static class DataDragonUrlPaths
+    internal class DataDragonUrlPaths
     {
-        internal readonly static string GET_DDRAGON_VERSIONS = "https://ddragon.leagueoflegends.com/api/versions.json";
-        internal readonly static string DDRAGON_BASE_CDN = "https://ddragon.leagueoflegends.com/cdn/";
-        internal readonly static string DDRAGON_PROFILEICON = "img/profileicon/";
+        internal readonly string GET_DDRAGON_VERSIONS = "https://ddragon.leagueoflegends.com/api/versions.json";
+        internal readonly string DDRAGON_BASE_CDN = "https://ddragon.leagueoflegends.com/cdn/";
+        internal readonly string DDRAGON_PROFILEICON = "img/profileicon/";
+        internal readonly string DDRAGON_CHAMPIONICON = "img/champion/";
+        internal readonly string DDRAGON_CHAMPION_DATA = "data/en_US/champion.json";
+
+        //CommunityDragon URLs - Community made custom API to retrieve game data more easily and much more quickly
+        //Full url - Get a champion's icon => https://cdn.communitydragon.org/{version}/champion/{championId}/square
+        internal readonly string CDRAGON_BASE = "https://cdn.communitydragon.org/";
+        internal readonly string CDRAGON_CHAMPION = "/champion/";
+        internal readonly string CDRAGON_ICON = "/square";
     }
 
     internal static class ApiUrlPaths

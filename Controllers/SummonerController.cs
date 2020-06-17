@@ -30,18 +30,20 @@ namespace intrapp.Controllers
                 return RedirectToAction("Index", "Home", new { message = errorMessage, region = region });
             }
             
-            SetRegions();
+            SetRegions(region);
             return View(model);
         }
 
         public ActionResult _MatchHistory(string accountId, int startIndex, int endIndex, string region)
         {
             var model = dllSummonerInfo.FetchMoreMatches(accountId, startIndex, endIndex, region);
+            ViewBag.SelectedRegion = region;
             return PartialView(model);
         }
 
-        public void SetRegions()
+        public void SetRegions(string region)
         {
+            ViewBag.SelectedRegion = region;
             ViewBag.Regions = new Dictionary<string, string>()
             {
                 { "BR1", "BR" },

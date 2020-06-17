@@ -5,18 +5,18 @@
 
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-md-12">
-        <div id="waiting-div" style="text-align: center; display: none; margin-top: 10px;" class="float-right">
+        <div name="waiting-div" style="text-align: center; display: none; margin-top: 10px;" class="float-right">
             <span class="loader"><span class="loader-inner"></span></span>
         </div>
     </div>
 </div>
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-md-3">
-        <div class="card" style="margin-bottom: 5px;">
-            <div class="card-header">
-                <b>Summoner Information</b>
+        <div class="card" style="margin-bottom: 5px; border: none;">
+            <div class="card-header" style="border: none;">
+                <b>Summoner</b>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="border: none;">
                 <div class="row">
                     <div class="col-3 col-sm-3 col-md-12 col-lg-6 col-xl-5">
                         <div class="image-container">
@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="col-md-9">
-        <div class="card">
+        <div class="card" style="margin-right: -15px;">
             <div class="card-header">
                 <b>League Entries</b>
             </div>
@@ -45,12 +45,21 @@
 </div>
 <div class="row">
     <h4 style="margin-left: 15px;">Match history</h4>
+    <hr />
 </div>
 <div class="row">
-    <div id="matchHistory" style="margin-left: 15px;">
+    <div id="matchHistory" class="w-100" style="margin-left: 15px;">
         @Html.Partial("_MatchHistory", Model.MatchHistory.Matches)
+        <span style="display: none;">@Model.Region</span>
     </div>
-    <button id="loadBtn" class="input-link-style" style="margin-left: 15px;">Load more</button>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <button id="loadBtn" class="btn btn-primary">Load more</button>
+        <div name="waiting-div" style="text-align: center; margin-right: -14px; display: none;" class="float-right">
+            <span class="loader"><span class="loader-inner"></span></span>
+        </div>
+    </div>
 </div>
 
 @section scripts{

@@ -14,5 +14,8 @@ namespace intrapp.Models
         public int Spell2Id { get; set; }
         public Stats Stats { get; set; }
         public Timeline Timeline { get; set; }
+        public Player Player { get; set; }
+        public string DisplayedSummonerName { get; set; }
+        public string ChampionPlayedIcon { get; set; }
     }
 }

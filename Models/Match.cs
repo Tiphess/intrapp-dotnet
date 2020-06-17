@@ -24,5 +24,7 @@ namespace intrapp.Models
 
 
         public long Timestamp { get; set; }
+        public IEnumerable<IGrouping<int, Participant>> ParticipantsByTeam { get; set; }
+
     }
 }

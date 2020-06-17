@@ -61,8 +61,17 @@ namespace intrapp.Models.DLL
 
                             var match = JsonConvert.DeserializeObject<Match>(readData.Result);
                             foreach (var participant in match.Participants)
+                            {
+                                participant.Player = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId).Player;
+                                participant.ChampionPlayedIcon = pathBuilder.GetChampionIconUrl(participant.ChampionId);
                                 SetTimeLineStatsOfParticipant(participant, match, readData.Result);
 
+                                //kinda bad, will revisist
+                                if (participant.Player.SummonerName.Length > 15)
+                                    participant.DisplayedSummonerName = participant.Player.SummonerName.Substring(0, 12) + "..";
+                            }
+
+                            match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
                             match.Timestamp = matchRef.Timestamp;
                             matches.Add(match);
                         }
@@ -127,8 +136,17 @@ namespace intrapp.Models.DLL
 
                             var match = JsonConvert.DeserializeObject<Match>(readData.Result);
                             foreach (var participant in match.Participants)
+                            {
+                                participant.Player = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId).Player;
+                                participant.ChampionPlayedIcon = pathBuilder.GetChampionIconUrl(participant.ChampionId);
                                 SetTimeLineStatsOfParticipant(participant, match, readData.Result);
 
+                                //kinda bad, will revisist
+                                if (participant.Player.SummonerName.Length > 15)
+                                    participant.DisplayedSummonerName = participant.Player.SummonerName.Substring(0, 12) + "..";
+                            }
+
+                            match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
                             match.Timestamp = matchRef.Timestamp;
                             matchHistory.Matches.Add(match);
                         }

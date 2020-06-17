@@ -5,14 +5,14 @@
     function getMatches(accountId, region) {
         startIndex += 5;
         endIndex += 5;
-        $('#waiting-div').show();
+        $("div[name='waiting-div']").show();
         $.ajax({
             url: "/Summoner/_MatchHistory",
             type: "POST",
             data: { accountId: accountId, startIndex: startIndex, endIndex: endIndex, region: region },
             success: function (data) {
                 $("#matchHistory").append(data);
-                $('#waiting-div').hide();
+                $("div[name='waiting-div']").hide();
             }
         });
     }

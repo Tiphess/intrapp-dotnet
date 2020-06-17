@@ -4,18 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
+using System.Web.Mvc;
 using intrapp.DataAccess.RiotGamesApi;
+using System.Runtime.Remoting.Messaging;
 
 namespace intrapp.DataAccess.RiotGamesApi
 {
     public class UrlPathBuilder
     {
-        public string GetDDragonCdn()
+        private static string DDragonLatestVersion { get; set; } = SetDDragonVersion();
+
+        public static string SetDDragonVersion()
         {
             var ddragon_versions = new List<string>();
+            var ddragon_url_provider = new DataDragonUrlPaths();
             using (var client = new HttpClient())
             {
-                var response = client.GetAsync(new Uri(DataDragonUrlPaths.GET_DDRAGON_VERSIONS));
+                var response = client.GetAsync(new Uri(ddragon_url_provider.GET_DDRAGON_VERSIONS));
                 response.Wait();
                 if (response.Result.IsSuccessStatusCode)
                 {
@@ -24,7 +29,13 @@ namespace intrapp.DataAccess.RiotGamesApi
                     ddragon_versions = JsonConvert.DeserializeObject<List<string>>(readData.Result);
                 }
             }
-            return DataDragonUrlPaths.DDRAGON_BASE_CDN + ddragon_versions.First() + "/";
+            return ddragon_versions.First();
+        }
+
+        public string GetDDragonVersion()
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return ddragon_url_provider.DDRAGON_BASE_CDN + DDragonLatestVersion + "/";
         }
 
         public string GetSummonerByNameUrl(string name, string region)
@@ -59,7 +70,14 @@ namespace intrapp.DataAccess.RiotGamesApi
 
         public string GetProfileIconUrl(int profileIconId)
         {
-            return GetDDragonCdn() + DataDragonUrlPaths.DDRAGON_PROFILEICON + profileIconId.ToString() + ".png";
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return GetDDragonVersion() + ddragon_url_provider.DDRAGON_PROFILEICON + profileIconId.ToString() + ".png";
+        }
+
+        public string GetChampionIconUrl(int championId)
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return ddragon_url_provider.CDRAGON_BASE + DDragonLatestVersion + ddragon_url_provider.CDRAGON_CHAMPION + championId + ddragon_url_provider.CDRAGON_ICON;
         }
     }
 }
