@@ -57,6 +57,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -130,6 +131,7 @@
     <Compile Include="DataAccess\ConfigWrapper.cs" />
     <Compile Include="DataAccess\RiotGamesApi\UrlPathBuilder.cs" />
     <Compile Include="DataAccess\RiotGamesApi\UrlPaths.cs" />
+    <Compile Include="Extensions\String\StringExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -147,6 +149,7 @@
     <Compile Include="Models\Summoner.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\Timeline.cs" />
+    <Compile Include="Models\Utils\SummonerInfoUtils.cs" />
     <Compile Include="Models\ViewModels\SummonerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

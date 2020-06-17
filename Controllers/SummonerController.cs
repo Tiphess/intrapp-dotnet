@@ -36,7 +36,7 @@ namespace intrapp.Controllers
 
         public ActionResult _MatchHistory(string accountId, int startIndex, int endIndex, string region)
         {
-            var model = dllSummonerInfo.FetchMoreMatches(accountId, startIndex, endIndex, region);
+            var model = dllSummonerInfo.FetchMoreMatches(accountId, region, startIndex, endIndex);
             ViewBag.SelectedRegion = region;
             return PartialView(model);
         }
