@@ -59,6 +59,9 @@ namespace intrapp.DataAccess.RiotGamesApi
 
         //Summoner spells
         internal readonly string CDRAGON_SUMMONERSPELLS_JSON = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/summoner-spells.json";
+
+        //Runes Reforged
+        internal readonly string CDRAGON_RUNESREFORGED_JSON = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json";
     }
 
     internal static class ApiUrlPaths

@@ -1,5 +1,6 @@
 ﻿using intrapp.DataAccess.RiotGamesApi;
 using intrapp.Extensions.String;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -56,11 +57,22 @@ namespace intrapp.Models.Utils
 
             var spell1Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell1Id).IconPath;
             var spell2Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell2Id).IconPath;
+
+            var perkStyle = pathBuilder.GetRuneIcon(RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon);
+            var keystonePath = "";
+            foreach (var path in RunePaths)
+                foreach (var slot in path.Slots)
+                    foreach (var rune in slot.Runes)
+                        if (rune.Id == participant.Stats.Perk0)
+                            keystonePath = pathBuilder.GetRuneIcon(rune.Icon);
+
             match.ChampionForDisplay = new ChampionForDisplay()
             {
                 ChampionIconUrl = pathBuilder.GetChampionIconUrl(participant.ChampionId),
                 SummonerSpell1IconUrl = pathBuilder.GetSummonerSpellIcon(spell1Path.Replace("/lol-game-data/assets/", "").ToLower()),
-                SummonerSpell2IconUrl = pathBuilder.GetSummonerSpellIcon(spell2Path.Replace("/lol-game-data/assets/", "").ToLower())
+                SummonerSpell2IconUrl = pathBuilder.GetSummonerSpellIcon(spell2Path.Replace("/lol-game-data/assets/", "").ToLower()),
+                RuneKeystoneIconUrl = keystonePath,
+                RuneSecondaryPathIconUrl = perkStyle
             };
         }
 

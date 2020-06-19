@@ -141,8 +141,8 @@
     <Compile Include="Models\LeagueEntry.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\MatchHistory.cs" />
-    <Compile Include="Models\MatchReference.cs" />
     <Compile Include="Models\MatchList.cs" />
+    <Compile Include="Models\MatchReference.cs" />
     <Compile Include="Models\Participant.cs" />
     <Compile Include="Models\ParticipantIdentity.cs" />
     <Compile Include="Models\Player.cs" />
