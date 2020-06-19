@@ -136,6 +136,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Ban.cs" />
+    <Compile Include="Models\ChampionForDisplay.cs" />
     <Compile Include="Models\DLL\DLLSummonerInfo.cs" />
     <Compile Include="Models\LeagueEntry.cs" />
     <Compile Include="Models\Match.cs" />
@@ -145,8 +146,11 @@
     <Compile Include="Models\Participant.cs" />
     <Compile Include="Models\ParticipantIdentity.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\QueueType.cs" />
+    <Compile Include="Models\Rune.cs" />
     <Compile Include="Models\Stats.cs" />
     <Compile Include="Models\Summoner.cs" />
+    <Compile Include="Models\SummonerSpell.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\Timeline.cs" />
     <Compile Include="Models\Utils\SummonerInfoUtils.cs" />

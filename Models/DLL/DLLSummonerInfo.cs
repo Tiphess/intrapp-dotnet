@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace intrapp.Models.DLL
 {
     public class DLLSummonerInfo
     {
-
+        
         public SummonerInfo GetSummoner(string name, string region)
         {
             var pathBuilder = new UrlPathBuilder();
@@ -34,7 +35,6 @@ namespace intrapp.Models.DLL
             summonerInfo.ProfileIconUrl = pathBuilder.GetProfileIconUrl(summonerInfo.Summoner.ProfileIconId);
             summonerInfo.LastPlayed = SummonerInfoUtils.GetLastTimePlayedStr(summonerInfo.MatchHistory);
             summonerInfo.Region = region;
-            SummonerInfoUtils.SetLeagueEntriesWinRates(summonerInfo.LeagueEntries);
 
             return summonerInfo;
         }
@@ -102,8 +102,7 @@ namespace intrapp.Models.DLL
                             foreach (var participant in match.Participants)
                                 SummonerInfoUtils.SetParticipantCustomFieldsAndDeltas(participant, match, readData.Result);
 
-                            match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
-                            match.Timestamp = matchRef.Timestamp;
+                            SummonerInfoUtils.SetMatchCustomFields(match, matchRef, accountId);
                             matchHistory.Matches.Add(match);
                         }
                     }
@@ -137,6 +136,8 @@ namespace intrapp.Models.DLL
                 }
                 catch (Exception) {}
             }
+
+            SummonerInfoUtils.SetLeagueEntriesWinRates(leagueEntries);
             return leagueEntries;
         }
 

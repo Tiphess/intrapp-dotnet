@@ -130,7 +130,17 @@ textarea {
 /* LEVEL CSS END */
 
 /* MATCH HISTORY CSS */
-a[name=playerLink]{
+a[name=playerLink] {
     text-decoration: none;
+}
+
+.game-stats-queue {
+    position: absolute;
+    top: 0px;
+}
+
+.game-stats-result {
+    position: absolute;
+    top: 100px;
 }
 /* MATCH HISTORY CSS END */

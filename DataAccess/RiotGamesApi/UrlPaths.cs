@@ -43,13 +43,22 @@ namespace intrapp.DataAccess.RiotGamesApi
         internal readonly string DDRAGON_BASE_CDN = "https://ddragon.leagueoflegends.com/cdn/";
         internal readonly string DDRAGON_PROFILEICON = "img/profileicon/";
         internal readonly string DDRAGON_CHAMPIONICON = "img/champion/";
+        internal readonly string DDRAGON_SUMMONERSPELL = "img/spell/";
         internal readonly string DDRAGON_CHAMPION_DATA = "data/en_US/champion.json";
+        internal readonly string DDRAGON_VERSIONLESS_IMG = "https://ddragon.leagueoflegends.com/cdn/img/"; // For runes icons
+
+        //Runes Reforged
+        internal readonly string DDRAGON_RUNES_JSON = "data/en_US/runesReforged.json"; 
 
         //CommunityDragon URLs - Community made custom API to retrieve game data more easily and much more quickly
         //Full url - Get a champion's icon => https://cdn.communitydragon.org/{version}/champion/{championId}/square
         internal readonly string CDRAGON_BASE = "https://cdn.communitydragon.org/";
         internal readonly string CDRAGON_CHAMPION = "/champion/";
         internal readonly string CDRAGON_ICON = "/square";
+        internal readonly string CDRAGON_PREFIX = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/";
+
+        //Summoner spells
+        internal readonly string CDRAGON_SUMMONERSPELLS_JSON = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/summoner-spells.json";
     }
 
     internal static class ApiUrlPaths

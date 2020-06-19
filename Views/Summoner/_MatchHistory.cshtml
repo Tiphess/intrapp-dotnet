@@ -4,10 +4,29 @@
 @foreach (var match in Model)
 {
     <div class="card" style="margin-bottom: 5px;">
-        <div class="card-body">
+        <div class="card-body" style="padding:0.50rem 0.75rem !important;">
             <div class="row">
                 <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-2" style="height: 100%;">
+                                <div class="game-stats-queue">
+                                    <b>@match.QueueTypeName</b><br />
+                                    <small>@match.WasPlayed</small><br />
+                                </div>
+                                <div class="game-stats-result">
+                                    <b>@match.GameResult</b><br />
+                                    <small>@match.GameDurationStr</small>
+                                </div>
+                        </div>
+                        <div class="col-md-5">
+                            <img src="@match.ChampionForDisplay.ChampionIconUrl" alt="Image unavailable" height="30" width="30"/><br />
+                            <img src="@match.ChampionForDisplay.SummonerSpell1IconUrl" alt="Image unavailable" height="30" width="30"/><br />
+                            <img src="@match.ChampionForDisplay.SummonerSpell2IconUrl" alt="Image unavailable" height="30" width="30"/><br />
+                        </div>
+                        <div class="col-md-5">
 
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="row">

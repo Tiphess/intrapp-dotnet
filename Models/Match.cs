@@ -24,7 +24,11 @@ namespace intrapp.Models
 
 
         public long Timestamp { get; set; }
+        public string WasPlayed { get; set; }
         public IEnumerable<IGrouping<int, Participant>> ParticipantsByTeam { get; set; }
-
+        public string QueueTypeName { get; set; }
+        public string GameDurationStr { get; set; }
+        public string GameResult { get; set; }
+        public ChampionForDisplay ChampionForDisplay { get; set; }
     }
 }

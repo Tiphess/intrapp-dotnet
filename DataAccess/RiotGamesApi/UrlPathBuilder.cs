@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using intrapp.DataAccess.RiotGamesApi;
 using System.Runtime.Remoting.Messaging;
+using intrapp.Models;
 
 namespace intrapp.DataAccess.RiotGamesApi
 {
@@ -78,6 +79,30 @@ namespace intrapp.DataAccess.RiotGamesApi
         {
             var ddragon_url_provider = new DataDragonUrlPaths();
             return ddragon_url_provider.CDRAGON_BASE + DDragonLatestVersion + ddragon_url_provider.CDRAGON_CHAMPION + championId + ddragon_url_provider.CDRAGON_ICON;
+        }
+
+        public string GetRunesReforgedUrl()
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return GetDDragonVersion() + ddragon_url_provider.DDRAGON_RUNES_JSON;
+        }
+
+        public string GetRuneIcon(string iconPath)
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return ddragon_url_provider.DDRAGON_VERSIONLESS_IMG + iconPath;
+        }
+
+        public string GetSummonerSpellsUrl()
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return ddragon_url_provider.CDRAGON_SUMMONERSPELLS_JSON;
+        }
+
+        public string GetSummonerSpellIcon(string summonerSpellFilePath)
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return ddragon_url_provider.CDRAGON_PREFIX +  summonerSpellFilePath;
         }
     }
 }

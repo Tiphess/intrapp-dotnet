@@ -1,20 +1,22 @@
 ﻿using intrapp.DataAccess.RiotGamesApi;
 using intrapp.Extensions.String;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace intrapp.Models.Utils
 {
     public static class SummonerInfoUtils
     {
+        private static List<QueueType> QueueTypes { get; set; } = GetQueueTypes();
+        private static List<RunePath> RunePaths { get; set; } = GetRunePaths();
+        private static List<SummonerSpell> SummonerSpells { get; set; } = GetSummonerSpells();
 
-        public static void SetLeagueEntriesWinRates(List<LeagueEntry> leagueEntries)
-        {
-
-        }
         /// <summary>
         /// Populates the custom fields of a participant for display on the Summoner Info view.
         /// </summary>
@@ -24,18 +26,50 @@ namespace intrapp.Models.Utils
         public static void SetParticipantCustomFieldsAndDeltas(Participant participant, Match match, string jsonData)
         {
             var pathBuilder = new UrlPathBuilder();
-
+            var temp = RunePaths;
             participant.Player = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId).Player;
-            participant.DisplayedSummonerName = participant.Player.SummonerName.Truncate(150);
             participant.ChampionPlayedIcon = pathBuilder.GetChampionIconUrl(participant.ChampionId);
             SetTimeLineStatsOfParticipant(participant, match, jsonData);
+
+            var displayedSummonerName = participant.Player.SummonerName.Truncate(150);
+            participant.DisplayedSummonerName = displayedSummonerName == participant.Player.SummonerName ? displayedSummonerName : displayedSummonerName + "...";
         }
 
         /// <summary>
-        /// Returns the last time a Summoner has played a match.
+        /// Populates the custom fields of a match for display on the Summoner Info view.
         /// </summary>
-        /// <param name="matchHistory"></param>
-        /// <returns></returns>
+        /// <param name="match"></param>
+        /// <param name="matchRef"></param>
+        /// <param name="accountId"></param>
+        public static void SetMatchCustomFields(Match match, MatchReference matchRef, string accountId)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.Player.AccountId == accountId);
+            var participant = match.Participants.FirstOrDefault(p => p.ParticipantId == participantIdentity.ParticipantId);
+
+            match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
+            match.Timestamp = matchRef.Timestamp;
+            match.WasPlayed = GetMatchWasPlayedTime(match.Timestamp);
+            match.GameDurationStr = GetGameDurationInText(match.GameDuration);
+            match.QueueTypeName = GetMatchQueueTypeName(match.QueueId);
+            match.GameResult = participant.Stats.Win == true ? "Victory" : "Defeat";
+
+            var spell1Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell1Id).IconPath;
+            var spell2Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell2Id).IconPath;
+            match.ChampionForDisplay = new ChampionForDisplay()
+            {
+                ChampionIconUrl = pathBuilder.GetChampionIconUrl(participant.ChampionId),
+                SummonerSpell1IconUrl = pathBuilder.GetSummonerSpellIcon(spell1Path.Replace("/lol-game-data/assets/", "").ToLower()),
+                SummonerSpell2IconUrl = pathBuilder.GetSummonerSpellIcon(spell2Path.Replace("/lol-game-data/assets/", "").ToLower())
+            };
+        }
+
+        public static void SetLeagueEntriesWinRates(List<LeagueEntry> leagueEntries)
+        {
+            foreach (var entry in leagueEntries)
+                entry.WinRate = (int)Math.Round((double)entry.Wins / (entry.Wins + entry.Losses) * 100);
+        }
+
         public static string GetLastTimePlayedStr(MatchHistory matchHistory)
         {
             //todo Returns "x minutes ago" or "x days ago" instead of only "x hours ago"
@@ -48,16 +82,18 @@ namespace intrapp.Models.Utils
             return "Played " + difference + " hours ago";
         }
 
-        /// <summary>
-        /// Populates the timeline's deltas of a participant in a custom dictionary.
-        /// </summary>
-        /// <param name="participant"></param>
-        /// <param name="match"></param>
-        /// <param name="jsonData"></param>
-        //Seems really ugly but it'll do for now
-        public static void SetTimeLineStatsOfParticipant(Participant participant, Match match, string jsonData)
+        private static string GetMatchWasPlayedTime(long timestamp)
         {
-            var numberOfDeltasFields = match.GameDuration / 600;
+            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            DateTime lastMatchTime = date.AddMilliseconds(timestamp).ToLocalTime();
+            var difference = (DateTime.Now - lastMatchTime).Hours;
+
+            return difference + " hours ago";
+        }
+
+        //Seems really ugly but it'll do for now
+        private static void SetTimeLineStatsOfParticipant(Participant participant, Match match, string jsonData)
+        {
             var jsonObject = JObject.Parse(jsonData);
             foreach (var part in jsonObject["participants"])
             {
@@ -100,6 +136,69 @@ namespace intrapp.Models.Utils
                     break;
                 }
             }
+        }
+
+        private static string GetMatchQueueTypeName(int queueId)
+        {
+            var desc = QueueTypes.FirstOrDefault(qt => qt.QueueId == queueId).Description;
+            //temp
+            if (desc.Contains("Blind"))
+                return "Blind";
+            else if (desc.Contains("Draft"))
+                return "Draft";
+            else if (desc.Contains("Ranked Solo"))
+                return "Ranked Solo";
+            else if (desc.Contains("Ranked Flex"))
+                return "Ranked Flex";
+
+            return "Default";
+        }
+
+        private static List<QueueType> GetQueueTypes()
+        {
+            using (var sr = new StreamReader(HttpRuntime.AppDomainAppPath + @"/DataAccess/RiotGamesApi/GameConstants/queues.json"))
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<List<QueueType>>(sr.ReadToEnd());
+                }
+                catch (Exception) { return new List<QueueType>(); }
+            }
+        }
+
+        private static List<RunePath> GetRunePaths()
+        {
+            var pathBuilder = new UrlPathBuilder();
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    var runesJson = client.DownloadString(pathBuilder.GetRunesReforgedUrl());
+                    return JsonConvert.DeserializeObject<List<RunePath>>(runesJson);
+                }
+                catch (Exception) { return new List<RunePath>(); }
+            }
+        }
+
+        private static List<SummonerSpell> GetSummonerSpells()
+        {
+            var pathBuilder = new UrlPathBuilder();
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    var summonerSpellsJson = client.DownloadString(pathBuilder.GetSummonerSpellsUrl());
+                    return JsonConvert.DeserializeObject<List<SummonerSpell>>(summonerSpellsJson);
+                }
+                catch (Exception) { return new List<SummonerSpell>(); }
+            }
+        }
+
+        private static string GetGameDurationInText(long gameDuration)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(gameDuration);
+
+            return string.Format("{0}m {1}s", time.Minutes, time.Seconds);
         }
     }
 }
