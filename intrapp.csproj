@@ -136,7 +136,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Ban.cs" />
-    <Compile Include="Models\ChampionForDisplay.cs" />
+    <Compile Include="Models\ParticipantForDisplay.cs" />
     <Compile Include="Models\DLL\DLLSummonerInfo.cs" />
     <Compile Include="Models\LeagueEntry.cs" />
     <Compile Include="Models\Match.cs" />

@@ -29,6 +29,6 @@ namespace intrapp.Models
         public string QueueTypeName { get; set; }
         public string GameDurationStr { get; set; }
         public string GameResult { get; set; }
-        public ChampionForDisplay ChampionForDisplay { get; set; }
+        public ParticipantForDisplay ParticipantForDisplay { get; set; }
     }
 }

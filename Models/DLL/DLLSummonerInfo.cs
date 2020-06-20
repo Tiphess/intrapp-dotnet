@@ -20,7 +20,6 @@ namespace intrapp.Models.DLL
 {
     public class DLLSummonerInfo
     {
-        
         public SummonerInfo GetSummoner(string name, string region)
         {
             var pathBuilder = new UrlPathBuilder();

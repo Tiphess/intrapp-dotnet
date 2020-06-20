@@ -66,13 +66,14 @@ namespace intrapp.Models.Utils
                         if (rune.Id == participant.Stats.Perk0)
                             keystonePath = pathBuilder.GetRuneIcon(rune.Icon);
 
-            match.ChampionForDisplay = new ChampionForDisplay()
+            match.ParticipantForDisplay = new ParticipantForDisplay()
             {
                 ChampionIconUrl = pathBuilder.GetChampionIconUrl(participant.ChampionId),
                 SummonerSpell1IconUrl = pathBuilder.GetSummonerSpellIcon(spell1Path.Replace("/lol-game-data/assets/", "").ToLower()),
                 SummonerSpell2IconUrl = pathBuilder.GetSummonerSpellIcon(spell2Path.Replace("/lol-game-data/assets/", "").ToLower()),
                 RuneKeystoneIconUrl = keystonePath,
-                RuneSecondaryPathIconUrl = perkStyle
+                RuneSecondaryPathIconUrl = perkStyle,
+                Participant = participant
             };
         }
 
