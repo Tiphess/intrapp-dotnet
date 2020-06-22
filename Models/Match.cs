@@ -30,5 +30,6 @@ namespace intrapp.Models
         public string GameDurationStr { get; set; }
         public string GameResult { get; set; }
         public ParticipantForDisplay ParticipantForDisplay { get; set; }
+        //public string TierAverage { get; set; }
     }
 }

@@ -48,7 +48,11 @@ namespace intrapp.DataAccess.RiotGamesApi
         internal readonly string DDRAGON_VERSIONLESS_IMG = "https://ddragon.leagueoflegends.com/cdn/img/"; // For runes icons
 
         //Runes Reforged
-        internal readonly string DDRAGON_RUNES_JSON = "data/en_US/runesReforged.json"; 
+        internal readonly string DDRAGON_RUNES_JSON = "data/en_US/runesReforged.json";
+
+        //Items
+        internal readonly string DDRAGON_ITEMS_JSON = "data/en_US/item.json";
+        internal readonly string DDRAGON_ITEM_ICON = "img/item/{itemId}.png";
 
         //CommunityDragon URLs - Community made custom API to retrieve game data more easily and much more quickly
         //Full url - Get a champion's icon => https://cdn.communitydragon.org/{version}/champion/{championId}/square

@@ -99,10 +99,22 @@ namespace intrapp.DataAccess.RiotGamesApi
             return ddragon_url_provider.CDRAGON_SUMMONERSPELLS_JSON;
         }
 
+        public string GetChampionsUrl()
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return GetDDragonVersion() + ddragon_url_provider.DDRAGON_CHAMPION_DATA;
+        }
+
         public string GetSummonerSpellIcon(string summonerSpellFilePath)
         {
             var ddragon_url_provider = new DataDragonUrlPaths();
             return ddragon_url_provider.CDRAGON_PREFIX +  summonerSpellFilePath;
+        }
+
+        public string GetItemIcon(int itemId)
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return GetDDragonVersion() + ddragon_url_provider.DDRAGON_ITEM_ICON.Replace("{itemId}", itemId.ToString());
         }
     }
 }

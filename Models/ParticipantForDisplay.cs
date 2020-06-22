@@ -13,5 +13,8 @@ namespace intrapp.Models
         public string RuneKeystoneIconUrl { get; set; }
         public string RuneSecondaryPathIconUrl { get; set; }
         public Participant Participant { get; set; }
+        public int KillParticipationPercentage { get; set; }
+        public Inventory Items { get; set; }
+        public string ChampionName { get; set; }
     }
 }

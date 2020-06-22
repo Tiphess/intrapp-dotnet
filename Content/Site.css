@@ -167,17 +167,17 @@ a[name=playerLink] {
 }
 
 .keystone {
-    left: 135px;
-    top: 35px;
+    top: 115px;
 }
 
 .secondary-path {
-    left: 137px;
-    top: 77px;
+    left: 40px;
+    top: 117px;
 }
 
 #MoreDetailsBtn {
     text-align: center;
+    margin-top: 2px;
     margin-right: -12px;
     margin-left: -12px;
     margin-bottom: -8px;
@@ -187,4 +187,9 @@ a[name=playerLink] {
         background-color: #2e83e6;
         cursor: pointer;
     }
+
+#kda {
+    position: absolute;
+    top: 35px;
+}
 /* MATCH HISTORY CSS END */

@@ -1,24 +1,33 @@
 ﻿@model List<intrapp.Models.Match>
 @foreach (var match in Model)
 {
+    var kills = match.ParticipantForDisplay.Participant.Stats.Kills;
+    var deaths = match.ParticipantForDisplay.Participant.Stats.Deaths;
+    var assists = match.ParticipantForDisplay.Participant.Stats.Assists;
+
+    var kda = Math.Round((double)(kills + assists) / deaths, 2);
+    var gameDurationTimeSpan = TimeSpan.FromSeconds(match.GameDuration);
+
+    
     <div class="card" style="margin-bottom: 5px;">
         <div class="card-body" style="padding:0.50rem 0.75rem !important;">
             <div class="row">
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-2" style="height: 100%;">
-                                <div class="game-stats-queue">
-                                    <b>@match.QueueTypeName</b><br />
-                                    <small>@match.WasPlayed</small><br />
-                                </div>
-                                <div class="game-stats-result">
-                                    <b>@match.GameResult</b><br />
-                                    <small>@match.GameDurationStr</small>
-                                </div>
+                            <div class="game-stats-queue">
+                                <b>@match.QueueTypeName</b><br />
+                                <small>@match.WasPlayed</small><br />
+                            </div>
+                            <div class="game-stats-result">
+                                <b>@match.GameResult</b><br />
+                                <small>@match.GameDurationStr</small>
+                            </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-6">
+                                    <span style="position:absolute; top: 13px;">@match.ParticipantForDisplay.ChampionName</span>
                                     <div id="participantImages" style="position:relative">
                                         <img class="champion-portrait" src="@match.ParticipantForDisplay.ChampionIconUrl" alt="Image unavailable" height="80" width="80" />
                                         <img class="summoner-spell-one" src="@match.ParticipantForDisplay.SummonerSpell1IconUrl" alt="Image unavailable" height="38" width="38" />
@@ -29,23 +38,32 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div id="kda">
-                                        @{
-                                            var kills = match.ParticipantForDisplay.Participant.Stats.Kills;
-                                            var deaths = match.ParticipantForDisplay.Participant.Stats.Deaths;
-                                            var assists = match.ParticipantForDisplay.Participant.Stats.Assists;
-                                            var kda = Math.Round((double)(kills + assists) / deaths, 2);
-                                            var gameDurationTimeSpan = TimeSpan.FromSeconds(match.GameDuration);
-
-                                        }
                                         @kills / @deaths / @assists <br />
-                                        @kda KDA<br />
-                                        @match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled (@Math.Round(match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled / gameDurationTimeSpan.TotalMinutes, 1)) CS<br />
+                                        @(kda != double.PositiveInfinity ? kda.ToString() : "Perfect") KDA<br />
+                                        @match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled (@Math.Round(match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled / gameDurationTimeSpan.TotalMinutes, 1)/min) CS<br />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    Level @match.ParticipantForDisplay.Participant.Stats.ChampLevel<br />
+                                    K/P @match.ParticipantForDisplay.KillParticipationPercentage%<br />
+                                </div>
+                                <div class="col-md-8">
+                                    Inventory
+                                    <div id="items">
+                                        <img class="league-item" src="@match.ParticipantForDisplay.Items.Item0Url" alt="Image unavailable" height="38" width="38" />
+                                        <img class="league-item" src="@match.ParticipantForDisplay.Items.Item1Url" alt="Image unavailable" height="38" width="38" />
+                                        <img class="league-item" src="@match.ParticipantForDisplay.Items.Item2Url" alt="Image unavailable" height="38" width="38" />
+                                        <img class="league-item" src="@match.ParticipantForDisplay.Items.Item3Url" alt="Image unavailable" height="38" width="38" />
+                                        <img class="league-item" src="@match.ParticipantForDisplay.Items.Item4Url" alt="Image unavailable" height="38" width="38" />
+                                        <img class="league-item" src="@match.ParticipantForDisplay.Items.Item5Url" alt="Image unavailable" height="38" width="38" />
+                                        <img class="league-item" src="@match.ParticipantForDisplay.Items.Item6Url" alt="Image unavailable" height="38" width="38" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +75,7 @@
                                 @foreach (var participant in team)
                                 {
                                     <span style="display: block;">
-                                        <img src="@participant.ChampionPlayedIcon" alt="Image unavailable" height="30" width="30"/>
+                                        <img src="@participant.ChampionPlayedIcon" alt="Image unavailable" height="30" width="30" />
                                         <a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@participant.Player.SummonerName&region=@ViewBag.SelectedRegion">
                                             @(string.IsNullOrWhiteSpace(participant.DisplayedSummonerName) ? participant.Player.SummonerName : participant.DisplayedSummonerName)
                                         </a>
