@@ -68,5 +68,43 @@
             SetSummonerInfoHandlers("@Model.Summoner.AccountId", "@Model.Region");
             $("#summonerName").val("");
         });
+
+        function OpenMatchBreakdown(accId, region, gameId) {
+            if ($("div[name='MoreDetailsBtn_" + gameId + "']").css('display') !== 'none') {
+                if ($("#MatchBreakdown_" + gameId).length) {
+                    $("#BreakdownDiv_" + gameId).show();
+                    $("div[name='MoreDetailsBtn_" + gameId + "']").hide();
+                    $("div[name='CloseBtn_" + gameId + "']").show();
+                    $("#breakdown_hr_" + gameId).show();
+                }
+                else {
+                    $("#BreakdownWaitingDiv_" + gameId).show();
+                    $.ajax({
+                        url: "/Summoner/_MatchBreakdown",
+                        type: "POST",
+                        data: { accountId: accId, region: region, gameId: gameId },
+                        success: function (data) {
+                            console.log(data);
+                            $("#BreakdownDiv_" + gameId).append(data);
+                            $("#BreakdownDiv_" + gameId).show();
+                            $("#BreakdownWaitingDiv_" + gameId).hide();
+
+                            $("div[name='MoreDetailsBtn_" + gameId + "']").hide();
+                            $("div[name='CloseBtn_" + gameId + "']").show();
+                            $("#breakdown_hr_" + gameId).show();
+                        }
+                    });
+                }
+            }
+        }
+
+        function CloseMatchBreakDown(gameId) {
+            if ($("div[name='CloseBtn_" + gameId + "']").css('display') !== 'none') {
+                $("#BreakdownDiv_" + gameId).hide();
+                $("div[name='MoreDetailsBtn_" + gameId + "']").show();
+                $("div[name='CloseBtn_" + gameId + "']").hide();
+                $("#breakdown_hr_" + gameId).hide();
+            }
+        }
     </script>
 }

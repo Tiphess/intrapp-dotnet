@@ -138,6 +138,7 @@
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Champion.cs" />
     <Compile Include="Models\Iventory.cs" />
+    <Compile Include="Models\MatchBreakdown.cs" />
     <Compile Include="Models\ParticipantForDisplay.cs" />
     <Compile Include="Models\DLL\DLLSummonerInfo.cs" />
     <Compile Include="Models\LeagueEntry.cs" />
@@ -176,6 +177,7 @@
     <Content Include="DataAccess\RiotGamesApi\Images\Emblems\Emblem_Platinum.png" />
     <Content Include="DataAccess\RiotGamesApi\Images\Emblems\Emblem_Silver.png" />
     <Content Include="DataAccess\RiotGamesApi\Images\Misc\level-box.png" />
+    <Content Include="DataAccess\RiotGamesApi\Images\Misc\no-item.png" />
     <Content Include="DataAccess\RiotGamesApi\Images\Positions\Position_Bronze-Bot.png" />
     <Content Include="DataAccess\RiotGamesApi\Images\Positions\Position_Bronze-Jungle.png" />
     <Content Include="DataAccess\RiotGamesApi\Images\Positions\Position_Bronze-Mid.png" />
@@ -362,6 +364,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Summoner\_MatchHistory.cshtml" />
     <Content Include="Views\Summoner\_LeagueEntries.cshtml" />
+    <Content Include="Views\Summoner\_MatchBreakdown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -47,12 +47,11 @@ namespace intrapp.Models.Utils
         /// <param name="match"></param>
         /// <param name="matchRef"></param>
         /// <param name="accountId"></param>
-        public static void SetMatchCustomFields(Match match, MatchReference matchRef, string accountId)
+        public static void SetMatchCustomFields(Match match, string accountId, MatchReference matchRef = null)
         {
             var pathBuilder = new UrlPathBuilder();
             var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.Player.AccountId == accountId);
             var participant = match.Participants.FirstOrDefault(p => p.ParticipantId == participantIdentity.ParticipantId);
-            var temp = Champions;
             //Custom properties for display
             match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
             match.Timestamp = matchRef.Timestamp;
@@ -92,8 +91,55 @@ namespace intrapp.Models.Utils
                 KillParticipationPercentage = kp,
                 Items = GetItems(participant),
                 ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
-                Participant = participant
+                Participant = participant,
+                ParticipantIdentity = participantIdentity
             };
+        }
+
+        public static void SetMatchBreakdownFields(MatchBreakdown match)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
+            foreach (var participant in match.Participants)
+            {
+                var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId);
+
+                //Summoner spells icons
+                var spell1Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell1Id).IconPath;
+                var spell2Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell2Id).IconPath;
+
+                //Runes icons
+                var perkStyle = pathBuilder.GetRuneIcon(RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon);
+                var keystonePath = "";
+                foreach (var path in RunePaths)
+                    foreach (var slot in path.Slots)
+                        foreach (var rune in slot.Runes)
+                            if (rune.Id == participant.Stats.Perk0)
+                                keystonePath = pathBuilder.GetRuneIcon(rune.Icon);
+
+                //KillParticipation property
+                var team = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == participant.TeamId);
+                var totalTeamKills = 0;
+                foreach (var player in team)
+                    totalTeamKills += player.Stats.Kills;
+                var kp = (int)Math.Round((double)(participant.Stats.Kills + participant.Stats.Assists) / totalTeamKills * 100);
+
+                match.ParticipantsForDisplay.Add(new ParticipantForDisplay
+                {
+                    ChampionIconUrl = pathBuilder.GetChampionIconUrl(participant.ChampionId),
+                    SummonerSpell1IconUrl = pathBuilder.GetSummonerSpellIcon(spell1Path.Replace("/lol-game-data/assets/", "").ToLower()),
+                    SummonerSpell2IconUrl = pathBuilder.GetSummonerSpellIcon(spell2Path.Replace("/lol-game-data/assets/", "").ToLower()),
+                    RuneKeystoneIconUrl = keystonePath,
+                    RuneSecondaryPathIconUrl = perkStyle,
+                    KillParticipationPercentage = kp,
+                    Items = GetItems(participant),
+                    ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
+                    Participant = participant,
+                    ParticipantIdentity = participantIdentity
+                });
+            }
+
+            match.ParticipantsForDisplayByTeam = match.ParticipantsForDisplay.GroupBy(p => p.Participant.TeamId);
         }
 
         public static void SetLeagueEntriesWinRates(List<LeagueEntry> leagueEntries)

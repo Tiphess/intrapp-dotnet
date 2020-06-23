@@ -188,8 +188,81 @@ a[name=playerLink] {
         cursor: pointer;
     }
 
+#CloseBtn {
+    text-align: center;
+    margin-top: 2px;
+    margin-right: -12px;
+    margin-left: -12px;
+    margin-bottom: -8px;
+}
+
+    #CloseBtn:hover {
+        background-color: #2e83e6;
+        cursor: pointer;
+    }
+
 #kda {
     position: absolute;
     top: 35px;
 }
+
+#items {
+    position: absolute;
+    top: 35px;
+}
+
+#stats {
+    position: absolute;
+    top: 35px;
+}
 /* MATCH HISTORY CSS END */
+
+/* MATCH BREAKDOWN CSS*/
+
+/* RIGHT SIDE*/
+.summoner-spells-right-breakdown {
+    padding-right: 0px;
+    margin-top: -5px;
+}
+    .summoner-spells-right-breakdown > img {
+        position: relative;
+        left: 11px;
+    }
+
+.summoner-spell-two-right-breakdown {
+    margin-top: -5px;
+}
+
+.runes-right-breakdown {
+    padding-right: 2px;
+    margin-top: -5px;
+}
+
+    .runes-right-breakdown > img {
+        position: relative;
+        left: 23px;
+    }
+
+.rune-secondary-path-right-breakdown {
+    margin-top: -5px;
+}
+
+/*LEFT SIDE */
+.summoner-spells-left-breakdown {
+    margin-top: -5px;
+}
+
+.summoner-spell-two-left-breakdown {
+    margin-top: -5px;
+}
+
+.runes-left-breakdown {
+    padding-left: 2px;
+    margin-top: -5px;
+}
+
+.rune-secondary-path-left-breakdown {
+    margin-top: -5px;
+}
+
+/* MATCH BREAKDOWN CSS END*/

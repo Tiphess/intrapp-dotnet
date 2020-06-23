@@ -41,6 +41,12 @@ namespace intrapp.Controllers
             return PartialView(model);
         }
 
+        public ActionResult _MatchBreakdown(string accountId, string region, long gameId)
+        {
+            var model = dllSummonerInfo.GetMatch(gameId, region, accountId);
+            return PartialView(model);
+        }
+
         public void SetRegions(string region)
         {
             ViewBag.SelectedRegion = region;

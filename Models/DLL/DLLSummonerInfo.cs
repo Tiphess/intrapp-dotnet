@@ -101,7 +101,7 @@ namespace intrapp.Models.DLL
                             foreach (var participant in match.Participants)
                                 SummonerInfoUtils.SetParticipantCustomFieldsAndDeltas(participant, match, readData.Result);
 
-                            SummonerInfoUtils.SetMatchCustomFields(match, matchRef, accountId);
+                            SummonerInfoUtils.SetMatchCustomFields(match, accountId, matchRef);
                             matchHistory.Matches.Add(match);
                         }
                     }
@@ -109,6 +109,33 @@ namespace intrapp.Models.DLL
                 catch (Exception) {}
             }
             return matchHistory;
+        }
+
+        public MatchBreakdown GetMatch(long gameId, string region, string accountId)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    var response = client.GetAsync(new Uri(pathBuilder.GetMatchByGameIdUrl(gameId, region)));
+                    response.Wait();
+
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        var readData = response.Result.Content.ReadAsStringAsync();
+                        readData.Wait();
+
+                        var match = JsonConvert.DeserializeObject<MatchBreakdown>(readData.Result);
+                        SummonerInfoUtils.SetMatchBreakdownFields(match);
+
+                        return match;
+                    }
+                }
+                catch (Exception) { return new MatchBreakdown(); }
+            }
+            return new MatchBreakdown();
         }
 
         private List<LeagueEntry> GetLeagueEntriesOfSummoner(string summonerId, string region)

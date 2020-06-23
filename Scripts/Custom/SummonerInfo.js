@@ -32,3 +32,4 @@ function SetSummonerInfoHandlers(accountId, region) {
         matchHistory.fetchMoreMatches(accountId, region);
     });
 }
+

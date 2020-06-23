@@ -114,6 +114,9 @@ namespace intrapp.DataAccess.RiotGamesApi
         public string GetItemIcon(int itemId)
         {
             var ddragon_url_provider = new DataDragonUrlPaths();
+            if (itemId == 0)
+                return "../DataAccess/RiotGamesApi/Images/Misc/no-item.png";
+
             return GetDDragonVersion() + ddragon_url_provider.DDRAGON_ITEM_ICON.Replace("{itemId}", itemId.ToString());
         }
     }
