@@ -95,18 +95,20 @@
                     </div>
                 </div>
             </div>
-            <hr id="breakdown_hr_@match.GameId" style="display: none;"/>
+            <div class="row" style="text-align: center;">
+                <div id="BreakdownWaitingDiv_@match.GameId" style="text-align: center; display: none;" class="mx-auto">
+                    <span class="loader" style="top: 0% !important;"><span class="loader-inner"></span></span>
+                </div>
+            </div>
             <div id="BreakdownDiv_@match.GameId" style="display: none;">
             </div>
+
             <div id="CloseBtn" name="CloseBtn_@match.GameId" style="display: none;" onclick="CloseMatchBreakDown('@match.GameId')">
                 <i name="CloseArrows" class="fa fa-caret-up" aria-hidden="true"></i>
                 <span id="BreakdownSpan">Close</span>
                 <i name="CloseArrows" class="fa fa-caret-up" aria-hidden="true"></i>
             </div>
             <div id="MoreDetailsBtn" name="MoreDetailsBtn_@match.GameId" onclick="OpenMatchBreakdown('@match.ParticipantForDisplay.ParticipantIdentity.Player.AccountId', '@ViewBag.SelectedRegion', '@match.GameId')">
-                <div id="BreakdownWaitingDiv_@match.GameId" style="text-align: center; margin-right: -14px; display: none;" class="float-right">
-                    <span class="loader"><span class="loader-inner"></span></span>
-                </div>
                 <i name="BreakdownArrows" class="fa fa-caret-down" aria-hidden="true"></i>
                 <span id="BreakdownSpan">Open match breakdown</span>
                 <i name="BreakdownArrows" class="fa fa-caret-down" aria-hidden="true"></i>

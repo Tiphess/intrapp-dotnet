@@ -72,7 +72,7 @@
         function OpenMatchBreakdown(accId, region, gameId) {
             if ($("div[name='MoreDetailsBtn_" + gameId + "']").css('display') !== 'none') {
                 if ($("#MatchBreakdown_" + gameId).length) {
-                    $("#BreakdownDiv_" + gameId).show();
+                    $("#BreakdownDiv_" + gameId).slideDown(400);
                     $("div[name='MoreDetailsBtn_" + gameId + "']").hide();
                     $("div[name='CloseBtn_" + gameId + "']").show();
                     $("#breakdown_hr_" + gameId).show();
@@ -86,7 +86,7 @@
                         success: function (data) {
                             console.log(data);
                             $("#BreakdownDiv_" + gameId).append(data);
-                            $("#BreakdownDiv_" + gameId).show();
+                            $("#BreakdownDiv_" + gameId).slideDown(400);
                             $("#BreakdownWaitingDiv_" + gameId).hide();
 
                             $("div[name='MoreDetailsBtn_" + gameId + "']").hide();
@@ -100,7 +100,7 @@
 
         function CloseMatchBreakDown(gameId) {
             if ($("div[name='CloseBtn_" + gameId + "']").css('display') !== 'none') {
-                $("#BreakdownDiv_" + gameId).hide();
+                $("#BreakdownDiv_" + gameId).slideUp(400);
                 $("div[name='MoreDetailsBtn_" + gameId + "']").show();
                 $("div[name='CloseBtn_" + gameId + "']").hide();
                 $("#breakdown_hr_" + gameId).hide();

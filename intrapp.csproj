@@ -155,6 +155,7 @@
     <Compile Include="Models\Summoner.cs" />
     <Compile Include="Models\SummonerSpell.cs" />
     <Compile Include="Models\Team.cs" />
+    <Compile Include="Models\TeamsBreakdown.cs" />
     <Compile Include="Models\Timeline.cs" />
     <Compile Include="Models\Utils\SummonerInfoUtils.cs" />
     <Compile Include="Models\ViewModels\SummonerInfo.cs" />

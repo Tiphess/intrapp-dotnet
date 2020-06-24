@@ -103,8 +103,12 @@ namespace intrapp.Models.Utils
             var dll = new DLLSummonerInfo();
 
             match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
+            var maxDmgDealt = 0;
             foreach (var participant in match.Participants)
             {
+                if (participant.Stats.TotalDamageDealtToChampions > maxDmgDealt)
+                    maxDmgDealt = participant.Stats.TotalDamageDealtToChampions;
+
                 var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId);
 
                 //Summoner spells icons
@@ -138,12 +142,29 @@ namespace intrapp.Models.Utils
                     Items = GetItems(participant),
                     ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
                     Participant = participant,
-                    ParticipantIdentity = participantIdentity
-                    //LeagueEntries = dll.GetLeagueEntriesOfSummoner(participantIdentity.Player.SummonerId, participantIdentity.Player.CurrentPlatformId)
+                    ParticipantIdentity = participantIdentity,
                 });
             }
 
-            //match.QueueTypeName = GetMatchQueueTypeName(match.QueueId);
+            var teamsBreakdown = new TeamsBreakdown();
+            foreach (var team in match.Teams)
+            {
+                if (team.TeamId == 100)
+                {
+                    teamsBreakdown.BlueTeamBaronKills = team.BaronKills;
+                    teamsBreakdown.BlueTeamDragonKills = team.DragonKills;
+                    teamsBreakdown.BlueTeamTowerKills = team.TowerKills;
+                }
+                else
+                {
+                    teamsBreakdown.RedTeamBaronKills = team.BaronKills;
+                    teamsBreakdown.RedTeamDragonKills = team.DragonKills;
+                    teamsBreakdown.RedTeamTowerKills = team.TowerKills;
+                }
+            }
+
+            match.TeamsBreakdown = teamsBreakdown;
+            match.HighestDamageDealtToChampionsByAParticipant = maxDmgDealt;
             match.ParticipantsForDisplayByTeam = match.ParticipantsForDisplay.GroupBy(p => p.Participant.TeamId);
         }
 
