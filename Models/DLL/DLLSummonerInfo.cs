@@ -138,7 +138,7 @@ namespace intrapp.Models.DLL
             return new MatchBreakdown();
         }
 
-        private List<LeagueEntry> GetLeagueEntriesOfSummoner(string summonerId, string region)
+        public List<LeagueEntry> GetLeagueEntriesOfSummoner(string summonerId, string region)
         {
             var pathBuilder = new UrlPathBuilder();
             var leagueEntries = new List<LeagueEntry>();

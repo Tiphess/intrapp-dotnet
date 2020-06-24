@@ -17,5 +17,6 @@ namespace intrapp.Models
         public int KillParticipationPercentage { get; set; }
         public Inventory Items { get; set; }
         public string ChampionName { get; set; }
+        public List<LeagueEntry> LeagueEntries { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using intrapp.DataAccess;
 using intrapp.DataAccess.RiotGamesApi;
 using intrapp.Extensions.String;
+using intrapp.Models.DLL;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -99,6 +100,8 @@ namespace intrapp.Models.Utils
         public static void SetMatchBreakdownFields(MatchBreakdown match)
         {
             var pathBuilder = new UrlPathBuilder();
+            var dll = new DLLSummonerInfo();
+
             match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
             foreach (var participant in match.Participants)
             {
@@ -136,9 +139,11 @@ namespace intrapp.Models.Utils
                     ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
                     Participant = participant,
                     ParticipantIdentity = participantIdentity
+                    //LeagueEntries = dll.GetLeagueEntriesOfSummoner(participantIdentity.Player.SummonerId, participantIdentity.Player.CurrentPlatformId)
                 });
             }
 
+            //match.QueueTypeName = GetMatchQueueTypeName(match.QueueId);
             match.ParticipantsForDisplayByTeam = match.ParticipantsForDisplay.GroupBy(p => p.Participant.TeamId);
         }
 

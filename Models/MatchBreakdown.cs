@@ -25,6 +25,7 @@ namespace intrapp.Models
         public IEnumerable<IGrouping<int, Participant>> ParticipantsByTeam { get; set; }
         public IList<ParticipantForDisplay> ParticipantsForDisplay { get; set; }
         public IEnumerable<IGrouping<int, ParticipantForDisplay>> ParticipantsForDisplayByTeam { get; set; }
+        public string QueueTypeName { get; set; }
 
         public MatchBreakdown()
         {

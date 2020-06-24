@@ -1,4 +1,5 @@
 ﻿@model intrapp.Models.MatchBreakdown
+@using intrapp.Extensions.String
 <div id="MatchBreakdown_@Model.GameId">
     <div style="margin-top: 20px;"></div>
     <div class="row">
@@ -6,50 +7,58 @@
             <div class="row">
                 @foreach (var team in Model.ParticipantsForDisplayByTeam)
                 {
-                    <div class="col-md-6 @(team.Key == 100 ? "float-left" : "float-right")">
-                        <div class="col-md-3 @(team.Key == 100 ? "float-left" : "float-right")">
-                            @foreach (var participant in team)
-                            {
-                                <div class="row" style="margin-bottom: 5px;">
-                                    @if (team.Key == 100)
-                                    {
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
-                                                </div>
-                                                <div class="col-md-3 summoner-spells-left-breakdown">
-                                                    <img src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
-                                                    <img class="summoner-spell-two-left-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
-                                                </div>
-                                                <div class="col-md-3 runes-left-breakdown">
-                                                    <img src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
-                                                    <img class="rune-secondary-path-left-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
-                                                </div>
+                    <div class="col-md-12 @(team.Key == 100 ? "float-left" : "float-right")">
+                        @foreach (var participant in team)
+                        {
+                            <div class="row" style="margin-bottom: 5px;">
+                                @if (team.Key == 100)
+                                {
+                                    <div class="col-md-1">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
+                                            </div>
+                                            <div class="col-md-3 summoner-spells-left-breakdown">
+                                                <img src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
+                                                <img class="summoner-spell-two-left-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
+                                            </div>
+                                            <div class="col-md-3 runes-left-breakdown">
+                                                <img src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
+                                                <img class="rune-secondary-path-left-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
                                             </div>
                                         </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-3 runes-right-breakdown">
-                                                    <img src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
-                                                    <img class="rune-secondary-path-right-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
-                                                </div>
-                                                <div class="col-md-3 summoner-spells-right-breakdown">
-                                                    <img src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
-                                                    <img class="summoner-spell-two-right-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
-                                                </div>
-                                                <div class="col-md-4 champion-portrait-right-breakdown">
-                                                    <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
-                                                </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-left: -30px;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <span>@participant.ParticipantIdentity.Player.SummonerName.Truncate(150)</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                @participant.Participant.Stats.Kills / @participant.Participant.Stats.Deaths / @participant.Participant.Stats.Assists
                                             </div>
                                         </div>
-                                    }
-                                </div>
-                            }
-                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-1">
+                                        <div class="row">
+                                            <div class="col-md-3 runes-right-breakdown">
+                                                <img src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
+                                                <img class="rune-secondary-path-right-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
+                                            </div>
+                                            <div class="col-md-3 summoner-spells-right-breakdown">
+                                                <img src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
+                                                <img class="summoner-spell-two-right-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
+                                            </div>
+                                            <div class="col-md-4 champion-portrait-right-breakdown">
+                                                <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
                     </div>
                 }
             </div>
