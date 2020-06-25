@@ -154,12 +154,16 @@ namespace intrapp.Models.Utils
                     teamsBreakdown.BlueTeamBaronKills = team.BaronKills;
                     teamsBreakdown.BlueTeamDragonKills = team.DragonKills;
                     teamsBreakdown.BlueTeamTowerKills = team.TowerKills;
+                    teamsBreakdown.BlueTeamChampionKills = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.Kills).ToList().Sum();
+                    teamsBreakdown.BlueTeamGold = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.GoldEarned).ToList().Sum();
                 }
                 else
                 {
                     teamsBreakdown.RedTeamBaronKills = team.BaronKills;
                     teamsBreakdown.RedTeamDragonKills = team.DragonKills;
                     teamsBreakdown.RedTeamTowerKills = team.TowerKills;
+                    teamsBreakdown.RedTeamChampionKills = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.Kills).ToList().Sum();
+                    teamsBreakdown.RedTeamGold = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.GoldEarned).ToList().Sum();
                 }
             }
 

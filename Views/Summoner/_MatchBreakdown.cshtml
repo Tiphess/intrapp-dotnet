@@ -184,14 +184,34 @@
             {
                 <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px;">
                     <div class="row">
-                        <div class="col-md-3" style="display: flex; justify-content:center; align-items: center;">
+                        <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
                             @Model.TeamsBreakdown.BlueTeamBaronKills / @Model.TeamsBreakdown.BlueTeamDragonKills / @Model.TeamsBreakdown.BlueTeamTowerKills
                         </div>
-                        <div class="col-md-6" style="display: flex; align-items: center;">
-                            Total kills... <br />
-                            Total gold...
+                        <div class="col-md-8">
+                            <div class="row" style="display: flex;">
+                                <div style="margin-left: -10px; margin-right: 10px;">Total Kills</div>
+                                <div style="margin: 0 10px; width: 48px; text-align: right;">@Model.TeamsBreakdown.BlueTeamChampionKills</div>
+                                <div class="game-kills-container">
+                                    <div class="game-kills-blue-team" style="flex: @Model.TeamsBreakdown.BlueTeamChampionKills;">
+                                    </div>
+                                    <div class="game-kills-red-team" style="flex: @Model.TeamsBreakdown.RedTeamChampionKills;">
+                                    </div>
+                                </div>
+                                <div style="margin: 0 10px;"> @Model.TeamsBreakdown.RedTeamChampionKills</div>
+                            </div>
+                            <div class="row" style="display: flex;">
+                                <div style="margin-left: -10px; margin-right: 10px;">Total gold</div>
+                                <div style="margin: 0 10px;">@Model.TeamsBreakdown.BlueTeamGold</div>
+                                <div class="game-kills-container">
+                                    <div class="game-kills-blue-team" style="flex: @Model.TeamsBreakdown.BlueTeamGold;">
+                                    </div>
+                                    <div class="game-kills-red-team" style="flex: @Model.TeamsBreakdown.RedTeamGold;">
+                                    </div>
+                                </div>
+                                <div style="margin: 0 10px;">@Model.TeamsBreakdown.RedTeamGold</div>
+                            </div>
                         </div>
-                        <div class="col-md-3" style="display: flex; justify-content:center; align-items: center;">
+                        <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
                             @Model.TeamsBreakdown.RedTeamBaronKills / @Model.TeamsBreakdown.RedTeamDragonKills / @Model.TeamsBreakdown.RedTeamTowerKills
                         </div>
                     </div>

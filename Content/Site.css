@@ -315,4 +315,21 @@ a[name=playerLink] {
 .league-item-breakdown {
     margin-right: 2px;
 }
+
+.game-kills-container {
+    flex: 0 1 450px;
+    display: flex;
+    align-items: center;
+    margin: 0 3px;
+}
+
+.game-kills-blue-team {
+    background-color: #548dca;
+    height: 10px;
+}
+
+.game-kills-red-team {
+    background-color: #d05a53;
+    height: 10px;
+}
 /* MATCH BREAKDOWN CSS END*/
