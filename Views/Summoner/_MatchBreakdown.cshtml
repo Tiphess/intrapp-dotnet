@@ -1,65 +1,53 @@
 ﻿@model intrapp.Models.MatchBreakdown
 @using intrapp.Extensions.String
+<div style="margin-top: 20px;"></div>
+<ul class="nav nav-tabs" style="margin-bottom: 10px;">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Overview</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Analysis</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Build</a>
+    </li>
+</ul>
 <div id="MatchBreakdown_@Model.GameId">
-    <div style="margin-top: 20px;"></div>
-    <ul class="nav nav-tabs" style="margin-bottom: 10px;">
-        <li class="nav-item">
-            <a class="nav-link active" href="#">Overview</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Analysis</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Build</a>
-        </li>
-    </ul>
     @foreach (var team in Model.ParticipantsForDisplayByTeam)
     {
         <div class="col-md-12">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-3" style="text-align:center;">
+            <div class="titles-row">
+                <div class="title-summoner">
                     Summoner
                 </div>
-                <div class="col-md-1" style="text-align:center; margin-left: -47px;">
+                <div class="title-kda">
                     KDA
                 </div>
-                <div class="col-md-1" style="text-align:center;">
+                <div class="title-damage">
                     Damage
                 </div>
-                <div class="col-md-1" style="text-align:center;">
+                <div class="title-wards">
                     Wards
                 </div>
-                <div class="col-md-1" style="text-align:center;">
+                <div class="title-cs">
                     CS
                 </div>
-                <div class="col-md-4" style="text-align:center;">
+                <div class="title-items">
                     Items
                 </div>
             </div>
             @foreach (var participant in team)
             {
-                <div class="row" style="margin-bottom: 5px;">
-                    @if (team.Key == 100)
-                    {
-                        <div class="col-md-2" style="max-width: 115px;">
-                            <div class="row" style="max-width: 115px;">
-                                <div class="col-md-4">
-                                    <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
-                                </div>
-                                <div class="col-md-3 summoner-spells-left-breakdown">
-                                    <img src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
-                                    <img class="summoner-spell-two-left-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
-                                </div>
-                                <div class="col-md-3 runes-left-breakdown">
-                                    <img src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
-                                    <img class="rune-secondary-path-left-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
-                                </div>
-                            </div>
+                <div class="summoner-data-row">
+                        <div class="summoner-images-container">
+                            <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
+                            <img class="summoner-spell-one-breakdown" src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
+                            <img class="summoner-spell-two-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
+                            <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
+                            <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
+                            <span class="summoner-name-breakdown">@participant.ParticipantIdentity.Player.SummonerName.Truncate(150)</span>
                         </div>
-                        <div class="col-md-2" style="margin-left: -20px; margin-top: 5px;">
-                            <span>@participant.ParticipantIdentity.Player.SummonerName.Truncate(150)</span>
-                        </div>
-                        <div class="col-md-1" style="text-align:center; margin-left: -50px; font-size: 14px;">
+                        <div class="kda-container">
                             @{
                                 var kills = participant.Participant.Stats.Kills;
                                 var deaths = participant.Participant.Stats.Deaths;
@@ -70,7 +58,7 @@
                             @participant.Participant.Stats.Kills/@participant.Participant.Stats.Deaths/@participant.Participant.Stats.Assists<br />
                             @(kda):1
                         </div>
-                        <div class="col-md-1">
+                        <div class="damage-dealt-container">
                             @{
                                 var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDamageDealtToChampionsByAParticipant;
                                 var notrounded = raw * 100;
@@ -81,7 +69,7 @@
                                 <div class="damage-dealt" style="width: @percentageDmgDealt%;"></div>
                             </div>
                         </div>
-                        <div class="col-md-1" style="text-align:center; font-size: 14px;">
+                        <div class="wards-container">
                             <div class="wards-tooltip">
                                 <span class="wards-tooltip-text">
                                     @participant.Participant.Stats.VisionWardsBoughtInGame Control Wards<br />
@@ -92,11 +80,11 @@
                                 @participant.Participant.Stats.WardsPlaced / @participant.Participant.Stats.WardsKilled
                             </div>
                         </div>
-                        <div class="col-md-1" style="text-align:center;">
+                        <div class="creep-score-container">
                             <span>@participant.Participant.Stats.TotalMinionsKilled</span><br />
                             <span style="font-size: 12px;">@Math.Round(participant.Participant.Stats.TotalMinionsKilled / TimeSpan.FromSeconds(Model.GameDuration).TotalMinutes, 1)/min</span>
                         </div>
-                        <div class="col-md-4">
+                        <div class="items-container">
                             <div style="margin-top: 5px; text-align: center; margin-left: auto; margin-right: auto;">
                                 <img class="league-item-breakdown" src="@participant.Items.Item0Url" alt="Image unavailable" height="35" width="35" />
                                 <img class="league-item-breakdown" src="@participant.Items.Item1Url" alt="Image unavailable" height="35" width="35" />
@@ -107,77 +95,6 @@
                                 <img class="league-item-breakdown" src="@participant.Items.Item6Url" alt="Image unavailable" height="35" width="35" />
                             </div>
                         </div>
-
-                    }
-                    else
-                    {
-                        <div class="col-md-2" style="max-width: 115px;">
-                            <div class="row" style="max-width: 115px;">
-                                <div class="col-md-4">
-                                    <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
-                                </div>
-                                <div class="col-md-3 summoner-spells-left-breakdown">
-                                    <img src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
-                                    <img class="summoner-spell-two-left-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
-                                </div>
-                                <div class="col-md-3 runes-left-breakdown">
-                                    <img src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
-                                    <img class="rune-secondary-path-left-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2" style="margin-left: -20px; margin-top: 5px;">
-                            <span>@participant.ParticipantIdentity.Player.SummonerName.Truncate(150)</span>
-                        </div>
-                        <div class="col-md-1" style="text-align:center; margin-left: -50px; font-size: 14px;">
-                            @{
-                                var kills = participant.Participant.Stats.Kills;
-                                var deaths = participant.Participant.Stats.Deaths;
-                                var assists = participant.Participant.Stats.Assists;
-
-                                var kda = Math.Round((double)(kills + assists) / deaths, 2);
-                            }
-                            @participant.Participant.Stats.Kills/@participant.Participant.Stats.Deaths/@participant.Participant.Stats.Assists<br />
-                            @(kda):1
-                        </div>
-                        <div class="col-md-1">
-                            @{
-                                var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDamageDealtToChampionsByAParticipant;
-                                var notrounded = raw * 100;
-                                var percentageDmgDealt = (int)Math.Round(notrounded);
-                            }
-                            <div style="text-align:center;">@participant.Participant.Stats.TotalDamageDealtToChampions</div>
-                            <div class="damage-dealt-max">
-                                <div class="damage-dealt" style="width: @percentageDmgDealt%;"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-1" style="text-align:center; font-size: 14px;">
-                            <div class="wards-tooltip">
-                                <span class="wards-tooltip-text">
-                                    @participant.Participant.Stats.VisionWardsBoughtInGame Control Wards<br />
-                                    Wards placed: @participant.Participant.Stats.WardsPlaced<br />
-                                    Wards killed: @participant.Participant.Stats.WardsKilled
-                                </span>
-                                @participant.Participant.Stats.VisionWardsBoughtInGame<br />
-                                @participant.Participant.Stats.WardsPlaced / @participant.Participant.Stats.WardsKilled
-                            </div>
-                        </div>
-                        <div class="col-md-1" style="text-align:center;">
-                            <span>@participant.Participant.Stats.TotalMinionsKilled</span><br />
-                            <span style="font-size: 12px;">@Math.Round(participant.Participant.Stats.TotalMinionsKilled / TimeSpan.FromSeconds(Model.GameDuration).TotalMinutes, 1)/min</span>
-                        </div>
-                        <div class="col-md-4">
-                            <div style="margin-top: 5px; text-align: center; margin-left: auto; margin-right: auto;">
-                                <img class="league-item-breakdown" src="@participant.Items.Item0Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item1Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item2Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item3Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item4Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item5Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item6Url" alt="Image unavailable" height="35" width="35" />
-                            </div>
-                        </div>
-                    }
                 </div>
             }
             @if (team.Key == 100)
@@ -188,27 +105,20 @@
                             @Model.TeamsBreakdown.BlueTeamBaronKills / @Model.TeamsBreakdown.BlueTeamDragonKills / @Model.TeamsBreakdown.BlueTeamTowerKills
                         </div>
                         <div class="col-md-8">
-                            <div class="row" style="display: flex;">
-                                <div style="margin-left: -10px; margin-right: 10px;">Total Kills</div>
-                                <div style="margin: 0 10px; width: 48px; text-align: right;">@Model.TeamsBreakdown.BlueTeamChampionKills</div>
-                                <div class="game-kills-container">
-                                    <div class="game-kills-blue-team" style="flex: @Model.TeamsBreakdown.BlueTeamChampionKills;">
-                                    </div>
-                                    <div class="game-kills-red-team" style="flex: @Model.TeamsBreakdown.RedTeamChampionKills;">
-                                    </div>
-                                </div>
-                                <div style="margin: 0 10px;"> @Model.TeamsBreakdown.RedTeamChampionKills</div>
+                            <div class="game-kills-container">
+                                <div class="total-kills-text">Total Kills</div>
+                                <div class="blue-team-kills">@Model.TeamsBreakdown.BlueTeamChampionKills</div>
+                                <div class="game-kills-blue-team-bar" style="flex: @Model.TeamsBreakdown.BlueTeamChampionKills;"></div>
+                                <div class="game-kills-red-team-bar" style="flex: @Model.TeamsBreakdown.RedTeamChampionKills;"></div>
+                                <div class="red-team-kills"> @Model.TeamsBreakdown.RedTeamChampionKills</div>
+
                             </div>
-                            <div class="row" style="display: flex;">
-                                <div style="margin-left: -10px; margin-right: 10px;">Total gold</div>
-                                <div style="margin: 0 10px;">@Model.TeamsBreakdown.BlueTeamGold</div>
-                                <div class="game-kills-container">
-                                    <div class="game-kills-blue-team" style="flex: @Model.TeamsBreakdown.BlueTeamGold;">
-                                    </div>
-                                    <div class="game-kills-red-team" style="flex: @Model.TeamsBreakdown.RedTeamGold;">
-                                    </div>
-                                </div>
-                                <div style="margin: 0 10px;">@Model.TeamsBreakdown.RedTeamGold</div>
+                            <div class="game-gold-container">
+                                <div class="total-gold-text">Total gold</div>
+                                <div class="blue-team-gold">@Model.TeamsBreakdown.BlueTeamGold</div>
+                                <div class="game-gold-blue-team-bar" style="flex: @Model.TeamsBreakdown.BlueTeamGold;"></div>
+                                <div class="game-gold-red-team-bar" style="flex: @Model.TeamsBreakdown.RedTeamGold;"></div>
+                                <div class="red-team-gold">@Model.TeamsBreakdown.RedTeamGold</div>
                             </div>
                         </div>
                         <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">

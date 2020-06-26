@@ -134,18 +134,22 @@ a[name=playerLink] {
     text-decoration: none;
 }
 
+.game-stats {
+    margin-right: 5px;
+}
+
 .game-stats-queue {
-    position: absolute;
-    top: 0px;
+    margin-bottom: 70px;
 }
 
 .game-stats-result {
-    position: absolute;
-    top: 100px;
 }
 
 #participantImages {
     position: relative;
+    height: 140px;
+    width: 130px;
+    margin: auto;
 }
 
     #participantImages > img {
@@ -153,26 +157,26 @@ a[name=playerLink] {
     }
 
 .champion-portrait {
-    top: 35px;
+    top: 21px;
 }
 
 .summoner-spell-one {
     left: 90px;
-    top: 35px;
+    top: 21px;
 }
 
 .summoner-spell-two {
     left: 90px;
-    top: 77px;
+    top: 63px;
 }
 
 .keystone {
-    top: 115px;
+    top:101px;
 }
 
 .secondary-path {
     left: 40px;
-    top: 117px;
+    top: 103px;
 }
 
 #MoreDetailsBtn {
@@ -201,70 +205,127 @@ a[name=playerLink] {
         cursor: pointer;
     }
 
-#kda {
-    position: absolute;
-    top: 35px;
-}
-
 #items {
-    position: absolute;
-    top: 35px;
+    margin: auto;
 }
 
 #stats {
-    position: absolute;
-    top: 35px;
+    margin: auto;
 }
+
+.participants-blue-team {
+    width: 160px;
+    margin-left: auto;
+}
+
+.participants-red-team {
+    width: 160px;
+    position: relative;
+}
+
 /* MATCH HISTORY CSS END */
 
 /* MATCH BREAKDOWN CSS*/
 
-/* RIGHT SIDE*/
-.summoner-spells-right-breakdown {
-    padding-right: 0px;
-    margin-top: -5px;
-}
-    .summoner-spells-right-breakdown > img {
-        position: relative;
-        left: 11px;
-    }
-
-.summoner-spell-two-right-breakdown {
-    margin-top: -5px;
+.titles-row {
+    display: flex;
+    margin-bottom: 10px;
 }
 
-.runes-right-breakdown {
-    padding-right: 2px;
-    margin-top: -5px;
+.title-summoner {
+    text-align: center;
+    width: 250px;
 }
 
-    .runes-right-breakdown > img {
-        position: relative;
-        left: 23px;
-    }
-
-.rune-secondary-path-right-breakdown {
-    margin-top: -5px;
+.title-kda {
+    text-align: center;
+    width: 60px;
 }
 
-/*LEFT SIDE */
-.summoner-spells-left-breakdown {
-    margin-top: -5px;
-    margin-left: 10px;
+.title-damage {
+    text-align: center;
+    width: 150px;
 }
 
-.summoner-spell-two-left-breakdown {
-    margin-top: -5px;
+.title-wards {
+    text-align: center;
+    width: 60px;
 }
 
-.runes-left-breakdown {
-    padding-left: 2px;
-    margin-top: -5px;
+.title-cs {
+    text-align: center;
+    width: 120px;
+}
+
+.title-items {
+    text-align: center;
+    width: 350px;
+}
+
+.summoner-data-row {
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.summoner-images-container {
+    position: relative;
+    width: 250px;
+}
+
+.summoner-spell-one-breakdown {
     margin-left: 5px;
+    position: absolute;
 }
 
-.rune-secondary-path-left-breakdown {
-    margin-top: -5px;
+.summoner-spell-two-breakdown {
+    position: absolute;
+    margin-left: 5px;
+    top: 21px;
+}
+
+.keystone-breakdown {
+    position: absolute;
+    margin-left: 25px;
+}
+
+.secondary-path-breakdown {
+    position: absolute;
+    margin-left: 25px;
+    top: 21px;
+}
+
+.summoner-name-breakdown {
+    margin-left: 50px;
+}
+
+.kda-container {
+    text-align:center;
+    font-size: 14px;
+    width: 60px;
+}
+
+.damage-dealt-container {
+    width: 150px;
+}
+
+.wards-container {
+    text-align: center;
+    font-size: 14px;
+    width: 60px;
+}
+
+.creep-score-container {
+    text-align: center;
+    width: 120px;
+}
+
+.items-container {
+    margin-top: 5px;
+    width: 350px;
+}
+
+.league-item-breakdown {
+    margin-right: 2px;
 }
 
 .damage-dealt-max {
@@ -282,6 +343,7 @@ a[name=playerLink] {
     background-color: #ee5a52;
 }
 
+/*WARDS TOOLTIP*/
 .wards-tooltip {
     position: relative;
     display: inline-block;
@@ -311,25 +373,71 @@ a[name=playerLink] {
     visibility: visible;
     opacity: 1;
 }
+/*WARDS TOOLTIP END*/
 
-.league-item-breakdown {
-    margin-right: 2px;
-}
-
+/*GRAPH BARS FOR KILLS/GOLD*/
 .game-kills-container {
-    flex: 0 1 450px;
     display: flex;
     align-items: center;
     margin: 0 3px;
 }
 
-.game-kills-blue-team {
+.game-kills-blue-team-bar {
     background-color: #548dca;
     height: 10px;
 }
 
-.game-kills-red-team {
+.game-kills-red-team-bar {
     background-color: #d05a53;
     height: 10px;
 }
+
+.total-kills-text {
+    margin-left: -10px;
+    margin-right: 10px;
+}
+
+.blue-team-kills {
+    width: 48px;
+    text-align: right;
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+.red-team-kills {
+    margin: 0 23px;
+}
+
+.game-gold-container {
+    display: flex;
+    align-items: center;
+    margin: 0 3px;
+}
+
+.game-gold-blue-team-bar {
+    background-color: #548dca;
+    height: 10px;
+}
+
+.game-gold-red-team-bar {
+    background-color: #d05a53;
+    height: 10px;
+}
+
+.total-gold-text {
+    margin-left: -10px;
+    margin-right: 10px;
+}
+
+.blue-team-gold {
+    margin: 0 10px;
+    width: 48px;
+    text-align: right;
+}
+
+.red-team-gold {
+    margin: 0 10px;
+}
+/*GRAPH BARS FOR KILLS/GOLD END*/
+
 /* MATCH BREAKDOWN CSS END*/
