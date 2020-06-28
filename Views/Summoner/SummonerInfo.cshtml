@@ -71,7 +71,7 @@
 
         function OpenMatchBreakdown(accId, region, gameId) {
             if ($("div[name='MoreDetailsBtn_" + gameId + "']").css('display') !== 'none') {
-                if ($("#MatchBreakdown_" + gameId).length) {
+                if ($("#overview_" + gameId).length) {
                     $("#BreakdownDiv_" + gameId).slideDown(400);
                     $("div[name='MoreDetailsBtn_" + gameId + "']").hide();
                     $("div[name='CloseBtn_" + gameId + "']").show();
@@ -84,7 +84,6 @@
                         type: "POST",
                         data: { accountId: accId, region: region, gameId: gameId },
                         success: function (data) {
-                            console.log(data);
                             $("#BreakdownDiv_" + gameId).append(data);
                             $("#BreakdownDiv_" + gameId).slideDown(400);
                             $("#BreakdownWaitingDiv_" + gameId).hide();
@@ -104,6 +103,30 @@
                 $("div[name='MoreDetailsBtn_" + gameId + "']").show();
                 $("div[name='CloseBtn_" + gameId + "']").hide();
                 $("#breakdown_hr_" + gameId).hide();
+            }
+        }
+
+        function ShowAnalysis(gameId) {
+            if ($("#analysis_" + gameId).css('display') === 'none') {
+                $("#overview_" + gameId).slideToggle(400);
+                $("#build_" + gameId).hide();
+                $("#analysis_" + gameId).slideToggle(400);
+
+                $("#analysisLink").addClass("active");
+                $("#overviewLink").removeClass("active");
+                $("#buildLink").removeClass("active");
+            }
+        }
+
+        function ShowOverview(gameId) {
+            if ($("#overview_" + gameId).css('display') === 'none') {
+                $("#analysis_" + gameId).slideToggle(400);
+                $("#build_" + gameId).hide();
+                $("#overview_" + gameId).slideToggle(400);
+
+                $("#overviewLink").addClass("active");
+                $("#analysisLink").removeClass("active");
+                $("#buildLink").removeClass("active");
             }
         }
     </script>

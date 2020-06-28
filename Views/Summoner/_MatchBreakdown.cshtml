@@ -3,16 +3,17 @@
 <div style="margin-top: 20px;"></div>
 <ul class="nav nav-tabs" style="margin-bottom: 10px;">
     <li class="nav-item">
-        <a class="nav-link active" href="#">Overview</a>
+        <a id="overviewLink" class="nav-link active" onclick="ShowOverview(@Model.GameId)">Overview</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Analysis</a>
+        <a id="analysisLink" class="nav-link" onclick="ShowAnalysis(@Model.GameId)">Analysis</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Build</a>
+        <a id="buildLink" class="nav-link" onclick="ShowBuild(@Model.GameId)">Build</a>
     </li>
 </ul>
-<div id="MatchBreakdown_@Model.GameId">
+<!--Overview-->
+<div id="overview_@Model.GameId">
     @foreach (var team in Model.ParticipantsForDisplayByTeam)
     {
         <div class="col-md-12">
@@ -61,8 +62,7 @@
                         <div class="damage-dealt-container">
                             @{
                                 var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDamageDealtToChampionsByAParticipant;
-                                var notrounded = raw * 100;
-                                var percentageDmgDealt = (int)Math.Round(notrounded);
+                                var percentageDmgDealt = (int)Math.Round(raw * 100);
                             }
                             <div style="text-align:center;">@participant.Participant.Stats.TotalDamageDealtToChampions</div>
                             <div class="damage-dealt-max">
@@ -129,4 +129,226 @@
             }
         </div>
     }
+</div>
+
+<!--Analysis-->
+<div id="analysis_@Model.GameId" style="display: none;">
+    <div>Legend</div>
+    <ul style="overflow: hidden; list-style: none; padding: 0;">
+        <!--Champion Kills-->
+        <li class="analysis-list-item">
+            <div class="analysis-item-content">
+                <h4>Champion Kills</h4>
+                <div class="analysis-table">
+                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                    {
+                        <div class="analysis-team">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                @foreach (var participant in team)
+                                {
+                                    var raw = (double)participant.Participant.Stats.Kills / Model.HighestChampionKillsByAParticipant;
+                                    var champKillsPercentage = Math.Round(raw * 100, 1);
+                                    <li style="margin-top: 5px;">
+                                        <div class="analysis-champion-image">
+                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                        </div>
+                                        <div class="analysis-progress">
+                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @champKillsPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                            <span class="analysis-progress-span">@participant.Participant.Stats.Kills</span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        if (team.Key == 100)
+                        {
+                            <div class="analysis-graph-container">
+                                Graph! TODO
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </li>
+        <!--Gold Earned-->
+        <li class="analysis-list-item">
+            <div class="analysis-item-content">
+                <h4>Gold Earned</h4>
+                <div class="analysis-table">
+                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                    {
+                        <div class="analysis-team">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                @foreach (var participant in team)
+                                {
+                                    var raw = (double)participant.Participant.Stats.GoldEarned / Model.HighestGoldEarnedAmountByAParticipant;
+                                    var goldEarnedPercentage = Math.Round(raw * 100, 1);
+                                    <li style="margin-top: 5px;">
+                                        <div class="analysis-champion-image">
+                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                        </div>
+                                        <div class="analysis-progress">
+                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @goldEarnedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                            <span class="analysis-progress-span">@participant.Participant.Stats.GoldEarned</span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        if (team.Key == 100)
+                        {
+                            <div class="analysis-graph-container">
+                                Graph! TODO
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </li>
+        <!--Damage Dealt-->
+        <li class="analysis-list-item">
+            <div class="analysis-item-content">
+                <h4>Damage Dealt</h4>
+                <div class="analysis-table">
+                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                    {
+                        <div class="analysis-team">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                @foreach (var participant in team)
+                                {
+                                    var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDamageDealtToChampionsByAParticipant;
+                                    var dmgDealtPercentage = Math.Round(raw * 100, 1);
+                                    <li style="margin-top: 5px;">
+                                        <div class="analysis-champion-image">
+                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                        </div>
+                                        <div class="analysis-progress">
+                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgDealtPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                            <span class="analysis-progress-span">@participant.Participant.Stats.TotalDamageDealtToChampions</span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        if (team.Key == 100)
+                        {
+                            <div class="analysis-graph-container">
+                                Graph! TODO
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </li>
+        <!--Damage Taken-->
+        <li class="analysis-list-item">
+            <div class="analysis-item-content">
+                <h4>Damage Taken</h4>
+                <div class="analysis-table">
+                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                    {
+                        <div class="analysis-team">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                @foreach (var participant in team)
+                                {
+                                    var raw = (double)participant.Participant.Stats.TotalDamageTaken / Model.HighestDamageTakenByAParticipant;
+                                    var dmgTakenPercentage = Math.Round(raw * 100, 1);
+                                    <li style="margin-top: 5px;">
+                                        <div class="analysis-champion-image">
+                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                        </div>
+                                        <div class="analysis-progress">
+                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgTakenPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                            <span class="analysis-progress-span">@participant.Participant.Stats.TotalDamageTaken</span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        if (team.Key == 100)
+                        {
+                            <div class="analysis-graph-container">
+                                Graph! TODO
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </li>
+        <!--Wards Placed-->
+        <li class="analysis-list-item">
+            <div class="analysis-item-content">
+                <h4>Wards Placed</h4>
+                <div class="analysis-table">
+                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                    {
+                        <div class="analysis-team">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                @foreach (var participant in team)
+                                {
+                                    var raw = (double)participant.Participant.Stats.WardsPlaced / Model.HighestWardsPlacedByAParticipant;
+                                    var wardsPlacedPercentage = Math.Round(raw * 100, 1);
+                                    <li style="margin-top: 5px;">
+                                        <div class="analysis-champion-image">
+                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                        </div>
+                                        <div class="analysis-progress">
+                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @wardsPlacedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                            <span class="analysis-progress-span">@participant.Participant.Stats.WardsPlaced</span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        if (team.Key == 100)
+                        {
+                            <div class="analysis-graph-container">
+                                Graph! TODO
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </li>
+        <!--Minions Killed-->
+        <li class="analysis-list-item">
+            <div class="analysis-item-content">
+                <h4>Minions Killed</h4>
+                <div class="analysis-table">
+                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                    {
+                        <div class="analysis-team">
+                            <ul style="margin: 0; padding: 0; list-style: none;">
+                                @foreach (var participant in team)
+                                {
+                                    var raw = (double)participant.Participant.Stats.TotalMinionsKilled / Model.HighestCreepScoreByAParticipant;
+                                    var csPercentage = Math.Round(raw * 100, 1);
+                                    <li style="margin-top: 5px;">
+                                        <div class="analysis-champion-image">
+                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                        </div>
+                                        <div class="analysis-progress">
+                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @csPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                            <span class="analysis-progress-span">@participant.Participant.Stats.TotalMinionsKilled</span>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        if (team.Key == 100)
+                        {
+                            <div class="analysis-graph-container">
+                                Graph! TODO
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!--Build-->
+<div id="build_@Model.GameId" style="display: none;">
+
 </div>

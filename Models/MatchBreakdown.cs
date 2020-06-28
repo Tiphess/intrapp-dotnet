@@ -21,13 +21,19 @@ namespace intrapp.Models
         public IList<Participant> Participants { get; set; }
         public IList<ParticipantIdentity> ParticipantIdentities { get; set; }
 
-
+        //custom fields
         public IEnumerable<IGrouping<int, Participant>> ParticipantsByTeam { get; set; }
         public IList<ParticipantForDisplay> ParticipantsForDisplay { get; set; }
         public IEnumerable<IGrouping<int, ParticipantForDisplay>> ParticipantsForDisplayByTeam { get; set; }
         public string QueueTypeName { get; set; }
         public TeamsBreakdown TeamsBreakdown { get; set; }
         public int HighestDamageDealtToChampionsByAParticipant { get; set; }
+        public int HighestChampionKillsByAParticipant { get; set; }
+        public int HighestGoldEarnedAmountByAParticipant { get; set; }
+        public int HighestWardsPlacedByAParticipant { get; set; }
+        public int HighestDamageTakenByAParticipant { get; set; }
+        public int HighestCreepScoreByAParticipant { get; set; }
+
 
         public MatchBreakdown()
         {

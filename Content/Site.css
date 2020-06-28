@@ -222,11 +222,10 @@ a[name=playerLink] {
     width: 160px;
     position: relative;
 }
-
 /* MATCH HISTORY CSS END */
 
-/* MATCH BREAKDOWN CSS*/
-
+/* ################### MATCH BREAKDOWN CSS ################### */
+/* OVERVIEW TAB */
 .titles-row {
     display: flex;
     margin-bottom: 10px;
@@ -343,7 +342,7 @@ a[name=playerLink] {
     background-color: #ee5a52;
 }
 
-/*WARDS TOOLTIP*/
+/* WARDS TOOLTIP */
 .wards-tooltip {
     position: relative;
     display: inline-block;
@@ -373,9 +372,9 @@ a[name=playerLink] {
     visibility: visible;
     opacity: 1;
 }
-/*WARDS TOOLTIP END*/
+/* WARDS TOOLTIP END */
 
-/*GRAPH BARS FOR KILLS/GOLD*/
+/* MIDDLE GRAPH BARS FOR KILLS/GOLD */
 .game-kills-container {
     display: flex;
     align-items: center;
@@ -438,6 +437,75 @@ a[name=playerLink] {
 .red-team-gold {
     margin: 0 10px;
 }
-/*GRAPH BARS FOR KILLS/GOLD END*/
+/* GRAPH BARS FOR KILLS/GOLD END */
+/* OVERVIEW TAB END */
 
-/* MATCH BREAKDOWN CSS END*/
+/* ANALYSIS TAB */
+.analysis-list-item {
+    float: left;
+    width: 50%;
+}
+
+.analysis-item-content {
+    margin: 0 20px;
+}
+
+.analysis-table {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.analysis-team {
+    display: table-cell;
+}
+
+.analysis-champion-image {
+    float: left;
+    height: 20px;
+    width: 20px;
+}
+
+.analysis-champion-image > img {
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+
+.analysis-progress {
+    position: relative;
+    margin-left: 20px;
+    height: 20px;
+    background-color: #afafaf;
+}
+
+.analysis-progress-bar-blue-team {
+    background-color: #548dca;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.analysis-progress-bar-red-team {
+    background-color: #d05a53;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.analysis-progress-span {
+    position: absolute;
+    right: 5px;
+    top: -2px;
+}
+
+.analysis-graph-container {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* ANALYSIS TAB END */
+/* ################### MATCH BREAKDOWN CSS END ################### */

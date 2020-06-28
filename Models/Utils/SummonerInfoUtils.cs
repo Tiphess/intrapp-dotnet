@@ -103,11 +103,28 @@ namespace intrapp.Models.Utils
             var dll = new DLLSummonerInfo();
 
             match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
+
+            var maxChampionKills = 0;
+            var maxGoldEarned = 0;
             var maxDmgDealt = 0;
+            var maxWardsPlaced = 0;
+            var maxDmgTaken = 0;
+            var maxCS = 0;
             foreach (var participant in match.Participants)
             {
+                //Setting max values for analysis tab
+                if (participant.Stats.Kills > maxChampionKills)
+                    maxChampionKills = participant.Stats.Kills;
+                if (participant.Stats.GoldEarned > maxGoldEarned)
+                    maxGoldEarned = participant.Stats.GoldEarned;
                 if (participant.Stats.TotalDamageDealtToChampions > maxDmgDealt)
                     maxDmgDealt = participant.Stats.TotalDamageDealtToChampions;
+                if (participant.Stats.WardsPlaced > maxWardsPlaced)
+                    maxWardsPlaced = participant.Stats.WardsPlaced;
+                if (participant.Stats.TotalDamageTaken > maxDmgTaken)
+                    maxDmgTaken = participant.Stats.TotalDamageTaken;
+                if (participant.Stats.TotalMinionsKilled > maxCS)
+                    maxCS = participant.Stats.TotalMinionsKilled;
 
                 var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId);
 
@@ -168,7 +185,12 @@ namespace intrapp.Models.Utils
             }
 
             match.TeamsBreakdown = teamsBreakdown;
+            match.HighestChampionKillsByAParticipant = maxChampionKills;
+            match.HighestGoldEarnedAmountByAParticipant = maxGoldEarned;
             match.HighestDamageDealtToChampionsByAParticipant = maxDmgDealt;
+            match.HighestWardsPlacedByAParticipant = maxWardsPlaced;
+            match.HighestDamageTakenByAParticipant = maxDmgTaken;
+            match.HighestCreepScoreByAParticipant = maxCS;
             match.ParticipantsForDisplayByTeam = match.ParticipantsForDisplay.GroupBy(p => p.Participant.TeamId);
         }
 
