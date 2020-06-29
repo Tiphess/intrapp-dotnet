@@ -25,7 +25,6 @@ namespace intrapp.Models
         public IEnumerable<IGrouping<int, Participant>> ParticipantsByTeam { get; set; }
         public IList<ParticipantForDisplay> ParticipantsForDisplay { get; set; }
         public IEnumerable<IGrouping<int, ParticipantForDisplay>> ParticipantsForDisplayByTeam { get; set; }
-        public string QueueTypeName { get; set; }
         public TeamsBreakdown TeamsBreakdown { get; set; }
         public int HighestDamageDealtToChampionsByAParticipant { get; set; }
         public int HighestChampionKillsByAParticipant { get; set; }
@@ -33,6 +32,7 @@ namespace intrapp.Models
         public int HighestWardsPlacedByAParticipant { get; set; }
         public int HighestDamageTakenByAParticipant { get; set; }
         public int HighestCreepScoreByAParticipant { get; set; }
+        
 
 
         public MatchBreakdown()

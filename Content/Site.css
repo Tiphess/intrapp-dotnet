@@ -225,6 +225,9 @@ a[name=playerLink] {
 /* MATCH HISTORY CSS END */
 
 /* ################### MATCH BREAKDOWN CSS ################### */
+.nav-link {
+    cursor: pointer;
+}
 /* OVERVIEW TAB */
 .titles-row {
     display: flex;
@@ -505,7 +508,35 @@ a[name=playerLink] {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
+    position: relative;
 }
+
+/* Analysis Graph */
+.analysis-graph-text-container {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+}
+
+    /*.analysis-graph-text-container:first-child {
+        border-bottom: 1px solid #cdd2d2;
+        width: 60px;
+        padding-bottom: 2px;
+    }*/
+
+.analysis-graph-text-first {
+    margin: 0 auto;
+    border-bottom: 1px solid #cdd2d2;
+    width: 70px;
+    padding-bottom: 2px;
+    color: #548dca;
+}
+
+.analysis-graph-text {
+    margin: 0 auto;
+    color: #d05a53;
+}
+/* Analysis Graph End */
 
 /* ANALYSIS TAB END */
 /* ################### MATCH BREAKDOWN CSS END ################### */

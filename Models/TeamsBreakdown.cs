@@ -17,5 +17,13 @@ namespace intrapp.Models
         public int RedTeamChampionKills { get; set; }
         public int BlueTeamGold { get; set; }
         public int RedTeamGold { get; set; }
+        public int BlueTeamDmgDealt { get; set; }
+        public int RedTeamDmgDealt { get; set; }
+        public int BlueTeamWardsPlaced { get; set; }
+        public int RedTeamWardsPlaced { get; set; }
+        public int BlueTeamDmgTaken { get; set; }
+        public int RedTeamDmgTaken { get; set; }
+        public int BlueTeamCS { get; set; }
+        public int RedTeamCS { get; set; }
     }
 }

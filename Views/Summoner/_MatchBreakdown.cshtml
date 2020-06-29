@@ -1,15 +1,16 @@
 ﻿@model intrapp.Models.MatchBreakdown
 @using intrapp.Extensions.String
 <div style="margin-top: 20px;"></div>
+<!--Tabs-->
 <ul class="nav nav-tabs" style="margin-bottom: 10px;">
     <li class="nav-item">
-        <a id="overviewLink" class="nav-link active" onclick="ShowOverview(@Model.GameId)">Overview</a>
+        <a id="overviewLink_@Model.GameId" class="nav-link active" onclick="ShowOverview(@Model.GameId)">Overview</a>
     </li>
     <li class="nav-item">
-        <a id="analysisLink" class="nav-link" onclick="ShowAnalysis(@Model.GameId)">Analysis</a>
+        <a id="analysisLink_@Model.GameId" class="nav-link" onclick="ShowAnalysis(@Model.GameId)">Analysis</a>
     </li>
     <li class="nav-item">
-        <a id="buildLink" class="nav-link" onclick="ShowBuild(@Model.GameId)">Build</a>
+        <a id="buildLink_@Model.GameId" class="nav-link" onclick="ShowBuild(@Model.GameId)">Build</a>
     </li>
 </ul>
 <!--Overview-->
@@ -133,7 +134,6 @@
 
 <!--Analysis-->
 <div id="analysis_@Model.GameId" style="display: none;">
-    <div>Legend</div>
     <ul style="overflow: hidden; list-style: none; padding: 0;">
         <!--Champion Kills-->
         <li class="analysis-list-item">
@@ -162,8 +162,23 @@
                         </div>
                         if (team.Key == 100)
                         {
+                            var totalKills = Model.TeamsBreakdown.BlueTeamChampionKills + Model.TeamsBreakdown.RedTeamChampionKills;
+                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamChampionKills / totalKills) * 100, 0);
+                            var circleBlankArea = 100 - circleCoveredArea;
+                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
                             <div class="analysis-graph-container">
-                                Graph! TODO
+                                <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                </svg>
+                                <div class="analysis-graph-text-container">
+                                    <div class="analysis-graph-text-first">
+                                        @Model.TeamsBreakdown.BlueTeamChampionKills
+                                    </div>
+                                    <div class="analysis-graph-text">
+                                        @Model.TeamsBreakdown.RedTeamChampionKills
+                                    </div>
+                                </div>
                             </div>
                         }
                     }
@@ -197,8 +212,23 @@
                         </div>
                         if (team.Key == 100)
                         {
+                            var totalGold = Model.TeamsBreakdown.BlueTeamGold + Model.TeamsBreakdown.RedTeamGold;
+                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamGold / totalGold) * 100, 0);
+                            var circleBlankArea = 100 - circleCoveredArea;
+                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
                             <div class="analysis-graph-container">
-                                Graph! TODO
+                                <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                </svg>
+                                <div class="analysis-graph-text-container">
+                                    <div class="analysis-graph-text-first">
+                                        @Model.TeamsBreakdown.BlueTeamGold
+                                    </div>
+                                    <div class="analysis-graph-text">
+                                        @Model.TeamsBreakdown.RedTeamGold
+                                    </div>
+                                </div>
                             </div>
                         }
                     }
@@ -232,8 +262,23 @@
                         </div>
                         if (team.Key == 100)
                         {
+                            var totalDmgDealt = Model.TeamsBreakdown.BlueTeamDmgDealt + Model.TeamsBreakdown.RedTeamDmgDealt;
+                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamDmgDealt / totalDmgDealt) * 100, 0);
+                            var circleBlankArea = 100 - circleCoveredArea;
+                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
                             <div class="analysis-graph-container">
-                                Graph! TODO
+                                <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                </svg>
+                                <div class="analysis-graph-text-container">
+                                    <div class="analysis-graph-text-first">
+                                        @Model.TeamsBreakdown.BlueTeamDmgDealt
+                                    </div>
+                                    <div class="analysis-graph-text">
+                                        @Model.TeamsBreakdown.RedTeamDmgDealt
+                                    </div>
+                                </div>
                             </div>
                         }
                     }
@@ -267,8 +312,23 @@
                         </div>
                         if (team.Key == 100)
                         {
+                            var totalDmgTaken = Model.TeamsBreakdown.BlueTeamDmgTaken + Model.TeamsBreakdown.RedTeamDmgTaken;
+                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamDmgTaken / totalDmgTaken) * 100, 0);
+                            var circleBlankArea = 100 - circleCoveredArea;
+                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
                             <div class="analysis-graph-container">
-                                Graph! TODO
+                                <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                </svg>
+                                <div class="analysis-graph-text-container">
+                                    <div class="analysis-graph-text-first">
+                                        @Model.TeamsBreakdown.BlueTeamDmgTaken
+                                    </div>
+                                    <div class="analysis-graph-text">
+                                        @Model.TeamsBreakdown.RedTeamDmgTaken
+                                    </div>
+                                </div>
                             </div>
                         }
                     }
@@ -302,8 +362,23 @@
                         </div>
                         if (team.Key == 100)
                         {
+                            var totalWards = Model.TeamsBreakdown.BlueTeamWardsPlaced + Model.TeamsBreakdown.RedTeamWardsPlaced;
+                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamWardsPlaced / totalWards) * 100, 0);
+                            var circleBlankArea = 100 - circleCoveredArea;
+                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
                             <div class="analysis-graph-container">
-                                Graph! TODO
+                                <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                </svg>
+                                <div class="analysis-graph-text-container">
+                                    <div class="analysis-graph-text-first">
+                                        @Model.TeamsBreakdown.BlueTeamWardsPlaced
+                                    </div>
+                                    <div class="analysis-graph-text">
+                                        @Model.TeamsBreakdown.RedTeamWardsPlaced
+                                    </div>
+                                </div>
                             </div>
                         }
                     }
@@ -337,8 +412,23 @@
                         </div>
                         if (team.Key == 100)
                         {
+                            var totalCS = Model.TeamsBreakdown.BlueTeamCS + Model.TeamsBreakdown.RedTeamCS;
+                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamCS / totalCS) * 100, 0);
+                            var circleBlankArea = 100 - circleCoveredArea;
+                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
                             <div class="analysis-graph-container">
-                                Graph! TODO
+                                <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                </svg>
+                                <div class="analysis-graph-text-container">
+                                    <div class="analysis-graph-text-first">
+                                        @Model.TeamsBreakdown.BlueTeamCS
+                                    </div>
+                                    <div class="analysis-graph-text">
+                                        @Model.TeamsBreakdown.RedTeamCS
+                                    </div>
+                                </div>
                             </div>
                         }
                     }
@@ -350,5 +440,7 @@
 
 <!--Build-->
 <div id="build_@Model.GameId" style="display: none;">
-
+    <div>
+        <p>Build here!</p>
+    </div>
 </div>

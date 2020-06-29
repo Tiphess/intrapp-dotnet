@@ -108,25 +108,49 @@
 
         function ShowAnalysis(gameId) {
             if ($("#analysis_" + gameId).css('display') === 'none') {
-                $("#overview_" + gameId).slideToggle(400);
-                $("#build_" + gameId).hide();
+                if ($("#overviewLink_" + gameId).hasClass("active")) {
+                    $("#overview_" + gameId).slideToggle(400);
+                }
+                else if ($("#buildLink_" + gameId).hasClass("active")) {
+                    $("#build_" + gameId).slideToggle(400);
+                }
                 $("#analysis_" + gameId).slideToggle(400);
 
-                $("#analysisLink").addClass("active");
-                $("#overviewLink").removeClass("active");
-                $("#buildLink").removeClass("active");
+                $("#analysisLink_" + gameId).addClass("active");
+                $("#overviewLink_" + gameId).removeClass("active");
+                $("#buildLink_" + gameId).removeClass("active");
             }
         }
 
         function ShowOverview(gameId) {
             if ($("#overview_" + gameId).css('display') === 'none') {
-                $("#analysis_" + gameId).slideToggle(400);
-                $("#build_" + gameId).hide();
+                if ($("#analysisLink_" + gameId).hasClass("active")) {
+                    $("#analysis_" + gameId).slideToggle(400);
+                }
+                else if ($("#buildLink_" + gameId).hasClass("active")) {
+                    $("#build_" + gameId).slideToggle(400);
+                }
                 $("#overview_" + gameId).slideToggle(400);
 
-                $("#overviewLink").addClass("active");
-                $("#analysisLink").removeClass("active");
-                $("#buildLink").removeClass("active");
+                $("#overviewLink_" + gameId).addClass("active");
+                $("#analysisLink_" + gameId).removeClass("active");
+                $("#buildLink_" + gameId).removeClass("active");
+            }
+        }
+
+        function ShowBuild(gameId) {
+            if ($("#build_" + gameId).css('display') === 'none') {
+                if ($("#overviewLink_" + gameId).hasClass("active")) {
+                    $("#overview_" + gameId).slideToggle(400);
+                }
+                else if ($("#analysisLink_" + gameId).hasClass("active")) {
+                    $("#analysis_" + gameId).slideToggle(400);
+                }
+                $("#build_" + gameId).slideToggle(400);
+
+                $("#buildLink_" + gameId).addClass("active");
+                $("#analysisLink_" + gameId).removeClass("active");
+                $("#overviewLink_" + gameId).removeClass("active");
             }
         }
     </script>

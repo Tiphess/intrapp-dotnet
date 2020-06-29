@@ -173,6 +173,10 @@ namespace intrapp.Models.Utils
                     teamsBreakdown.BlueTeamTowerKills = team.TowerKills;
                     teamsBreakdown.BlueTeamChampionKills = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.Kills).ToList().Sum();
                     teamsBreakdown.BlueTeamGold = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.GoldEarned).ToList().Sum();
+                    teamsBreakdown.BlueTeamDmgDealt = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.TotalDamageDealtToChampions).ToList().Sum();
+                    teamsBreakdown.BlueTeamWardsPlaced = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.WardsPlaced).ToList().Sum();
+                    teamsBreakdown.BlueTeamDmgTaken = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.TotalDamageTaken).ToList().Sum();
+                    teamsBreakdown.BlueTeamCS = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100).Select(p => p.Stats.TotalMinionsKilled).ToList().Sum();
                 }
                 else
                 {
@@ -181,6 +185,10 @@ namespace intrapp.Models.Utils
                     teamsBreakdown.RedTeamTowerKills = team.TowerKills;
                     teamsBreakdown.RedTeamChampionKills = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.Kills).ToList().Sum();
                     teamsBreakdown.RedTeamGold = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.GoldEarned).ToList().Sum();
+                    teamsBreakdown.RedTeamDmgDealt = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.TotalDamageDealtToChampions).ToList().Sum();
+                    teamsBreakdown.RedTeamWardsPlaced = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.WardsPlaced).ToList().Sum();
+                    teamsBreakdown.RedTeamDmgTaken = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.TotalDamageTaken).ToList().Sum();
+                    teamsBreakdown.RedTeamCS = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200).Select(p => p.Stats.TotalMinionsKilled).ToList().Sum();
                 }
             }
 
