@@ -119,5 +119,26 @@ namespace intrapp.DataAccess.RiotGamesApi
 
             return GetDDragonVersion() + ddragon_url_provider.DDRAGON_ITEM_ICON.Replace("{itemId}", itemId.ToString());
         }
+
+        public string GetSpellIcon(string spellId)
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            if (spellId == "0" || string.IsNullOrWhiteSpace(spellId))
+                return "../DataAccess/RiotGamesApi/Images/Misc/no-item.png";
+
+            return GetDDragonVersion() + ddragon_url_provider.DDRAGON_CHAMPION_SPELL.Replace("{spellId}", spellId);
+        }
+
+        public string GetMatchTimelineUrl(long gameId, string region)
+        {
+            var platform = BaseUrlPaths.PLATFORMS.FirstOrDefault(p => p.Key == region);
+            return BaseUrlPaths.HTTPS + platform.Value + ApiUrlPaths.GET_MATCH_TIMELINE_BY_GAMEID.Replace("{matchId}", gameId.ToString());
+        }
+
+        public string GetSpecificChampionUrl(string championId)
+        {
+            var ddragon_url_provider = new DataDragonUrlPaths();
+            return GetDDragonVersion() + ddragon_url_provider.DDRAGON_SPECIFIC_CHAMPION_DATA.Replace("{championId}", championId);
+        }
     }
 }

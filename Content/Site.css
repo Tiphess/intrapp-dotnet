@@ -235,33 +235,32 @@ a[name=playerLink] {
 }
 
 .title-summoner {
-    text-align: center;
-    width: 250px;
+    width: 20%;
 }
 
 .title-kda {
     text-align: center;
-    width: 60px;
+    width: 12%;
 }
 
 .title-damage {
     text-align: center;
-    width: 150px;
+    width: 12%;
 }
 
 .title-wards {
     text-align: center;
-    width: 60px;
+    width: 12%;
 }
 
 .title-cs {
     text-align: center;
-    width: 120px;
+    width: 12%;
 }
 
 .title-items {
     text-align: center;
-    width: 350px;
+    width: 32%;
 }
 
 .summoner-data-row {
@@ -271,7 +270,7 @@ a[name=playerLink] {
 
 .summoner-images-container {
     position: relative;
-    width: 250px;
+    width: 20%;
 }
 
 .summoner-spell-one-breakdown {
@@ -301,29 +300,29 @@ a[name=playerLink] {
 }
 
 .kda-container {
-    text-align:center;
+    text-align: center;
     font-size: 14px;
-    width: 60px;
+    width: 12%;
 }
 
 .damage-dealt-container {
-    width: 150px;
+    width: 12%;
 }
 
 .wards-container {
     text-align: center;
     font-size: 14px;
-    width: 60px;
+    width: 12%;
 }
 
 .creep-score-container {
     text-align: center;
-    width: 120px;
+    width: 12%;
 }
 
 .items-container {
     margin-top: 5px;
-    width: 350px;
+    width: 32%;
 }
 
 .league-item-breakdown {
@@ -449,8 +448,16 @@ a[name=playerLink] {
     width: 50%;
 }
 
+    .analysis-item-content > h4 {
+        text-align: center;
+        font-size: 16px;
+    }
+
 .analysis-item-content {
-    margin: 0 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+
 }
 
 .analysis-table {
@@ -539,4 +546,20 @@ a[name=playerLink] {
 /* Analysis Graph End */
 
 /* ANALYSIS TAB END */
+
+/* BUILD TAB */
+.timeline-item {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    margin-bottom: 30px;
+}
+
+.timeline-arrow {
+    display: inline-block;
+    margin: 8px 10px 0;
+    text-align: center;
+    vertical-align: top;
+}
+/* BUILD TAB END */
 /* ################### MATCH BREAKDOWN CSS END ################### */

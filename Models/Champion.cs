@@ -18,6 +18,16 @@ namespace intrapp.Models
         public IList<string> Tags { get; set; }
         public string Partype { get; set; }
         public ChampionStats Stats { get; set; }
+        public List<Spell> Spells { get; set; }
+    }
+
+    public class Spell
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Image Image { get; set; }
+        public string IconFullUrl { get; set; }
     }
 
     public class Info

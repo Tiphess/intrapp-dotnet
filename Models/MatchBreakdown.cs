@@ -22,6 +22,7 @@ namespace intrapp.Models
         public IList<ParticipantIdentity> ParticipantIdentities { get; set; }
 
         //custom fields
+        public Participant ObservedParticipant { get; set; }
         public IEnumerable<IGrouping<int, Participant>> ParticipantsByTeam { get; set; }
         public IList<ParticipantForDisplay> ParticipantsForDisplay { get; set; }
         public IEnumerable<IGrouping<int, ParticipantForDisplay>> ParticipantsForDisplayByTeam { get; set; }
@@ -32,7 +33,10 @@ namespace intrapp.Models
         public int HighestWardsPlacedByAParticipant { get; set; }
         public int HighestDamageTakenByAParticipant { get; set; }
         public int HighestCreepScoreByAParticipant { get; set; }
-        
+        public EventsTimeline Timeline { get; set; }
+        public List<RunePath> Runes { get; set; }
+        public List<Spell> Spells { get; set; }
+
 
 
         public MatchBreakdown()

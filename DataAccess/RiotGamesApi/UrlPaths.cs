@@ -44,6 +44,7 @@ namespace intrapp.DataAccess.RiotGamesApi
         internal readonly string DDRAGON_PROFILEICON = "img/profileicon/";
         internal readonly string DDRAGON_CHAMPIONICON = "img/champion/";
         internal readonly string DDRAGON_SUMMONERSPELL = "img/spell/";
+        internal readonly string DDRAGON_SPECIFIC_CHAMPION_DATA = "data/en_US/champion/{championId}.json";
         internal readonly string DDRAGON_CHAMPION_DATA = "data/en_US/champion.json";
         internal readonly string DDRAGON_VERSIONLESS_IMG = "https://ddragon.leagueoflegends.com/cdn/img/"; // For runes icons
 
@@ -53,6 +54,9 @@ namespace intrapp.DataAccess.RiotGamesApi
         //Items
         internal readonly string DDRAGON_ITEMS_JSON = "data/en_US/item.json";
         internal readonly string DDRAGON_ITEM_ICON = "img/item/{itemId}.png";
+
+        //Individual spell
+        internal readonly string DDRAGON_CHAMPION_SPELL = "img/spell/{spellId}.png";
 
         //CommunityDragon URLs - Community made custom API to retrieve game data more easily and much more quickly
         //Full url - Get a champion's icon => https://cdn.communitydragon.org/{version}/champion/{championId}/square
@@ -74,6 +78,7 @@ namespace intrapp.DataAccess.RiotGamesApi
         internal readonly static string GET_MATCH_HISTORY_BY_ACCOUNTID = "/lol/match/v4/matchlists/by-account/";
         internal readonly static string GET_MATCH_BY_GAMEID = "/lol/match/v4/matches/";
         internal readonly static string GET_LEAGUE_ENTRY_BY_SUMMONERID = "/lol/league/v4/entries/by-summoner/";
+        internal readonly static string GET_MATCH_TIMELINE_BY_GAMEID = "/lol/match/v4/timelines/by-match/{matchId}";
 
         internal readonly static string PARAMETER_DEFAULT_ENDINDEX = "?endIndex=5";
     }

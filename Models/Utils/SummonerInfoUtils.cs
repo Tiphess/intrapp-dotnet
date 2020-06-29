@@ -22,9 +22,6 @@ namespace intrapp.Models.Utils
         private static List<SummonerSpell> SummonerSpells { get; set; } = GetSummonerSpells();
         private static List<Champion> Champions { get; set; } = GetChampions();
 
-        //Used to determine the average rank per match
-        
-
         /// <summary>
         /// Populates the custom properties of a participant for display on the Summoner Info view.
         /// </summary>
@@ -67,7 +64,7 @@ namespace intrapp.Models.Utils
             var spell2Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell2Id).IconPath;
 
             //Runes icons
-            var perkStyle = pathBuilder.GetRuneIcon(RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon);
+            var perkSubStyleIcon = pathBuilder.GetRuneIcon(RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon);
             var keystonePath = "";
             foreach (var path in RunePaths)
                 foreach (var slot in path.Slots)
@@ -88,7 +85,7 @@ namespace intrapp.Models.Utils
                 SummonerSpell1IconUrl = pathBuilder.GetSummonerSpellIcon(spell1Path.Replace("/lol-game-data/assets/", "").ToLower()),
                 SummonerSpell2IconUrl = pathBuilder.GetSummonerSpellIcon(spell2Path.Replace("/lol-game-data/assets/", "").ToLower()),
                 RuneKeystoneIconUrl = keystonePath,
-                RuneSecondaryPathIconUrl = perkStyle,
+                RuneSecondaryPathIconUrl = perkSubStyleIcon,
                 KillParticipationPercentage = kp,
                 Items = GetItems(participant),
                 ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
@@ -97,7 +94,7 @@ namespace intrapp.Models.Utils
             };
         }
 
-        public static void SetMatchBreakdownFields(MatchBreakdown match)
+        public static void SetMatchBreakdownFields(MatchBreakdown match, string region, string accountId)
         {
             var pathBuilder = new UrlPathBuilder();
             var dll = new DLLSummonerInfo();
@@ -133,7 +130,7 @@ namespace intrapp.Models.Utils
                 var spell2Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell2Id).IconPath;
 
                 //Runes icons
-                var perkStyle = pathBuilder.GetRuneIcon(RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon);
+                var perkSubStyleIcon = pathBuilder.GetRuneIcon(RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon);
                 var keystonePath = "";
                 foreach (var path in RunePaths)
                     foreach (var slot in path.Slots)
@@ -154,7 +151,7 @@ namespace intrapp.Models.Utils
                     SummonerSpell1IconUrl = pathBuilder.GetSummonerSpellIcon(spell1Path.Replace("/lol-game-data/assets/", "").ToLower()),
                     SummonerSpell2IconUrl = pathBuilder.GetSummonerSpellIcon(spell2Path.Replace("/lol-game-data/assets/", "").ToLower()),
                     RuneKeystoneIconUrl = keystonePath,
-                    RuneSecondaryPathIconUrl = perkStyle,
+                    RuneSecondaryPathIconUrl = perkSubStyleIcon,
                     KillParticipationPercentage = kp,
                     Items = GetItems(participant),
                     ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
@@ -200,6 +197,24 @@ namespace intrapp.Models.Utils
             match.HighestDamageTakenByAParticipant = maxDmgTaken;
             match.HighestCreepScoreByAParticipant = maxCS;
             match.ParticipantsForDisplayByTeam = match.ParticipantsForDisplay.GroupBy(p => p.Participant.TeamId);
+            var partIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.Player.AccountId == accountId);
+            match.Timeline = GetMatchTimeline(match.GameId, region, partIdentity.ParticipantId);
+            var part = match.Participants.FirstOrDefault(p => p.ParticipantId == partIdentity.ParticipantId);
+            match.Runes = GetRunesOfPlayer(part);
+            match.ObservedParticipant = part;
+            match.Spells = GetChampionSpells(Champions.FirstOrDefault(c => c.Key == part.ChampionId.ToString()).Id);
+        }
+
+        public static List<RunePath> GetRunesOfPlayer(Participant participant)
+        {
+            var perkPrimaryStyle = RunePaths.FirstOrDefault(p => p.Id == participant.Stats.PerkPrimaryStyle);
+            var perkSubSTyle = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle);
+
+            var runes = new List<RunePath>();
+            runes.Add(perkPrimaryStyle);
+            runes.Add(perkSubSTyle);
+
+            return runes;
         }
 
         public static void SetLeagueEntriesWinRates(List<LeagueEntry> leagueEntries)
@@ -246,7 +261,8 @@ namespace intrapp.Models.Utils
                         championList.Add(new Champion
                         {
                             Name = championProperties["name"].Value<string>(),
-                            Key = championProperties["key"].Value<string>()
+                            Key = championProperties["key"].Value<string>(),
+                            Id = championProperties["id"].Value<string>()
                         });
                     }
 
@@ -255,6 +271,77 @@ namespace intrapp.Models.Utils
                 catch (Exception) { return new List<Champion>(); }
             }
         }
+
+        public static List<Spell> GetChampionSpells(string championId)
+        {
+            var pathBuilder = new UrlPathBuilder();
+            var spells = new List<Spell>();
+
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    var championJson = client.DownloadString(pathBuilder.GetSpecificChampionUrl(championId));
+                    var jsonObject = JObject.Parse(championJson);
+                    var champSpells = jsonObject["data"][championId]["spells"];
+                    spells = champSpells.ToObject<List<Spell>>();
+                    foreach (var spell in spells)
+                        spell.IconFullUrl = pathBuilder.GetSpellIcon(spell.Id);
+
+                    return spells;
+                }
+                catch (Exception ) { return new List<Spell>(); }
+            }
+        }
+
+        public static EventsTimeline GetMatchTimeline(long gameId, string region, int participantId) 
+        {
+            var pathBuilder = new UrlPathBuilder();
+            var timeline = new EventsTimeline();
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.DefaultRequestHeaders.Add("X-Riot-Token", ConfigWrapper.ApiKey);
+                    var response = client.GetAsync(new Uri(pathBuilder.GetMatchTimelineUrl(gameId, region)));
+                    response.Wait();
+
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        var readData = response.Result.Content.ReadAsStringAsync();
+                        readData.Wait();
+
+                        var jsonObject = JObject.Parse(readData.Result);
+                        foreach (var frame in jsonObject["frames"])
+                        {
+                            var events = frame.Children<JProperty>().FirstOrDefault(x => x.Name == "events");
+                            var timestamp = frame.Children<JProperty>().FirstOrDefault(x => x.Name == "timestamp");
+
+                            var intervalTimestamp = timestamp.Value.ToObject<long>();
+                            var matchEvents = events.Value.ToObject<List<MatchEvent>>();
+
+                            var eventsInsideTimestampWindow = new List<MatchEvent>();
+                            foreach (var e in matchEvents)
+                            {
+                                if (e.Type == "ITEM_PURCHASED" && e.ParticipantId == participantId)
+                                {
+                                    e.ItemUrl = pathBuilder.GetItemIcon(e.ItemId);
+                                    eventsInsideTimestampWindow.Add(e);
+                                }
+                                if (e.Type == "SKILL_LEVEL_UP" && e.ParticipantId == participantId)
+                                {
+                                    timeline.SkillEvents.Add(e);
+                                }
+                            }
+                            timeline.ItemPurchaseEventsByTimestamp.Add(intervalTimestamp, eventsInsideTimestampWindow);
+                        }
+                    }
+                    return timeline;
+                }
+                catch (Exception) { return new EventsTimeline(); }
+            }
+        }
+
 
         //Seems really ugly but it'll do for now
         private static void SetTimeLineStatsOfParticipant(Participant participant, Match match, string jsonData)

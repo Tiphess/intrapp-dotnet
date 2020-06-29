@@ -441,6 +441,100 @@
 <!--Build-->
 <div id="build_@Model.GameId" style="display: none;">
     <div>
-        <p>Build here!</p>
+        <div style="margin-bottom: 20px;">
+            <h4>Items Purchase Timeline</h4>
+            <hr />
+        </div>
+        <div>
+            <ul>
+                @{ var firstDone = false; }
+                @foreach (var itemPurchaseEvents in Model.Timeline.ItemPurchaseEventsByTimestamp)
+                {
+                    if (itemPurchaseEvents.Value.Count == 0)
+                    {
+                        continue;
+                    }
+                    long firstTimestamp = 0;
+                    <li class="timeline-item">
+                        @if (firstDone == true)
+                        {
+                            <div class="timeline-arrow">
+                                <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                            </div>
+                        }
+                        @foreach (var itemPurchase in itemPurchaseEvents.Value)
+                        {
+                            if (firstTimestamp == 0)
+                            {
+                                firstTimestamp = itemPurchase.Timestamp;
+                            }
+                            <img src="@itemPurchase.ItemUrl" height="40" width="40" />
+                        }
+                        <div style="text-align: center; margin-right: -30px;">
+                            @Math.Round(TimeSpan.FromMilliseconds(firstTimestamp).TotalMinutes, 0) min
+                        </div>
+                        @{ firstDone = true; }
+                    </li>
+                }
+            </ul>
+        </div>
+        
     </div>
+    <div>Skill points</div>
+    @foreach (var spells in Model.Spells)
+    {
+        <img src="@(spells.IconFullUrl)" width="20" height="20" />
+    }
+    @foreach (var skillLeveledUp in Model.Timeline.SkillEvents)
+    {
+        <div>
+            @skillLeveledUp.SkillSlot
+        </div>
+    }
+    <div>Runes build</div>
+    @foreach (var path in Model.Runes)
+    {
+        <div>
+            STYLE - @path.Name
+        </div>
+        foreach (var slot in path.Slots)
+        {
+            <div>
+                ROW 
+            </div>
+            foreach (var rune in slot.Runes)
+            {
+                <div>
+                    @if (rune.Id == Model.ObservedParticipant.Stats.Perk0)
+                    {
+                        <span>KEYSTONE - @rune.Name</span><br />
+                    }
+                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk1)
+                    {
+                        <span>ROW 1 - @rune.Name</span><br />
+                    }
+                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk2)
+                    {
+                        <span>ROW 2 - @rune.Name</span><br />
+                    }
+                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk3)
+                    {
+                        <span>ROW 3 - @rune.Name</span><br />
+                    }
+                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk4)
+                    {
+                        <span>SUB ROW 1 - @rune.Name</span><br />
+                    }
+                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk5)
+                    {
+                        <span>SUB ROW 2 - @rune.Name</span><br />
+                    }
+                    else
+                    {
+                        <span>unselected runes - @rune.Name</span>
+                    }
+                </div>
+            }
+        }
+    }
 </div>

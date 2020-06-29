@@ -137,8 +137,10 @@
     </Compile>
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Champion.cs" />
+    <Compile Include="Models\EventsTimeline.cs" />
     <Compile Include="Models\Iventory.cs" />
     <Compile Include="Models\MatchBreakdown.cs" />
+    <Compile Include="Models\MatchEvent.cs" />
     <Compile Include="Models\ParticipantForDisplay.cs" />
     <Compile Include="Models\DLL\DLLSummonerInfo.cs" />
     <Compile Include="Models\LeagueEntry.cs" />

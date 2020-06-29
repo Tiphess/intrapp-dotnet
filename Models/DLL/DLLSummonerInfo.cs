@@ -128,7 +128,7 @@ namespace intrapp.Models.DLL
                         readData.Wait();
 
                         var match = JsonConvert.DeserializeObject<MatchBreakdown>(readData.Result);
-                        SummonerInfoUtils.SetMatchBreakdownFields(match);
+                        SummonerInfoUtils.SetMatchBreakdownFields(match, region, accountId);
 
                         return match;
                     }
