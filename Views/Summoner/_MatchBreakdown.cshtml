@@ -42,11 +42,11 @@
             {
                 <div class="summoner-data-row">
                         <div class="summoner-images-container">
-                            <img src="@participant.ChampionIconUrl" alt="Image unavailable" height="40" width="40" />
-                            <img class="summoner-spell-one-breakdown" src="@participant.SummonerSpell1IconUrl" alt="Image unavailable" height="18" width="18" />
-                            <img class="summoner-spell-two-breakdown" src="@participant.SummonerSpell2IconUrl" alt="Image unavailable" height="18" width="18" />
-                            <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" alt="Image unavailable" height="18" width="18" />
-                            <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" alt="Image unavailable" height="18" width="18" />
+                            <img src="@participant.ChampionIconUrl" height="40" width="40" />
+                            <img class="summoner-spell-one-breakdown" src="@participant.SummonerSpell1IconUrl" height="18" width="18" />
+                            <img class="summoner-spell-two-breakdown" src="@participant.SummonerSpell2IconUrl" height="18" width="18" />
+                            <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" height="18" width="18" />
+                            <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" height="18" width="18" />
                             <span class="summoner-name-breakdown">@participant.ParticipantIdentity.Player.SummonerName.Truncate(150)</span>
                         </div>
                         <div class="kda-container">
@@ -87,13 +87,13 @@
                         </div>
                         <div class="items-container">
                             <div style="margin-top: 5px; text-align: center; margin-left: auto; margin-right: auto;">
-                                <img class="league-item-breakdown" src="@participant.Items.Item0Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item1Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item2Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item3Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item4Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item5Url" alt="Image unavailable" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item6Url" alt="Image unavailable" height="35" width="35" />
+                                <img class="league-item-breakdown" src="@participant.Items.Item0Url" height="35" width="35" />
+                                <img class="league-item-breakdown" src="@participant.Items.Item1Url" height="35" width="35" />
+                                <img class="league-item-breakdown" src="@participant.Items.Item2Url" height="35" width="35" />
+                                <img class="league-item-breakdown" src="@participant.Items.Item3Url" height="35" width="35" />
+                                <img class="league-item-breakdown" src="@participant.Items.Item4Url" height="35" width="35" />
+                                <img class="league-item-breakdown" src="@participant.Items.Item5Url" height="35" width="35" />
+                                <img class="league-item-breakdown" src="@participant.Items.Item6Url" height="35" width="35" />
                             </div>
                         </div>
                 </div>
@@ -150,7 +150,7 @@
                                     var champKillsPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                            <img src="@participant.ChampionIconUrl" />
                                         </div>
                                         <div class="analysis-progress">
                                             <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @champKillsPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
@@ -200,7 +200,7 @@
                                     var goldEarnedPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                            <img src="@participant.ChampionIconUrl" />
                                         </div>
                                         <div class="analysis-progress">
                                             <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @goldEarnedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
@@ -250,7 +250,7 @@
                                     var dmgDealtPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                            <img src="@participant.ChampionIconUrl" />
                                         </div>
                                         <div class="analysis-progress">
                                             <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgDealtPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
@@ -300,7 +300,7 @@
                                     var dmgTakenPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                            <img src="@participant.ChampionIconUrl" />
                                         </div>
                                         <div class="analysis-progress">
                                             <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgTakenPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
@@ -350,7 +350,7 @@
                                     var wardsPlacedPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                            <img src="@participant.ChampionIconUrl" />
                                         </div>
                                         <div class="analysis-progress">
                                             <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @wardsPlacedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
@@ -400,7 +400,7 @@
                                     var csPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" alt="" />
+                                            <img src="@participant.ChampionIconUrl" />
                                         </div>
                                         <div class="analysis-progress">
                                             <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @csPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
@@ -441,6 +441,7 @@
 <!--Build-->
 <div id="build_@Model.Match.GameId" style="display: none;">
     <div>
+        <!--Timeline-->
         <div style="margin-bottom: 20px;">
             <h4>Items Purchase Timeline</h4>
             <hr />
@@ -470,7 +471,7 @@
                             }
                             <img src="@itemPurchase.ItemUrl" height="40" width="40" />
                         }
-                        <div style="text-align: center; margin-right: -30px;">
+                        <div style="text-align: center; margin-right: @(firstDone == true ? "-30px" : "0");">
                             @Math.Round(TimeSpan.FromMilliseconds(firstTimestamp).TotalMinutes, 0) min
                         </div>
                         @{ firstDone = true; }
@@ -480,61 +481,155 @@
         </div>
         
     </div>
-    <div>Skill points</div>
-    @foreach (var spells in Model.Spells)
-    {
-        <img src="@(spells.IconFullUrl)" width="20" height="20" />
-    }
-    @foreach (var skillLeveledUp in Model.Timeline.SkillEvents)
-    {
-        <div>
-            @skillLeveledUp.SkillSlot
-        </div>
-    }
-    <div>Runes build</div>
-    @foreach (var path in Model.Runes)
-    {
-        <div>
-            STYLE - @path.Name
-        </div>
-        foreach (var slot in path.Slots)
-        {
-            <div>
-                ROW 
-            </div>
-            foreach (var rune in slot.Runes)
-            {
-                <div>
-                    @if (rune.Id == Model.ObservedParticipant.Stats.Perk0)
+    <!--Skill points table-->
+    <div style="margin-bottom: 20px;">
+        <h4>Skill Points Spent</h4>
+        <hr />
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            @{
+                var qUrl = "";
+                var wUrl = "";
+                var eUrl = "";
+                var rUrl = "";
+
+                foreach (var spell in Model.Spells)
+                {
+                    if (Model.Spells.IndexOf(spell) == 0) // Q
                     {
-                        <span>KEYSTONE - @rune.Name</span><br />
+                        qUrl = spell.IconFullUrl;
                     }
-                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk1)
+                    else if (Model.Spells.IndexOf(spell) == 1) // W
                     {
-                        <span>ROW 1 - @rune.Name</span><br />
+                        wUrl = spell.IconFullUrl;
                     }
-                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk2)
+                    else if (Model.Spells.IndexOf(spell) == 2) // E
                     {
-                        <span>ROW 2 - @rune.Name</span><br />
+                        eUrl = spell.IconFullUrl;
                     }
-                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk3)
+                    else if (Model.Spells.IndexOf(spell) == 3) // R
                     {
-                        <span>ROW 3 - @rune.Name</span><br />
+                        rUrl = spell.IconFullUrl;
                     }
-                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk4)
-                    {
-                        <span>SUB ROW 1 - @rune.Name</span><br />
-                    }
-                    else if (rune.Id == Model.ObservedParticipant.Stats.Perk5)
-                    {
-                        <span>SUB ROW 2 - @rune.Name</span><br />
-                    }
-                    else
-                    {
-                        <span>unselected runes - @rune.Name</span>
-                    }
-                </div>
+                }
             }
+            <div class="col-md-12">
+                <table id="skillsTable_@Model.Match.GameId" class="skills-table">
+                    <tbody>
+                        <tr id="QRow_@Model.Match.GameId">
+                            <td class="skills-table-first-td">Q</td>
+                            <td class="skills-table-img-td"><img src="@qUrl" class="skills-table-img" /></td>
+                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                            {
+                                if (skillPoint.SkillSlot == 1)
+                                {
+                                    <td class="skills-table-skillpoint"></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                        <tr id="WRow_@Model.Match.GameId">
+                            <td class="skills-table-first-td">W</td>
+                            <td class="skills-table-img-td"><img src="@wUrl" class="skills-table-img" /></td>
+                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                            {
+                                if (skillPoint.SkillSlot == 2)
+                                {
+                                    <td class="skills-table-skillpoint"></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                        <tr id="ERow_@Model.Match.GameId">
+                            <td class="skills-table-first-td">E</td>
+                            <td class="skills-table-img-td"><img src="@eUrl" class="skills-table-img" /></td>
+                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                            {
+                                if (skillPoint.SkillSlot == 3)
+                                {
+                                    <td class="skills-table-skillpoint"></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                        <tr id="RRow_@Model.Match.GameId">
+                            <td class="skills-table-first-td">R</td>
+                            <td class="skills-table-img-td"><img src="@rUrl" class="skills-table-img" /></td>
+                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                            {
+                                if (skillPoint.SkillSlot == 4)
+                                {
+                                    <td class="skills-table-skillpoint"></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <!--Runes layout-->
+    <div>Runes build</div>
+    <div class="row">
+        @foreach (var path in Model.Runes)
+        {
+            <div class="col-md-6">
+                <img src="@path.Icon" width="20" height="20" />
+                @foreach (var slot in path.Slots)
+                {
+                    <div class="row">
+                        @foreach (var rune in slot.Runes)
+                        {
+                            <div class="col-md-4"> @* handle keystones (e.g. some path have 4 keystones, other 3, so col-md-4 for all scenarios doesnt work)*@
+                                @if (rune.Id == Model.ObservedParticipant.Stats.Perk0)
+                                {
+                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk1)
+                                {
+                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk2)
+                                {
+                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk3)
+                                {
+                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk4)
+                                {
+                                    <span><img src="@rune.Icon" width="20" height="20" /></span><br />
+                                }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk5)
+                                {
+                                    <span><img src="@rune.Icon" width="20" height="20" /></span><br />
+                                }
+                                else
+                                {
+                                    <span><img src="@rune.Icon" width="20" height="20"/></span>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
         }
-    }
+    </div>
 </div>

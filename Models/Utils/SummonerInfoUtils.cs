@@ -121,12 +121,23 @@ namespace intrapp.Models.Utils
         //For the match breakdown, return the rune paths so we have access to all the runes for display on the view, selected or unselected
         private static List<RunePath> GetRunesOfPlayer(Participant participant)
         {
+            var pathBuilder = new UrlPathBuilder();
+
             var perkPrimaryStyle = RunePaths.FirstOrDefault(p => p.Id == participant.Stats.PerkPrimaryStyle);
-            var perkSubSTyle = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle);
+            var perkSubStyle = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle);
+
+            //Setting the correct icon paths
+            /*foreach (var slot in perkPrimaryStyle.Slots)
+                foreach (var rune in slot.Runes)
+                    rune.Icon = pathBuilder.GetRuneIcon(rune.Icon);
+
+            foreach (var slot in perkSubStyle.Slots)
+                foreach (var rune in slot.Runes)
+                    rune.Icon = pathBuilder.GetRuneIcon(rune.Icon);*/
 
             var runes = new List<RunePath>();
             runes.Add(perkPrimaryStyle);
-            runes.Add(perkSubSTyle);
+            runes.Add(perkSubStyle);
 
             return runes;
         }
@@ -267,14 +278,25 @@ namespace intrapp.Models.Utils
 
         private static Tuple<string, string> GetRunesPaths(Participant participant)
         {
-            var pathBuilder = new UrlPathBuilder();
-            var perkSubStylePath = pathBuilder.GetRuneIcon(RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon);
+            var perkPrimaryStylePath = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkPrimaryStyle);
+            var perkSubStylePath = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon;
             var keystonePath = "";
-            foreach (var path in RunePaths)
-                foreach (var slot in path.Slots)
-                    foreach (var rune in slot.Runes)
-                        if (rune.Id == participant.Stats.Perk0)
-                            keystonePath = pathBuilder.GetRuneIcon(rune.Icon);
+
+            var found = false;
+            foreach (var slot in perkPrimaryStylePath.Slots)
+            {
+                foreach (var rune in slot.Runes)
+                {
+                    if (rune.Id == participant.Stats.Perk0)
+                    {
+                        keystonePath = rune.Icon;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == true)
+                    break;
+            }
 
             return Tuple.Create(keystonePath, perkSubStylePath);
         }
@@ -346,7 +368,18 @@ namespace intrapp.Models.Utils
                 try
                 {
                     var runesJson = client.DownloadString(pathBuilder.GetRunesReforgedUrl());
-                    return JsonConvert.DeserializeObject<List<RunePath>>(runesJson);
+                    var runePaths = JsonConvert.DeserializeObject<List<RunePath>>(runesJson);
+
+                    foreach (var path in runePaths)
+                    {
+                        path.Icon = pathBuilder.GetRuneIcon(path.Icon);
+                        foreach (var slot in path.Slots)
+                            foreach (var rune in slot.Runes)
+                                rune.Icon = pathBuilder.GetRuneIcon(rune.Icon);
+                    }
+                        
+
+                    return runePaths;
                 }
                 catch (Exception) { return new List<RunePath>(); }
             }

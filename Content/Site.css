@@ -561,5 +561,41 @@ a[name=playerLink] {
     text-align: center;
     vertical-align: top;
 }
+
+.skills-table {
+    margin-bottom: 1rem;
+    table-layout: fixed;
+    border: none;
+}
+
+.skills-table td {
+    width:55px;
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+}
+
+.skills-table-first-td {
+    border: none !important;
+    text-align: right;
+    width: 40px;
+    vertical-align: middle;
+}
+
+.skills-table-img-td {
+    border: none !important;
+}
+
+.skills-table-img {
+    margin: -0.7rem;
+    width: 51.5px;
+    height: 51.5px;
+}
+
+.skills-table-skillpoint {
+    background: green;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+}
 /* BUILD TAB END */
 /* ################### MATCH BREAKDOWN CSS END ################### */

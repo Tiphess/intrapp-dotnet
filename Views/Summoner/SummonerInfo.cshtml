@@ -69,7 +69,7 @@
             $("#summonerName").val("");
         });
 
-        function OpenMatchBreakdown(accId, region, gameId) {
+        /*function OpenMatchBreakdown(accId, region, gameId) {
             if ($("div[name='MoreDetailsBtn_" + gameId + "']").css('display') !== 'none') {
                 if ($("#overview_" + gameId).length) {
                     $("#BreakdownDiv_" + gameId).slideDown(400);
@@ -95,18 +95,18 @@
                     });
                 }
             }
-        }
+        }*/
 
-        function CloseMatchBreakDown(gameId) {
+        /*function CloseMatchBreakDown(gameId) {
             if ($("div[name='CloseBtn_" + gameId + "']").css('display') !== 'none') {
                 $("#BreakdownDiv_" + gameId).slideUp(400);
                 $("div[name='MoreDetailsBtn_" + gameId + "']").show();
                 $("div[name='CloseBtn_" + gameId + "']").hide();
                 $("#breakdown_hr_" + gameId).hide();
             }
-        }
+        }*/
 
-        function ShowAnalysis(gameId) {
+        /*function ShowAnalysis(gameId) {
             if ($("#analysis_" + gameId).css('display') === 'none') {
                 if ($("#overviewLink_" + gameId).hasClass("active")) {
                     $("#overview_" + gameId).slideToggle(400);
@@ -140,6 +140,7 @@
 
         function ShowBuild(gameId) {
             if ($("#build_" + gameId).css('display') === 'none') {
+                FillTableWithLevels(gameId);
                 if ($("#overviewLink_" + gameId).hasClass("active")) {
                     $("#overview_" + gameId).slideToggle(400);
                 }
@@ -153,5 +154,29 @@
                 $("#overviewLink_" + gameId).removeClass("active");
             }
         }
+
+        function FillTableWithLevels(gameId) {
+            var cellsOffset = 1 // Since the first 2 cells are not skillpoints
+            $("#QRow_" + gameId + " > td").each(function (index) {
+                if ($(this).hasClass("skills-table-skillpoint")) {
+                    $(this).text(index - cellsOffset);
+                }
+            });
+            $("#WRow_" + gameId + " > td").each(function (index) {
+                if ($(this).hasClass("skills-table-skillpoint")) {
+                    $(this).text(index - cellsOffset);
+                }
+            });
+            $("#ERow_" + gameId + " > td").each(function (index) {
+                if ($(this).hasClass("skills-table-skillpoint")) {
+                    $(this).text(index - cellsOffset);
+                }
+            });
+            $("#RRow_" + gameId + " > td").each(function (index) {
+                if ($(this).hasClass("skills-table-skillpoint")) {
+                    $(this).text(index - cellsOffset);
+                }
+            });
+        }*/
     </script>
 }
