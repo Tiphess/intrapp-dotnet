@@ -4,17 +4,17 @@
 <!--Tabs-->
 <ul class="nav nav-tabs" style="margin-bottom: 10px;">
     <li class="nav-item">
-        <a id="overviewLink_@Model.GameId" class="nav-link active" onclick="ShowOverview(@Model.GameId)">Overview</a>
+        <a id="overviewLink_@Model.Match.GameId" class="nav-link active" onclick="ShowOverview(@Model.Match.GameId)">Overview</a>
     </li>
     <li class="nav-item">
-        <a id="analysisLink_@Model.GameId" class="nav-link" onclick="ShowAnalysis(@Model.GameId)">Analysis</a>
+        <a id="analysisLink_@Model.Match.GameId" class="nav-link" onclick="ShowAnalysis(@Model.Match.GameId)">Analysis</a>
     </li>
     <li class="nav-item">
-        <a id="buildLink_@Model.GameId" class="nav-link" onclick="ShowBuild(@Model.GameId)">Build</a>
+        <a id="buildLink_@Model.Match.GameId" class="nav-link" onclick="ShowBuild(@Model.Match.GameId)">Build</a>
     </li>
 </ul>
 <!--Overview-->
-<div id="overview_@Model.GameId">
+<div id="overview_@Model.Match.GameId">
     @foreach (var team in Model.ParticipantsForDisplayByTeam)
     {
         <div class="col-md-12">
@@ -62,7 +62,7 @@
                         </div>
                         <div class="damage-dealt-container">
                             @{
-                                var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDamageDealtToChampionsByAParticipant;
+                                var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDmgDealt;
                                 var percentageDmgDealt = (int)Math.Round(raw * 100);
                             }
                             <div style="text-align:center;">@participant.Participant.Stats.TotalDamageDealtToChampions</div>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="creep-score-container">
                             <span>@participant.Participant.Stats.TotalMinionsKilled</span><br />
-                            <span style="font-size: 12px;">@Math.Round(participant.Participant.Stats.TotalMinionsKilled / TimeSpan.FromSeconds(Model.GameDuration).TotalMinutes, 1)/min</span>
+                            <span style="font-size: 12px;">@Math.Round(participant.Participant.Stats.TotalMinionsKilled / TimeSpan.FromSeconds(Model.Match.GameDuration).TotalMinutes, 1)/min</span>
                         </div>
                         <div class="items-container">
                             <div style="margin-top: 5px; text-align: center; margin-left: auto; margin-right: auto;">
@@ -133,7 +133,7 @@
 </div>
 
 <!--Analysis-->
-<div id="analysis_@Model.GameId" style="display: none;">
+<div id="analysis_@Model.Match.GameId" style="display: none;">
     <ul style="overflow: hidden; list-style: none; padding: 0;">
         <!--Champion Kills-->
         <li class="analysis-list-item">
@@ -146,7 +146,7 @@
                             <ul style="margin: 0; padding: 0; list-style: none;">
                                 @foreach (var participant in team)
                                 {
-                                    var raw = (double)participant.Participant.Stats.Kills / Model.HighestChampionKillsByAParticipant;
+                                    var raw = (double)participant.Participant.Stats.Kills / Model.HighestKills;
                                     var champKillsPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
@@ -196,7 +196,7 @@
                             <ul style="margin: 0; padding: 0; list-style: none;">
                                 @foreach (var participant in team)
                                 {
-                                    var raw = (double)participant.Participant.Stats.GoldEarned / Model.HighestGoldEarnedAmountByAParticipant;
+                                    var raw = (double)participant.Participant.Stats.GoldEarned / Model.HighestGold;
                                     var goldEarnedPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
@@ -246,7 +246,7 @@
                             <ul style="margin: 0; padding: 0; list-style: none;">
                                 @foreach (var participant in team)
                                 {
-                                    var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDamageDealtToChampionsByAParticipant;
+                                    var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDmgDealt;
                                     var dmgDealtPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
@@ -296,7 +296,7 @@
                             <ul style="margin: 0; padding: 0; list-style: none;">
                                 @foreach (var participant in team)
                                 {
-                                    var raw = (double)participant.Participant.Stats.TotalDamageTaken / Model.HighestDamageTakenByAParticipant;
+                                    var raw = (double)participant.Participant.Stats.TotalDamageTaken / Model.HighestDmgTaken;
                                     var dmgTakenPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
@@ -346,7 +346,7 @@
                             <ul style="margin: 0; padding: 0; list-style: none;">
                                 @foreach (var participant in team)
                                 {
-                                    var raw = (double)participant.Participant.Stats.WardsPlaced / Model.HighestWardsPlacedByAParticipant;
+                                    var raw = (double)participant.Participant.Stats.WardsPlaced / Model.HighestWardsPlaced;
                                     var wardsPlacedPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
@@ -396,7 +396,7 @@
                             <ul style="margin: 0; padding: 0; list-style: none;">
                                 @foreach (var participant in team)
                                 {
-                                    var raw = (double)participant.Participant.Stats.TotalMinionsKilled / Model.HighestCreepScoreByAParticipant;
+                                    var raw = (double)participant.Participant.Stats.TotalMinionsKilled / Model.HighestCS;
                                     var csPercentage = Math.Round(raw * 100, 1);
                                     <li style="margin-top: 5px;">
                                         <div class="analysis-champion-image">
@@ -439,7 +439,7 @@
 </div>
 
 <!--Build-->
-<div id="build_@Model.GameId" style="display: none;">
+<div id="build_@Model.Match.GameId" style="display: none;">
     <div>
         <div style="margin-bottom: 20px;">
             <h4>Items Purchase Timeline</h4>

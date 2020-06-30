@@ -99,7 +99,7 @@ namespace intrapp.Models.DLL
 
                             var match = JsonConvert.DeserializeObject<Match>(readData.Result);
                             foreach (var participant in match.Participants)
-                                SummonerInfoUtils.SetParticipantCustomFieldsAndDeltas(participant, match, readData.Result);
+                                SummonerInfoUtils.SetParticipantCustomFields(participant, match, readData.Result);
 
                             SummonerInfoUtils.SetMatchCustomFields(match, accountId, matchRef);
                             matchHistory.Matches.Add(match);
@@ -127,10 +127,10 @@ namespace intrapp.Models.DLL
                         var readData = response.Result.Content.ReadAsStringAsync();
                         readData.Wait();
 
-                        var match = JsonConvert.DeserializeObject<MatchBreakdown>(readData.Result);
-                        SummonerInfoUtils.SetMatchBreakdownFields(match, region, accountId);
+                        var match = JsonConvert.DeserializeObject<Match>(readData.Result);
+                        var breakdown = SummonerInfoUtils.GetMatchBreakdown(match, region, accountId);
 
-                        return match;
+                        return breakdown;
                     }
                 }
                 catch (Exception) { return new MatchBreakdown(); }
