@@ -9,16 +9,16 @@
     var gameDurationTimeSpan = TimeSpan.FromSeconds(match.GameDuration);
 
 
-    <div class="card" style="margin-bottom: 5px;">
+    <div class="card @(match.GameResult == "Victory" ? "victory-card" : "defeat-card")" style="margin-bottom: 5px;">
         <div class="card-body" style="padding:0.50rem 0.75rem !important;">
-            <div style="display: flex; flex-direction: row;">
+            <div style="display: flex; flex-flow: row wrap;">
                 <div class="game-stats">
                     <div class="game-stats-queue">
                         <b>@match.QueueTypeName</b><br />
                         <small>@match.WasPlayed</small><br />
                     </div>
                     <div class="game-stats-result">
-                        <b>@match.GameResult</b><br />
+                        <b class="@(match.GameResult == "Victory" ? "victory-text" : "defeat-text")">@match.GameResult</b><br />
                         <small>@match.GameDurationStr</small>
                     </div>
                 </div>
@@ -31,12 +31,15 @@
                     <img class="secondary-path" src="@match.ParticipantForDisplay.RuneSecondaryPathIconUrl" height="33" width="33" />
                 </div>
                 <div id="stats">
-                    @kills / @deaths / @assists <br />
-                    @(kda != double.PositiveInfinity ? kda.ToString() : "Perfect") KDA<br />
-                    @match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled (@Math.Round(match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled / gameDurationTimeSpan.TotalMinutes, 1)/min) CS<br />
                     Level @match.ParticipantForDisplay.Participant.Stats.ChampLevel<br />
                     K/P @match.ParticipantForDisplay.KillParticipationPercentage%<br />
                 </div>
+                <div id="stats-two">
+                    @kills / @deaths / @assists <br />
+                    @(kda != double.PositiveInfinity ? kda.ToString() : "Perfect") KDA<br />
+                    @match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled (@Math.Round(match.ParticipantForDisplay.Participant.Stats.TotalMinionsKilled / gameDurationTimeSpan.TotalMinutes, 1)/min) CS<br />
+                </div>
+                <div style="width:100%; display: none;"></div>
                 <div id="items">
                     <div style="margin-bottom: 2px;">
                         <img class="league-item" src="@match.ParticipantForDisplay.Items.Item0Url" height="38" width="38" />
@@ -50,20 +53,22 @@
                         <img class="league-item" src="@match.ParticipantForDisplay.Items.Item5Url" height="38" width="38" />
                     </div>
                 </div>
-                @foreach (var team in match.ParticipantsByTeam)
-                {
-                    <div class="participants-@(team.Key == 100 ? "blue" : "red")-team">
-                        @foreach (var participant in team)
-                        {
-                            <span style="display: block; margin-bottom: 2px;">
-                                <img src="@participant.ChampionPlayedIcon" height="30" width="30" />
-                                <a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@participant.Player.SummonerName&region=@ViewBag.SelectedRegion">
-                                    @(string.IsNullOrWhiteSpace(participant.DisplayedSummonerName) ? participant.Player.SummonerName : participant.DisplayedSummonerName)
-                                </a>
-                            </span>
-                        }
-                    </div>
-                }
+                <div style="display: inherit">
+                    @foreach (var team in match.ParticipantsByTeam)
+                    {
+                        <div class="participants-@(team.Key == 100 ? "blue" : "red")-team">
+                            @foreach (var participant in team)
+                            {
+                                <span style="display: block; margin-bottom: 2px;">
+                                    <img src="@participant.ChampionPlayedIcon" height="30" width="30" />
+                                    <a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@participant.Player.SummonerName&region=@ViewBag.SelectedRegion">
+                                        @(string.IsNullOrWhiteSpace(participant.DisplayedSummonerName) ? participant.Player.SummonerName : participant.DisplayedSummonerName)
+                                    </a>
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
             </div>
             <div class="row" style="text-align: center;">
                 <div id="BreakdownWaitingDiv_@match.GameId" style="text-align: center; display: none;" class="mx-auto">
@@ -74,14 +79,14 @@
             </div>
 
             <div id="CloseBtn" name="CloseBtn_@match.GameId" style="display: none;" onclick="CloseMatchBreakDown('@match.GameId')">
-                <i name="CloseArrows" class="fa fa-caret-up" aria-hidden="true"></i>
+                <i name="CloseArrows" class="fa fa-angle-up" aria-hidden="true"></i>
                 <span id="BreakdownSpan">Close</span>
-                <i name="CloseArrows" class="fa fa-caret-up" aria-hidden="true"></i>
+                <i name="CloseArrows" class="fa fa-angle-up" aria-hidden="true"></i>
             </div>
             <div id="MoreDetailsBtn" name="MoreDetailsBtn_@match.GameId" onclick="OpenMatchBreakdown('@match.ParticipantForDisplay.ParticipantIdentity.Player.AccountId', '@ViewBag.SelectedRegion', '@match.GameId')">
-                <i name="BreakdownArrows" class="fa fa-caret-down" aria-hidden="true"></i>
-                <span id="BreakdownSpan">Open match breakdown</span>
-                <i name="BreakdownArrows" class="fa fa-caret-down" aria-hidden="true"></i>
+                <i name="BreakdownArrows" class="fa fa-angle-down" aria-hidden="true"></i>
+                <span id="BreakdownSpan">Match Details</span>
+                <i name="BreakdownArrows" class="fa fa-angle-down" aria-hidden="true"></i>
             </div>
         </div>
     </div>

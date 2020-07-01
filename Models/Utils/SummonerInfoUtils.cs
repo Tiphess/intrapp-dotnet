@@ -126,10 +126,12 @@ namespace intrapp.Models.Utils
 
             var perkPrimaryStyle = RunePaths.FirstOrDefault(p => p.Id == participant.Stats.PerkPrimaryStyle);
             var perkSubStyle = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle);
+            var fragments = RunePaths.FirstOrDefault(rp => rp.Name == "Rune Stats");
 
             var runes = new List<RunePath>();
             runes.Add(perkPrimaryStyle);
             runes.Add(perkSubStyle);
+            runes.Add(fragments);
 
             return runes;
         }
@@ -264,6 +266,8 @@ namespace intrapp.Models.Utils
                 return "Ranked Solo";
             else if (desc.Contains("Ranked Flex"))
                 return "Ranked Flex";
+            else if (desc.Contains("ARAM"))
+                return "Aram";
 
             return "Undetermined";
         }
@@ -369,7 +373,27 @@ namespace intrapp.Models.Utils
                             foreach (var rune in slot.Runes)
                                 rune.Icon = pathBuilder.GetRuneIcon(rune.Icon);
                     }
-                        
+
+                    //Deliberately adding a custom runepath for rune fragments, since they are not provided by DDragon
+                    var runepath = new RunePath() { Name = "Rune Stats" };
+                    var slot1 = new Slot();
+                    slot1.Runes.Add(new Rune { Id = 5008, Name = "Offense", LongDesc = "Adaptive Force +9", ShortDesc = "Adaptive Force +9", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_dmg.png" }); // damage fragment
+                    slot1.Runes.Add(new Rune { Id = 5005, Name = "Offense", LongDesc = "+10% Attack Speed", ShortDesc = "+10% Attack Speed", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_aspeed.png" }); // attack speed fragment
+                    slot1.Runes.Add(new Rune { Id = 5007, Name = "Offense", LongDesc = "+1-10% CDR (based on level)", ShortDesc = "+1-10% CDR (based on level)", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_cdr.png" }); // cdr fragment
+                    var slot2 = new Slot();
+                    slot2.Runes.Add(new Rune { Id = 5008, Name = "Flex", LongDesc = "Adaptive Force +9", ShortDesc = "Adaptive Force +9", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_dmg.png" }); // damage fragment
+                    slot2.Runes.Add(new Rune { Id = 5002, Name = "Flex", LongDesc = "+6 Armor", ShortDesc = "+6 Armor", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_armor.png" }); // armor fragment
+                    slot2.Runes.Add(new Rune { Id = 5003, Name = "Flex", LongDesc = "+8 Magic Resist", ShortDesc = "+8 Magic Resist", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_mr.png" }); // magic resist fragment
+                    var slot3 = new Slot();
+                    slot3.Runes.Add(new Rune { Id = 5001, Name = "Defense", LongDesc = "+15-90 Health (Based on level)", ShortDesc = "+15-90 Health (Based on level)", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_hp.png" }); // hp fragment
+                    slot3.Runes.Add(new Rune { Id = 5002, Name = "Defense", LongDesc = "+6 Armor", ShortDesc = "+6 Armor", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_armor.png" }); // armor fragment
+                    slot3.Runes.Add(new Rune { Id = 5003, Name = "Defense", LongDesc = "+8 Magic Resist", ShortDesc = "+8 Magic Resist", Icon = "../DataAccess/RiotGamesApi/Images/Misc/fragment_mr.png" }); // magic resist fragment
+
+                    runepath.Slots.Add(slot1);
+                    runepath.Slots.Add(slot2);
+                    runepath.Slots.Add(slot3);
+
+                    runePaths.Add(runepath);
 
                     return runePaths;
                 }

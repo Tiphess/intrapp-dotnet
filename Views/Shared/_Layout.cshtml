@@ -23,8 +23,6 @@
             </div>
             <div id="navbar-elements" class="navbar-collapse collapse">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">@Html.ActionLink("Champions", "Index", "Champion", null, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Statistics", "Index", "Statistic", null, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Leaderboards", "Index", "Leaderboard", null, new { @class = "nav-link" })</li>
                 </ul>
                 @using (Html.BeginForm("SummonerInfo", "Summoner", FormMethod.Post, new { id = "SummonerNameFormNavbar", @class = "form-inline justify-content-center" }))

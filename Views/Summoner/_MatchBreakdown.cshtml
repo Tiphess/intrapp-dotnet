@@ -12,41 +12,48 @@
     <li class="nav-item">
         <a id="buildLink_@Model.Match.GameId" class="nav-link" onclick="ShowBuild(@Model.Match.GameId)">Build</a>
     </li>
+    <li class="nav-item ml-auto">
+        <a class="nav-link nav-close-btn" id="navCloseBtn" onclick="CloseMatchBreakDown('@Model.Match.GameId')"><i class="fa fa-times fa-lg" aria-hidden="true"></i></a>
+    </li>
 </ul>
 <!--Overview-->
 <div id="overview_@Model.Match.GameId">
     @foreach (var team in Model.ParticipantsForDisplayByTeam)
     {
+        var currTeam = Model.Match.Teams.FirstOrDefault(t => t.TeamId == team.Key);
         <div class="col-md-12">
-            <div class="titles-row">
-                <div class="title-summoner">
-                    Summoner
+            <div class="@(currTeam.Win == "Win" ? "victory-team" : "defeat-team")">
+                <div class="titles-row">
+                    <div class="title-summoner">
+                        <b class="@(currTeam.Win == "Win" ? "victory-text" : "defeat-text")">@(currTeam.Win == "Win" ? "Victory" : "Defeat") @(currTeam.TeamId == 100 ? "(Blue Team)" : "(Red Team)")</b>
+                    </div>
+                    <div class="title-kda">
+                        KDA
+                    </div>
+                    <div class="title-damage">
+                        Damage
+                    </div>
+                    <div class="title-wards">
+                        Wards
+                    </div>
+                    <div class="title-cs">
+                        CS
+                    </div>
+                    <div class="title-items">
+                        Items
+                    </div>
                 </div>
-                <div class="title-kda">
-                    KDA
-                </div>
-                <div class="title-damage">
-                    Damage
-                </div>
-                <div class="title-wards">
-                    Wards
-                </div>
-                <div class="title-cs">
-                    CS
-                </div>
-                <div class="title-items">
-                    Items
-                </div>
-            </div>
-            @foreach (var participant in team)
-            {
-                <div class="summoner-data-row">
+                @foreach (var participant in team)
+                {
+                    <div class="summoner-data-row">
                         <div class="summoner-images-container">
-                            <img src="@participant.ChampionIconUrl" height="40" width="40" />
-                            <img class="summoner-spell-one-breakdown" src="@participant.SummonerSpell1IconUrl" height="18" width="18" />
-                            <img class="summoner-spell-two-breakdown" src="@participant.SummonerSpell2IconUrl" height="18" width="18" />
-                            <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" height="18" width="18" />
-                            <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" height="18" width="18" />
+                            <div style="width: 90px; display: inline-block">
+                                <img src="@participant.ChampionIconUrl" height="40" width="40" />
+                                <img class="summoner-spell-one-breakdown" src="@participant.SummonerSpell1IconUrl" height="18" width="18" />
+                                <img class="summoner-spell-two-breakdown" src="@participant.SummonerSpell2IconUrl" height="18" width="18" />
+                                <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" height="18" width="18" />
+                                <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" height="18" width="18" />
+                            </div>
                             <span class="summoner-name-breakdown">@participant.ParticipantIdentity.Player.SummonerName.Truncate(150)</span>
                         </div>
                         <div class="kda-container">
@@ -96,14 +103,25 @@
                                 <img class="league-item-breakdown" src="@participant.Items.Item6Url" height="35" width="35" />
                             </div>
                         </div>
-                </div>
-            }
+                    </div>
+                }
+            </div>
             @if (team.Key == 100)
             {
                 <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px;">
                     <div class="row">
                         <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
-                            @Model.TeamsBreakdown.BlueTeamBaronKills / @Model.TeamsBreakdown.BlueTeamDragonKills / @Model.TeamsBreakdown.BlueTeamTowerKills
+                            <div class="row">
+                                <div class="col-4" style="padding-left: 0;">
+                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/baron-blue.png" /> @Model.TeamsBreakdown.BlueTeamBaronKills
+                                </div>
+                                <div class="col-4" style="padding-left: 0;">
+                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/dragon-blue.png" /> @Model.TeamsBreakdown.BlueTeamDragonKills
+                                </div>
+                                <div class="col-4" style="padding-left: 0;">
+                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/tower-blue.png" /> @Model.TeamsBreakdown.BlueTeamTowerKills
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-8">
                             <div class="game-kills-container">
@@ -112,7 +130,6 @@
                                 <div class="game-kills-blue-team-bar" style="flex: @Model.TeamsBreakdown.BlueTeamChampionKills;"></div>
                                 <div class="game-kills-red-team-bar" style="flex: @Model.TeamsBreakdown.RedTeamChampionKills;"></div>
                                 <div class="red-team-kills"> @Model.TeamsBreakdown.RedTeamChampionKills</div>
-
                             </div>
                             <div class="game-gold-container">
                                 <div class="total-gold-text">Total gold</div>
@@ -123,7 +140,17 @@
                             </div>
                         </div>
                         <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
-                            @Model.TeamsBreakdown.RedTeamBaronKills / @Model.TeamsBreakdown.RedTeamDragonKills / @Model.TeamsBreakdown.RedTeamTowerKills
+                            <div class="row">
+                                <div class="col-4" style="padding-left: 0;">
+                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/tower-red.png" /> @Model.TeamsBreakdown.RedTeamTowerKills
+                                </div>
+                                <div class="col-4" style="padding-left: 0;">
+                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/dragon-red.png" /> @Model.TeamsBreakdown.RedTeamDragonKills
+                                </div>
+                                <div class="col-4" style="padding-left: 0;">
+                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/baron-red.png" /> @Model.TeamsBreakdown.RedTeamBaronKills
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -456,26 +483,28 @@
                         continue;
                     }
                     long firstTimestamp = 0;
-                    <li class="timeline-item">
+                    <li class="timeline-node">
                         @if (firstDone == true)
                         {
-                            <div class="timeline-arrow">
-                                <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
-                            </div>
+                        <div class="timeline-arrow">
+                            <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                        </div>
                         }
-                        @foreach (var itemPurchase in itemPurchaseEvents.Value)
-                        {
-                            if (firstTimestamp == 0)
+                        <div class="timeline-items">
+                            @foreach (var itemPurchase in itemPurchaseEvents.Value)
                             {
-                                firstTimestamp = itemPurchase.Timestamp;
+                                if (firstTimestamp == 0)
+                                {
+                                    firstTimestamp = itemPurchase.Timestamp;
+                                }
+                                <img src="@itemPurchase.ItemUrl" height="40" width="40" />
                             }
-                            <img src="@itemPurchase.ItemUrl" height="40" width="40" />
-                        }
-                        <div style="text-align: center; margin-right: @(firstDone == true ? "-30px" : "0");">
+                        </div>
+                        <div style="text-align: center; margin-right: @(firstDone == true ? "-10px" : "0");">
                             @Math.Round(TimeSpan.FromMilliseconds(firstTimestamp).TotalMinutes, 0) min
                         </div>
-                        @{ firstDone = true; }
                     </li>
+                    firstDone = true;
                 }
             </ul>
         </div>
@@ -514,7 +543,7 @@
                     }
                 }
             }
-            <div class="col-md-12">
+            <div class="table-responsive">
                 <table id="skillsTable_@Model.Match.GameId" class="skills-table">
                     <tbody>
                         <tr id="QRow_@Model.Match.GameId">
@@ -585,19 +614,31 @@
         
     </div>
     <!--Runes layout-->
-    <div>Runes build</div>
-    <div class="row">
+    <div style="margin-bottom: 20px;">
+        <h4>Runes</h4>
+        <hr />
+    </div>
+    <div class="row justify-content-center">
+        @{ 
+            var lastPath = Model.Runes.Last();
+            var firstPath = Model.Runes.First();
+         }
         @foreach (var path in Model.Runes)
         {
             var skipKeystones = false;
 
-            <div class="perk-style">
+            <div class="perk-style" style="border-right: @(path != lastPath ? "1px solid #d2d2d2" : "none");">
+                @if (path != firstPath)
+                {
+                    <div class="@(path == lastPath ? "rune-offset-fragment" : "rune-offset")"><img /></div>
+                }
                 <div class="rune-path">
                     <img src="@path.Icon"/>
                 </div>
 
                 @foreach (var slot in path.Slots)
                 {
+                    var fragmentDone = false;
                     @*Skip keystones for sub-style*@
                     if (path.Id == Model.Match.ParticipantForDisplay.Participant.Stats.PerkSubStyle && skipKeystones == false)
                     {
@@ -632,14 +673,32 @@
                                 {
                                     <span><img class="selected-rune" src="@rune.Icon" /></span><br />
                                 }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk0 && fragmentDone == false)
+                                {
+                                    fragmentDone = true;
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk1 && fragmentDone == false)
+                                {
+                                    fragmentDone = true;
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                }
+                                else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk2 && fragmentDone == false)
+                                {
+                                    fragmentDone = true;
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                }
                                 else
                                 {
-                                        <span><img class="unselected-rune" src="@rune.Icon" width="20" height="20" /></span>
+                                    <span><img class="unselected-rune" src="@rune.Icon" /></span>
                                 }
                             </div>
                         }
                     </div>
                 }
+                <div style="text-align: center;">
+                    @path.Name
+                </div>
             </div>
         }
     </div>

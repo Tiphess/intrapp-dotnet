@@ -130,6 +130,24 @@ textarea {
 /* LEVEL CSS END */
 
 /* MATCH HISTORY CSS */
+.victory-card {
+    border-color: #a3cfec;
+    border-width: 2px;
+}
+
+.defeat-card {
+    border-color: #e2b6b3;
+    border-width: 2px;
+}
+
+.victory-text {
+    color: #4aa1d2;
+}
+
+.defeat-text {
+    color: #d05a53;
+}
+
 a[name=playerLink] {
     text-decoration: none;
 }
@@ -181,28 +199,28 @@ a[name=playerLink] {
 
 #MoreDetailsBtn {
     text-align: center;
-    margin-top: 2px;
+    margin-top: 10px;
     margin-right: -12px;
     margin-left: -12px;
     margin-bottom: -8px;
 }
 
     #MoreDetailsBtn:hover {
-        background-color: #2e83e6;
         cursor: pointer;
+        text-shadow: 2px 3px 5px rgba(0,0,0,0.5);
     }
 
 #CloseBtn {
     text-align: center;
-    margin-top: 2px;
+    margin-top: 10px;
     margin-right: -12px;
     margin-left: -12px;
     margin-bottom: -8px;
 }
 
     #CloseBtn:hover {
-        background-color: #2e83e6;
         cursor: pointer;
+        text-shadow: 2px 3px 5px rgba(0,0,0,0.5);
     }
 
 #items {
@@ -210,6 +228,10 @@ a[name=playerLink] {
 }
 
 #stats {
+    margin: auto;
+}
+
+#stats-two {
     margin: auto;
 }
 
@@ -228,7 +250,35 @@ a[name=playerLink] {
 .nav-link {
     cursor: pointer;
 }
+
+.nav-close-btn {
+    border: none !important;
+}
+
+    .nav-close-btn:hover {
+        text-shadow: 2px 3px 5px rgba(0,0,0,0.5);
+    }
+
 /* OVERVIEW TAB */
+.objective-img {
+    height: 20px;
+    width: 20px;
+}
+
+.victory-team {
+    border: 2px solid #a3cfec;
+    border-radius: 5px;
+    margin: 0 -15px;
+    padding: 0 15px;
+}
+
+.defeat-team {
+    border: 2px solid #e2b6b3;
+    border-radius: 5px;
+    margin: 0 -15px;
+    padding: 0 15px;
+}
+
 .titles-row {
     display: flex;
     margin-bottom: 10px;
@@ -278,6 +328,7 @@ a[name=playerLink] {
     position: absolute;
 }
 
+
 .summoner-spell-two-breakdown {
     position: absolute;
     margin-left: 5px;
@@ -296,7 +347,6 @@ a[name=playerLink] {
 }
 
 .summoner-name-breakdown {
-    margin-left: 50px;
 }
 
 .kda-container {
@@ -548,18 +598,28 @@ a[name=playerLink] {
 /* ANALYSIS TAB END */
 
 /* BUILD TAB */
-.timeline-item {
+.timeline-node {
     position: relative;
     display: inline-block;
     margin: 0;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
+    border-radius: 5px;
 }
 
 .timeline-arrow {
     display: inline-block;
-    margin: 8px 10px 0;
     text-align: center;
     vertical-align: top;
+    background-color: #d2d2d2;
+    padding: 5px 10px 5px 10px;
+    margin: 12px -10px 0 -10px;
+}
+
+.timeline-items {
+    display: inline-block;
+    background-color: #d2d2d2;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .skills-table {
@@ -599,7 +659,7 @@ a[name=playerLink] {
 }
 
 .perk-style {
-    width: 33%;
+    width: 25%;
 }
 
 .slot {
@@ -638,3 +698,159 @@ a[name=playerLink] {
 }
 /* BUILD TAB END */
 /* ################### MATCH BREAKDOWN CSS END ################### */
+.rune-offset {
+    margin-bottom: 26px;
+}
+.rune-offset-fragment {
+    margin-bottom: 32px;
+}
+
+@media screen and (max-width: 992px) {
+    .analysis-list-item {
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width: 767px){
+    .title-damage {
+        display: none;
+    }
+    .damage-dealt-container {
+        display: none;
+    }
+
+    .title-summoner {
+        width: 25%;
+    }
+    .title-kda {
+        width: 15%;
+    }
+    .title-wards {
+        width: 15%;
+    }
+    .title-cs {
+        width: 15%;
+    }
+    .title-items {
+        width: 30%;
+    }
+
+    .summoner-images-container {
+        width: 25%;
+    }
+    .kda-container {
+        width: 15%;
+    }
+    .wards-container {
+        width: 15%;
+    }
+    .creep-score-container {
+        width: 15%;
+    }
+    .items-container {
+        width: 30%;
+    }
+
+    #items {
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .analysis-graph-text-first {
+        width: 40px;
+        font-size: 12px;
+    }
+
+    .analysis-graph-text {
+        width: 40px;
+        font-size: 12px;
+    }
+
+    .analysis-graph-text-container {
+        top: 34%;
+    }
+
+    .selected-rune {
+        width: 30px;
+        height: 30px;
+    }
+
+    .unselected-rune {
+        width: 30px;
+        height: 30px;
+    }
+
+    .rune-offset {
+        margin-bottom: 16px;
+    }
+
+    .rune-offset-fragment{
+        margin-bottom: 24px;
+    }
+}
+
+@media screen and (max-width: 476px) {
+    .title-items {
+        display: none;
+    }
+    .items-container {
+        display: none;
+    }
+
+    .title-summoner {
+        width: 40%;
+    }
+    .title-kda {
+        width: 20%;
+    }
+    .title-wards {
+        width: 20%;
+    }
+    .title-cs {
+        width: 20%;
+    }
+
+    .summoner-images-container {
+        width: 40%;
+    }
+    .kda-container {
+        width: 20%;
+    }
+    .wards-container {
+        width: 20%;
+    }
+    .creep-score-container {
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 367px) {
+    .title-wards {
+        display: none;
+    }
+    .wards-container {
+        display: none;
+    }
+
+    .title-summoner {
+        width: 50%;
+    }
+    .title-kda {
+        width: 25%;
+    }
+    .title-cs {
+        width: 25%;
+    }
+
+    .summoner-images-container {
+        width: 50%;
+    }
+    .kda-container {
+        width: 25%;
+    }
+    .creep-score-container {
+        width: 25%;
+    }
+}

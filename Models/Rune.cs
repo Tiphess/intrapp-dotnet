@@ -18,6 +18,10 @@ namespace intrapp.Models
     public class Slot
     {
         public IList<Rune> Runes { get; set; }
+        public Slot()
+        {
+            Runes = new List<Rune>();
+        }
     }
 
     public class RunePath
@@ -27,5 +31,10 @@ namespace intrapp.Models
         public string Icon { get; set; }
         public string Name { get; set; }
         public IList<Slot> Slots { get; set; }
+
+        public RunePath()
+        {
+            Slots = new List<Slot>();
+        }
     }
 }
