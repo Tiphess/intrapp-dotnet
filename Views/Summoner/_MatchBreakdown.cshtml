@@ -589,41 +589,52 @@
     <div class="row">
         @foreach (var path in Model.Runes)
         {
-            <div class="col-md-6">
-                <img src="@path.Icon" width="20" height="20" />
+            var skipKeystones = false;
+
+            <div class="perk-style">
+                <div class="rune-path">
+                    <img src="@path.Icon"/>
+                </div>
+
                 @foreach (var slot in path.Slots)
                 {
-                    <div class="row">
+                    @*Skip keystones for sub-style*@
+                    if (path.Id == Model.Match.ParticipantForDisplay.Participant.Stats.PerkSubStyle && skipKeystones == false)
+                    {
+                        skipKeystones = true;
+                        continue;
+                    }
+                    <div class="slot">
                         @foreach (var rune in slot.Runes)
                         {
-                            <div class="col-md-4"> @* handle keystones (e.g. some path have 4 keystones, other 3, so col-md-4 for all scenarios doesnt work)*@
+                            <div class="@(slot.Runes.Count == 3 ? "rune" : "rune-four-keystones")">
                                 @if (rune.Id == Model.ObservedParticipant.Stats.Perk0)
                                 {
-                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
                                 }
                                 else if (rune.Id == Model.ObservedParticipant.Stats.Perk1)
                                 {
-                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
                                 }
                                 else if (rune.Id == Model.ObservedParticipant.Stats.Perk2)
                                 {
-                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
                                 }
                                 else if (rune.Id == Model.ObservedParticipant.Stats.Perk3)
                                 {
-                                    <span><img src="@rune.Icon" width="20" height="20"/></span><br />
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
                                 }
                                 else if (rune.Id == Model.ObservedParticipant.Stats.Perk4)
                                 {
-                                    <span><img src="@rune.Icon" width="20" height="20" /></span><br />
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
                                 }
                                 else if (rune.Id == Model.ObservedParticipant.Stats.Perk5)
                                 {
-                                    <span><img src="@rune.Icon" width="20" height="20" /></span><br />
+                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
                                 }
                                 else
                                 {
-                                    <span><img src="@rune.Icon" width="20" height="20"/></span>
+                                        <span><img class="unselected-rune" src="@rune.Icon" width="20" height="20" /></span>
                                 }
                             </div>
                         }

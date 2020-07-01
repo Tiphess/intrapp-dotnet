@@ -60,6 +60,7 @@ namespace intrapp.Models.Utils
             var part = match.Participants.FirstOrDefault(p => p.ParticipantId == partIdentity.ParticipantId);
 
             match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
+            match.ParticipantForDisplay = SetParticipantForDisplay(match, part, partIdentity);
 
             foreach (var participant in match.Participants)
             {
@@ -125,15 +126,6 @@ namespace intrapp.Models.Utils
 
             var perkPrimaryStyle = RunePaths.FirstOrDefault(p => p.Id == participant.Stats.PerkPrimaryStyle);
             var perkSubStyle = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle);
-
-            //Setting the correct icon paths
-            /*foreach (var slot in perkPrimaryStyle.Slots)
-                foreach (var rune in slot.Runes)
-                    rune.Icon = pathBuilder.GetRuneIcon(rune.Icon);
-
-            foreach (var slot in perkSubStyle.Slots)
-                foreach (var rune in slot.Runes)
-                    rune.Icon = pathBuilder.GetRuneIcon(rune.Icon);*/
 
             var runes = new List<RunePath>();
             runes.Add(perkPrimaryStyle);
