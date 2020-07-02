@@ -7,3 +7,5 @@ L'application récupère et affiches diverses informations sur les Invocateurs, 
 
 ASP.NET MVC Web Application consuming several League of Legends APIS from Riot Games.
 This application fetches and displays various information on Summoners, matches played by those Summoners, and Ranked ladders.
+
+Documentation: https://developer.riotgames.com/apis
