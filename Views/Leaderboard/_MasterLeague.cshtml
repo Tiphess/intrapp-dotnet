@@ -1,0 +1,67 @@
+﻿@model intrapp.Models.League
+@{
+    var count = Model.CurrentPage.HasValue && Model.CurrentPage != 0 ? (Model.CurrentPage * intrapp.Models.League.PageSize) : 0;
+    var firstPageActivated = false;
+}
+<nav aria-label="Page navigation example" style="margin-top: 10px;">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="PreviousPage(@Model.CurrentPage)"><</a></li>
+        @for (int i = 0; i < Model.Pages; i++)
+        {
+            if (ViewBag.SetFirstPageActive != null && firstPageActivated == false)
+            {
+                <li id="page_@(i)" class="page-item active"><a class="page-link" href="javascript:void(0)" onclick="GetPage(this)">@(i+1)</a></li>
+                firstPageActivated = true;
+            }
+            else
+            {
+                <li id="page_@(i)" class="page-item"><a class="page-link" href="javascript:void(0)" onclick="GetPage(this)">@(i+1)</a></li>
+            }
+        }
+        <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="NextPage(@Model.CurrentPage, @Model.Pages)">></a></li>
+    </ul>
+</nav>
+<div class="table-responsive">
+    <table class="table" style="margin-top: 10px;">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-1">#</th>
+                <th class="col-3">Name</th>
+                <th class="col-2" style="text-align:center;">Tier</th>
+                <th class="col-2" style="text-align:center;">League Points</th>
+                <th class="col-4" style="text-align:center;">Win Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.Entries)
+            {
+                <tr class="d-flex">
+                    <th class="col-1" scope="row">
+                        @(++count)
+                    </th>
+                    <td class="col-3">
+                        <a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@entry.SummonerName&region=@ViewBag.SelectedRegion">
+                            @entry.SummonerName
+                        </a>
+                    </td>
+                    <td class="col-2" style="text-align:center;">
+                        Master
+                    </td>
+                    <td class="col-2" style="text-align:center;">
+                        @entry.LeaguePoints LP
+                    </td>
+                    <td class="col-4" style="text-align:center; width: 200px;">
+                        @{
+                            var wr = (int)Math.Round((double)entry.Wins / (entry.Wins + entry.Losses) * 100);
+                        }
+                        <div style="display: flex; align-items: center;">
+                            <div style="background-color: #548dca; height: 10px; flex: @entry.Wins;"></div>
+                            <div style="background-color: #d05a53; height: 10px; flex: @entry.Losses;"></div>
+                            <div style="margin-left: 5px;">@wr%</div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

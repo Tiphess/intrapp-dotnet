@@ -55,7 +55,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <button id="loadBtn" class="btn btn-primary">Load more</button>
+        <button id="loadBtn" class="btn btn-primary" style="margin-left: -15px;">Load more</button>
         <div name="waiting-div" style="text-align: center; margin-right: -14px; display: none;" class="float-right">
             <span class="loader"><span class="loader-inner"></span></span>
         </div>
@@ -67,6 +67,7 @@
         $(document).ready(function () {
             SetSummonerInfoHandlers("@Model.Summoner.AccountId", "@Model.Region");
             $("#summonerName").val("");
+            $("#footer").removeClass("footer-index");
         });
     </script>
 }

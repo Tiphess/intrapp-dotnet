@@ -44,6 +44,7 @@ namespace intrapp.Controllers
         public ActionResult _MatchBreakdown(string accountId, string region, long gameId)
         {
             var model = dllSummonerInfo.GetMatch(gameId, region, accountId);
+            ViewBag.SelectedRegion = region;
             return PartialView(model);
         }
 

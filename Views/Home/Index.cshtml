@@ -3,29 +3,23 @@
     ViewBag.Title = "Intrapp";
 }
 
-<h3 class="text-center" style="margin-bottom:20px;">Intrapp</h3>
-<p class="text-center" style="margin-bottom: 50px;">
-    Intrapp is a web app that provides League of Legends Statistics
-    on different champions, ranked ladders, and your own summoner.<br>
-
-    This is a personnal project made strictly for learning purposes of consuming third party APIs with ASP.NET.
-</p>
-
-@using (Html.BeginForm("SummonerInfo", "Summoner", FormMethod.Post, new { id = "SummonerNameFormIndex", @class = "form-inline justify-content-center" }))
-{
-    @Html.DropDownList("region", new SelectList(ViewBag.Regions, "Key", "Value", ViewBag.SelectedRegion), new { @class = "form-control", style = "margin-right: 5px;" })
-    @Html.TextBox("summonerName", "", new { @class = "form-control", placeholder = "Enter a summoner name", style = "margin-right: 5px;" })
-    <button class="btn btn-primary" type="submit">
-        <i class="fa fa-search" aria-hidden="true"></i>
-    </button>
-}
+<h3 class="text-center jumbotron" style="margin-bottom:20px; background-color: transparent">Intrapp</h3>
+<div style="position: absolute; left: 50%; transform: translateX(-50%); top: 35%; width: 500px;">
+    @using (Html.BeginForm("SummonerInfo", "Summoner", FormMethod.Post, new { id = "SummonerNameFormIndex", @class = "form-inline justify-content-center" }))
+    {
+        @Html.DropDownList("region", new SelectList(ViewBag.Regions, "Key", "Value", ViewBag.SelectedRegion), new { @class = "form-control", style = "margin-right: 5px; width: 15%;" })
+        @Html.TextBox("summonerName", "", new { @class = "form-control", placeholder = "Enter a summoner name", style = "margin-right: 5px; width: 50%;" })
+        <button class="btn btn-primary" type="submit">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+    }
     <span style="color: red; display: table; margin: 0 auto;" >@ViewBag.ErrorMessage</span>
-<div class="row" style="margin-bottom: 30px; text-align: center;">
-    <div id="waiting-div" style="text-align: center; display: none; margin-top: 10px;" class="mx-auto">
-        <span class="loader"><span class="loader-inner"></span></span>
+    <div class="row" style="margin-bottom: 30px; text-align: center;">
+        <div id="waiting-div" style="text-align: center; display: none; margin-top: 10px;" class="mx-auto">
+            <span class="loader"><span class="loader-inner"></span></span>
+        </div>
     </div>
 </div>
-
 @section scripts{
     <script type="text/javascript">
         $(document).ready(function () {

@@ -10,7 +10,8 @@ namespace intrapp
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/Custom/SummonerInfo.js"));
+                        "~/Scripts/Custom/SummonerInfo.js",
+                        "~/Scripts/Custom/Leaderboards.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

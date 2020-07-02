@@ -26,10 +26,13 @@
 
 function SetSummonerInfoHandlers(accountId, region) {
     $("a[name='playerLink']").click(function () {
-        $('#waiting-div').show();
+        $("div[name='waiting-div']").show();
     });
     $("#loadBtn").click(function () {
         matchHistory.fetchMoreMatches(accountId, region);
+    });
+    $("#SummonerNameFormNavbar").submit(function () {
+        $("div[name='waiting-div']").show();
     });
 }
 

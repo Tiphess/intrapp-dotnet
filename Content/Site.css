@@ -1,6 +1,13 @@
 ﻿body {
 }
 
+.footer-index {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -755,6 +762,24 @@ a[name=playerLink] {
     #items {
         margin-bottom: 10px;
     }
+
+    .selected-rune {
+        width: 30px;
+        height: 30px;
+    }
+
+    .unselected-rune {
+        width: 30px;
+        height: 30px;
+    }
+
+    .rune-offset {
+        margin-bottom: 16px;
+    }
+
+    .rune-offset-fragment {
+        margin-bottom: 24px;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -772,23 +797,7 @@ a[name=playerLink] {
         top: 34%;
     }
 
-    .selected-rune {
-        width: 30px;
-        height: 30px;
-    }
-
-    .unselected-rune {
-        width: 30px;
-        height: 30px;
-    }
-
-    .rune-offset {
-        margin-bottom: 16px;
-    }
-
-    .rune-offset-fragment{
-        margin-bottom: 24px;
-    }
+    
 }
 
 @media screen and (max-width: 476px) {
@@ -824,6 +833,24 @@ a[name=playerLink] {
     .creep-score-container {
         width: 20%;
     }
+
+    .selected-rune {
+        width: 25px;
+        height: 25px;
+    }
+
+    .unselected-rune {
+        width: 25px;
+        height: 25px;
+    }
+
+    .rune-offset {
+        margin-bottom: 13px;
+    }
+
+    .rune-offset-fragment {
+        margin-bottom: 21px;
+    }
 }
 
 @media screen and (max-width: 367px) {
@@ -852,5 +879,23 @@ a[name=playerLink] {
     }
     .creep-score-container {
         width: 25%;
+    }
+
+    .selected-rune {
+        width: 20px;
+        height: 20px;
+    }
+
+    .unselected-rune {
+        width: 20px;
+        height: 20px;
+    }
+
+    .rune-offset {
+        margin-bottom: 10px;
+    }
+
+    .rune-offset-fragment {
+        margin-bottom: 18px;
     }
 }

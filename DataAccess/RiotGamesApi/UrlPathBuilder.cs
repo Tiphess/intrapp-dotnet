@@ -69,6 +69,24 @@ namespace intrapp.DataAccess.RiotGamesApi
             return platform.Value + ApiPathProvider.GET_LEAGUE_ENTRY_BY_SUMMONERID.Replace("{summonerId}", summonerId);
         }
 
+        public string GetChallengerLeaguesUrl(string queue, string region)
+        {
+            var platform = PlatformProvider.PLATFORMS.FirstOrDefault(p => p.Key == region);
+            return platform.Value + ApiPathProvider.GET_CHALLENGER_LEAGUES.Replace("{queue}", queue);
+        }
+
+        public string GetGrandmasterLeaguesUrl(string queue, string region)
+        {
+            var platform = PlatformProvider.PLATFORMS.FirstOrDefault(p => p.Key == region);
+            return platform.Value + ApiPathProvider.GET_GRANDMASTER_LEAGUES.Replace("{queue}", queue);
+        }
+
+        public string GetMasterLeaguesUrl(string queue, string region)
+        {
+            var platform = PlatformProvider.PLATFORMS.FirstOrDefault(p => p.Key == region);
+            return platform.Value + ApiPathProvider.GET_MASTER_LEAGUES.Replace("{queue}", queue);
+        }
+
         public string GetProfileIconUrl(int profileIconId)
         {
             var ddragon_url_provider = new StaticDataPathProvider();

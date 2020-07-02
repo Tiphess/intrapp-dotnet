@@ -1,9 +1,48 @@
-﻿
+﻿@model intrapp.Models.League
 @{
     ViewBag.Title = "Leaderboards";
 }
 
-<h2>Leaderboard section</h2>
+<!--Tabs-->
+<ul class="nav nav-tabs" style="margin-bottom: 10px; margin-top: 10px;">
+    <li class="nav-item">
+        <a id="challengerLink" class="nav-link active" onclick="ShowChallengers()">Challenger</a>
+    </li>
+    <li class="nav-item">
+        <a id="grandmasterLink" class="nav-link" onclick="ShowGrandmasters()">Grandmaster</a>
+    </li>
+    <li class="nav-item">
+        <a id="masterLink" class="nav-link" onclick="ShowMasters()">Master</a>
+    </li>
+    <li class="nav-item ml-auto">
+        <div name="waiting-div" style="text-align: center; display: none;" class="float-right">
+            <span class="loader"><span class="loader-inner"></span></span>
+        </div>
+    </li>
+</ul>
 
-<p>Not implemented, check back later!</p>
+@using (Html.BeginForm("Index", "Leaderboard", FormMethod.Post, new { id = "LeaguesForm", @class = "form-inline" }))
+{
+    @Html.DropDownList("region-league", new SelectList(ViewBag.Regions, "Key", "Value", ViewBag.SelectedRegion), new { @class = "form-control", style = "margin-right: 5px; width: 15%;" })
+    @Html.DropDownList("queue", new SelectList(ViewBag.Queues, "Key", "Value", ViewBag.DefaultQueue), new { @class = "form-control", style = "margin-right: 5px; width: 50%;" })
+    <button class="btn btn-primary" type="submit">
+        <i class="fa fa-search" aria-hidden="true"></i>
+    </button>
+}
 
+<div id="League" class="row" style="margin: 0;">
+    @Html.Partial("_ChallengerLeague", Model)
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#footer").removeClass("footer-index");
+            $("#LeaguesForm").submit(function (e) {
+                e.preventDefault();
+                UpdateLeague();
+            });
+        });
+    </script>
+}

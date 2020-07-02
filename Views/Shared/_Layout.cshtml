@@ -27,7 +27,7 @@
                 </ul>
                 @using (Html.BeginForm("SummonerInfo", "Summoner", FormMethod.Post, new { id = "SummonerNameFormNavbar", @class = "form-inline justify-content-center" }))
                 {
-                    @Html.DropDownList("region", new SelectList(ViewBag.Regions, "Key", "Value"), new { @class = "form-control", style = "margin-right: 5px;" })
+                    @Html.DropDownList("region", new SelectList(ViewBag.Regions, "Key", "Value", ViewBag.SelectedRegion), new { @class = "form-control", style = "margin-right: 5px;" })
                     @Html.TextBox("summonerName", "", new { @class = "form-control", placeholder = "Enter a summoner name", style = "margin-right: 5px;" });
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-search" aria-hidden="true"></i>
@@ -38,9 +38,11 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Intrapp</p>
+        <footer id="footer" class="footer-index">
+            <hr />
+            <div style="margin: 0 15%;">
+                <p>Intrapp isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends &copy; Riot Games, Inc. </p>
+            </div>
         </footer>
     </div>
     @Scripts.Render("~/bundles/jquery")

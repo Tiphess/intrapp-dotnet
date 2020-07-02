@@ -66,6 +66,10 @@ namespace intrapp.DataAccess.RiotGamesApi
         internal readonly static string GET_MATCH_BY_GAMEID = "/lol/match/v4/matches/{gameId}";
         internal readonly static string GET_LEAGUE_ENTRY_BY_SUMMONERID = "/lol/league/v4/entries/by-summoner/{summonerId}";
         internal readonly static string GET_MATCH_TIMELINE_BY_GAMEID = "/lol/match/v4/timelines/by-match/{matchId}";
+        internal readonly static string GET_CHALLENGER_LEAGUES = "/lol/league/v4/challengerleagues/by-queue/{queue}";
+        internal readonly static string GET_GRANDMASTER_LEAGUES = "/lol/league/v4/grandmasterleagues/by-queue/{queue}";
+        internal readonly static string GET_MASTER_LEAGUES = "/lol/league/v4/masterleagues/by-queue/{queue}";
+
         internal readonly static string DEFAULT_ENDINDEX = "?endIndex=5";
     }
 }

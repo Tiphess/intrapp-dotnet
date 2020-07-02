@@ -308,14 +308,27 @@ namespace intrapp.Models.Utils
         //Gets the last time the summoner played
         public static string GetLastTimePlayedStr(MatchHistory matchHistory)
         {
-            //todo Returns "x minutes ago" or "x days ago" instead of only "x hours ago"
             var matchTimestmap = matchHistory.Matches.First().Timestamp;
 
             DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             DateTime lastMatchTime = date.AddMilliseconds(matchTimestmap).ToLocalTime();
-            var difference = (DateTime.Now - lastMatchTime).Hours;
+            var difference = (DateTime.Now - lastMatchTime);
 
-            return "Played " + difference + " hours ago";
+            if (difference.Days > 0)
+            {
+                return "Played " + (difference.Days == 1 ? difference.Days + " day" : difference.Days + " days") + " ago";
+            }
+            else if (difference.Days == 0)
+            {
+                if (difference.Hours == 0)
+                    return "Played " + (difference.Minutes == 1 ? difference.Minutes + " minute" : difference.Minutes + " minutes") + " ago";
+                else if (difference.Hours == 1)
+                    return "Played " + difference.Hours + " hour ago";
+                else
+                    return "Played " + difference.Hours + " hours ago";
+            }
+
+            return "Played " + difference.Hours + " hours ago";
         }
 
         //Gets how long ago each match was played
@@ -323,9 +336,23 @@ namespace intrapp.Models.Utils
         {
             DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             DateTime lastMatchTime = date.AddMilliseconds(timestamp).ToLocalTime();
-            var difference = (DateTime.Now - lastMatchTime).Hours;
+            var difference = (DateTime.Now - lastMatchTime);
 
-            return difference + " hours ago";
+            if (difference.Days > 0)
+            {
+                return (difference.Days == 1 ? difference.Days + " day" : difference.Days + " days") + " ago";
+            }
+            else if (difference.Days == 0)
+            {
+                if (difference.Hours == 0)
+                    return (difference.Minutes == 1 ? difference.Minutes + " minute" : difference.Minutes + " minutes") + " ago";
+                else if (difference.Hours == 1)
+                    return difference.Hours + " hour ago";
+                else
+                    return difference.Hours + " hours ago";
+            }
+
+            return difference.Hours + " hours ago";
         }
 
 

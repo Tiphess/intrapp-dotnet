@@ -123,11 +123,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ChampionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SummonerController.cs" />
     <Compile Include="Controllers\LeaderboardController.cs" />
-    <Compile Include="Controllers\StatisticController.cs" />
     <Compile Include="DataAccess\ConfigWrapper.cs" />
     <Compile Include="DataAccess\RiotGamesApi\UrlPathBuilder.cs" />
     <Compile Include="DataAccess\RiotGamesApi\UrlPaths.cs" />
@@ -137,8 +135,10 @@
     </Compile>
     <Compile Include="Models\Ban.cs" />
     <Compile Include="Models\Champion.cs" />
+    <Compile Include="Models\DLL\DLL_Leaderboards.cs" />
     <Compile Include="Models\EventsTimeline.cs" />
     <Compile Include="Models\Iventory.cs" />
+    <Compile Include="Models\League.cs" />
     <Compile Include="Models\MatchBreakdown.cs" />
     <Compile Include="Models\MatchEvent.cs" />
     <Compile Include="Models\ParticipantForDisplay.cs" />
@@ -245,6 +245,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Custom\Leaderboards.js" />
     <Content Include="Scripts\Custom\SummonerInfo.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -373,13 +374,15 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Statistic\Index.cshtml" />
     <Content Include="Views\Leaderboard\Index.cshtml" />
-    <Content Include="Views\Champion\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Summoner\_MatchHistory.cshtml" />
     <Content Include="Views\Summoner\_LeagueEntries.cshtml" />
     <Content Include="Views\Summoner\_MatchBreakdown.cshtml" />
+    <Content Include="Views\Leaderboard\_ChallengerLeague.cshtml" />
+    <Content Include="Views\Leaderboard\_GrandmasterLeague.cshtml" />
+    <Content Include="Views\Leaderboard\_MasterLeague.cshtml" />
+    <Content Include="Views\Leaderboard\_LeaguePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

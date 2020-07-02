@@ -54,7 +54,11 @@
                                 <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" height="18" width="18" />
                                 <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" height="18" width="18" />
                             </div>
-                            <span class="summoner-name-breakdown">@participant.ParticipantIdentity.Player.SummonerName.Truncate(150)</span>
+                            <span class="summoner-name-breakdown">
+                                <a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@participant.ParticipantIdentity.Player.SummonerName&region=@ViewBag.SelectedRegion">
+                                    @participant.ParticipantIdentity.Player.SummonerName.Truncate(150)
+                                </a>
+                            </span>
                         </div>
                         <div class="kda-container">
                             @{
