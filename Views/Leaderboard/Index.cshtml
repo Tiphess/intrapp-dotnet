@@ -55,6 +55,12 @@
                     $(".go-up-btn").removeClass("go-up-btn-active");
                 }
             });
+            $("a[name='playerLink']").click(function () {
+                $("div[name='waiting-div']").show();
+            });
+            $("#SummonerNameFormNavbar").submit(function () {
+                $("div[name='waiting-div']").show();
+            });
         });
     </script>
 }
