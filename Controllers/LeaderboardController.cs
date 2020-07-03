@@ -35,10 +35,8 @@ namespace intrapp.Controllers
             if (string.IsNullOrWhiteSpace(queue) && string.IsNullOrWhiteSpace(region))
             {
                 model = dll_leaderboards.GetChallengers("RANKED_SOLO_5x5", "NA1"); // Default queue/region
-
                 return PartialView(model);
             }
-
             model = dll_leaderboards.GetChallengers(queue, region);
 
             if (page >= model.Pages)
@@ -67,7 +65,6 @@ namespace intrapp.Controllers
             if (string.IsNullOrWhiteSpace(queue) && string.IsNullOrWhiteSpace(region))
             {
                 model = dll_leaderboards.GetGrandmasters("RANKED_SOLO_5x5", "NA1"); // Default queue/region
-
                 return PartialView(model);
             }
 
@@ -99,7 +96,6 @@ namespace intrapp.Controllers
             if (string.IsNullOrWhiteSpace(queue) && string.IsNullOrWhiteSpace(region))
             {
                 model = dll_leaderboards.GetMasters("RANKED_SOLO_5x5", "NA1"); // Default queue/region
-
                 return PartialView(model);
             }
 

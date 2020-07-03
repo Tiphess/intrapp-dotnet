@@ -26,7 +26,11 @@ namespace intrapp.Models.Utils
         public static void SetParticipantCustomFields(Participant participant, Match match, string jsonData)
         {
             var pathBuilder = new UrlPathBuilder();
-            participant.Player = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId).Player;
+            var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId);
+            if (participantIdentity == null)
+                return;
+
+            participant.Player = participantIdentity.Player;
             participant.ChampionPlayedIcon = pathBuilder.GetChampionIconUrl(participant.ChampionId);
 
             var displayedSummonerName = participant.Player.SummonerName.Truncate(150);
@@ -35,8 +39,11 @@ namespace intrapp.Models.Utils
 
         public static void SetMatchCustomFields(Match match, string accountId, MatchReference matchRef = null)
         {
-            var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.Player.AccountId == accountId);
+            var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.Player.CurrentAccountId == accountId);
             var participant = match.Participants.FirstOrDefault(p => p.ParticipantId == participantIdentity.ParticipantId);
+
+            if (participantIdentity == null || participant == null)
+                return;
 
             match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
             match.Timestamp = matchRef.Timestamp;
@@ -57,16 +64,30 @@ namespace intrapp.Models.Utils
             var breakdown = new MatchBreakdown();
 
             var partIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.Player.AccountId == accountId);
+            if (partIdentity == null)
+                partIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.Player.CurrentAccountId == accountId);
+
             var part = match.Participants.FirstOrDefault(p => p.ParticipantId == partIdentity.ParticipantId);
+
+            if (partIdentity == null || part == null)
+                return null;
 
             match.ParticipantsByTeam = match.Participants.GroupBy(p => p.TeamId);
             match.ParticipantForDisplay = SetParticipantForDisplay(match, part, partIdentity);
 
+            var failed = false;
             foreach (var participant in match.Participants)
             {
                 var participantIdentity = match.ParticipantIdentities.FirstOrDefault(pi => pi.ParticipantId == participant.ParticipantId);
+                if (participantIdentity == null)
+                {
+                    failed = true;
+                    break;
+                }
                 breakdown.ParticipantsForDisplay.Add(SetParticipantForDisplay(match, participant, participantIdentity));
             }
+            if (failed == true)
+                return null;
 
             breakdown.Match = match;
             breakdown.TeamsBreakdown = SetTeamsBreakdown(match);
@@ -80,7 +101,7 @@ namespace intrapp.Models.Utils
             breakdown.Timeline = GetMatchTimeline(match.GameId, region, partIdentity.ParticipantId);
             breakdown.Runes = GetRunesOfPlayer(part);
             breakdown.ObservedParticipant = part;
-            breakdown.Spells = GetChampionAbilities(Champions.FirstOrDefault(c => c.Key == part.ChampionId.ToString()).Id);
+            breakdown.Spells = Champions.FirstOrDefault(c => c.Key == part.ChampionId.ToString()) == null ? null :  GetChampionAbilities(Champions.FirstOrDefault(c => c.Key == part.ChampionId.ToString()).Id);
 
             return breakdown;
         }
@@ -93,6 +114,9 @@ namespace intrapp.Models.Utils
 
             var bluePlayers = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 100);
             var redPlayers = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == 200);
+
+            if (blueTeam == null || redTeam == null || bluePlayers == null || redPlayers == null)
+                return null;
 
             //Blue team stats
             teamsBreakdown.BlueTeamBaronKills = blueTeam.BaronKills;
@@ -128,6 +152,9 @@ namespace intrapp.Models.Utils
             var perkSubStyle = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle);
             var fragments = RunePaths.FirstOrDefault(rp => rp.Name == "Rune Stats");
 
+            if (perkPrimaryStyle == null || perkSubStyle == null || fragments == null)
+                return null;
+
             var runes = new List<RunePath>();
             runes.Add(perkPrimaryStyle);
             runes.Add(perkSubStyle);
@@ -154,7 +181,7 @@ namespace intrapp.Models.Utils
 
                     return spells;
                 }
-                catch (Exception) { return new List<Spell>(); }
+                catch (Exception) { return null; }
             }
         }
 
@@ -181,6 +208,9 @@ namespace intrapp.Models.Utils
                             var events = frame.Children<JProperty>().FirstOrDefault(x => x.Name == "events");
                             var timestamp = frame.Children<JProperty>().FirstOrDefault(x => x.Name == "timestamp");
 
+                            if (events == null || timestamp == null)
+                                return null;
+
                             var intervalTimestamp = timestamp.Value.ToObject<long>();
                             var matchEvents = events.Value.ToObject<List<MatchEvent>>();
 
@@ -202,7 +232,7 @@ namespace intrapp.Models.Utils
                     }
                     return timeline;
                 }
-                catch (Exception) { return new EventsTimeline(); }
+                catch (Exception) { return null; }
             }
         }
 
@@ -224,7 +254,7 @@ namespace intrapp.Models.Utils
                 RuneSecondaryPathIconUrl = runes.Item2,
                 KillParticipationPercentage = GetKillParticipation(match, participant),
                 Items = GetItems(participant),
-                ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
+                ChampionName = Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()) == null ? "Default" : Champions.FirstOrDefault(x => x.Key == participant.ChampionId.ToString()).Name,
                 Participant = participant,
                 ParticipantIdentity = participantIdentity
             };
@@ -233,6 +263,9 @@ namespace intrapp.Models.Utils
         private static int GetKillParticipation(Match match, Participant participant)
         {
             var team = match.ParticipantsByTeam.FirstOrDefault(t => t.Key == participant.TeamId);
+            if (team == null)
+                return 0;
+
             var totalTeamKills = 0;
             foreach (var player in team)
                 totalTeamKills += player.Stats.Kills;
@@ -257,7 +290,11 @@ namespace intrapp.Models.Utils
 
         private static string GetMatchQueueTypeName(int queueId)
         {
-            var desc = QueueTypes.FirstOrDefault(qt => qt.QueueId == queueId).Description;
+            var queuetype = QueueTypes.FirstOrDefault(qt => qt.QueueId == queueId);
+            if (queuetype == null)
+                return "Undetermined";
+
+            var desc = queuetype.Description;
             if (desc.Contains("Blind"))
                 return "Blind";
             else if (desc.Contains("Draft"))
@@ -275,7 +312,10 @@ namespace intrapp.Models.Utils
         private static Tuple<string, string> GetRunesPaths(Participant participant)
         {
             var perkPrimaryStylePath = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkPrimaryStyle);
-            var perkSubStylePath = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle).Icon;
+            var perkSubStylePath = RunePaths.FirstOrDefault(rp => rp.Id == participant.Stats.PerkSubStyle);
+            if (perkPrimaryStylePath == null || perkSubStylePath == null)
+                return Tuple.Create("https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/GlacialAugment/GlacialAugment.png", "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7204_Resolve.png");
+
             var keystonePath = "";
 
             var found = false;
@@ -294,15 +334,18 @@ namespace intrapp.Models.Utils
                     break;
             }
 
-            return Tuple.Create(keystonePath, perkSubStylePath);
+            return Tuple.Create(keystonePath, perkSubStylePath.Icon);
         }
 
         private static Tuple<string, string> GetSummonerSpellsPaths(Participant participant)
         {
-            var spell1Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell1Id).IconPath;
-            var spell2Path = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell2Id).IconPath;
+            var spell1 = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell1Id);
+            var spell2 = SummonerSpells.FirstOrDefault(s => s.Id == participant.Spell2Id);
 
-            return Tuple.Create(spell1Path, spell2Path);
+            if (spell1 == null || spell2 == null)
+                return Tuple.Create("/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_heal.png", "/lol-game-data/assets/DATA/Spells/Icons2D/Summoner_haste.png");
+                
+            return Tuple.Create(spell1.IconPath, spell2.IconPath);
         }
 
         //Gets the last time the summoner played

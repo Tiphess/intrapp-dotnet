@@ -1,4 +1,26 @@
-﻿body {
+﻿html {
+    scroll-behavior: smooth;
+}
+body {
+}
+
+.go-up-btn{
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    background: #d2d2d2;
+    bottom: 40px;
+    right: 50px;
+    text-decoration: none;
+    text-align:center;
+    line-height: 50px;
+    color: white;
+    font-size: 20px;
+    visibility: hidden;
+}
+
+.go-up-btn-active {
+    visibility: visible;
 }
 
 .footer-index {
@@ -196,12 +218,15 @@ a[name=playerLink] {
 }
 
 .keystone {
-    top:101px;
+    top:103px;
+    background: #000;
+    border-radius: 50%;
+    left: 5px;
 }
 
 .secondary-path {
-    left: 40px;
-    top: 103px;
+    left: 45px;
+    top: 105px;
 }
 
 #MoreDetailsBtn {
@@ -345,6 +370,8 @@ a[name=playerLink] {
 .keystone-breakdown {
     position: absolute;
     margin-left: 25px;
+    background: #000;
+    border-radius: 50%;
 }
 
 .secondary-path-breakdown {
@@ -695,6 +722,8 @@ a[name=playerLink] {
 .selected-rune {
     width: 40px;
     height: 40px;
+    background: #000;
+    border-radius: 50%;
 }
 
 .unselected-rune {
@@ -702,6 +731,8 @@ a[name=playerLink] {
     opacity: 0.60;
     width: 40px;
     height: 40px;
+    background: #000;
+    border-radius: 50%;
 }
 /* BUILD TAB END */
 /* ################### MATCH BREAKDOWN CSS END ################### */

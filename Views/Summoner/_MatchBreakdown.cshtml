@@ -1,709 +1,746 @@
 ﻿@model intrapp.Models.MatchBreakdown
 @using intrapp.Extensions.String
 <div style="margin-top: 20px;"></div>
-<!--Tabs-->
-<ul class="nav nav-tabs" style="margin-bottom: 10px;">
-    <li class="nav-item">
-        <a id="overviewLink_@Model.Match.GameId" class="nav-link active" onclick="ShowOverview(@Model.Match.GameId)">Overview</a>
-    </li>
-    <li class="nav-item">
-        <a id="analysisLink_@Model.Match.GameId" class="nav-link" onclick="ShowAnalysis(@Model.Match.GameId)">Analysis</a>
-    </li>
-    <li class="nav-item">
-        <a id="buildLink_@Model.Match.GameId" class="nav-link" onclick="ShowBuild(@Model.Match.GameId)">Build</a>
-    </li>
-    <li class="nav-item ml-auto">
-        <a class="nav-link nav-close-btn" id="navCloseBtn" onclick="CloseMatchBreakDown('@Model.Match.GameId')"><i class="fa fa-times fa-lg" aria-hidden="true"></i></a>
-    </li>
-</ul>
-<!--Overview-->
-<div id="overview_@Model.Match.GameId">
-    @foreach (var team in Model.ParticipantsForDisplayByTeam)
-    {
-        var currTeam = Model.Match.Teams.FirstOrDefault(t => t.TeamId == team.Key);
-        <div class="col-md-12">
-            <div class="@(currTeam.Win == "Win" ? "victory-team" : "defeat-team")">
-                <div class="titles-row">
-                    <div class="title-summoner">
-                        <b class="@(currTeam.Win == "Win" ? "victory-text" : "defeat-text")">@(currTeam.Win == "Win" ? "Victory" : "Defeat") @(currTeam.TeamId == 100 ? "(Blue Team)" : "(Red Team)")</b>
-                    </div>
-                    <div class="title-kda">
-                        KDA
-                    </div>
-                    <div class="title-damage">
-                        Damage
-                    </div>
-                    <div class="title-wards">
-                        Wards
-                    </div>
-                    <div class="title-cs">
-                        CS
-                    </div>
-                    <div class="title-items">
-                        Items
-                    </div>
-                </div>
-                @foreach (var participant in team)
-                {
-                    <div class="summoner-data-row">
-                        <div class="summoner-images-container">
-                            <div style="width: 90px; display: inline-block">
-                                <img src="@participant.ChampionIconUrl" height="40" width="40" />
-                                <img class="summoner-spell-one-breakdown" src="@participant.SummonerSpell1IconUrl" height="18" width="18" />
-                                <img class="summoner-spell-two-breakdown" src="@participant.SummonerSpell2IconUrl" height="18" width="18" />
-                                <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" height="18" width="18" />
-                                <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" height="18" width="18" />
-                            </div>
-                            <span class="summoner-name-breakdown">
-                                <a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@participant.ParticipantIdentity.Player.SummonerName&region=@ViewBag.SelectedRegion">
-                                    @participant.ParticipantIdentity.Player.SummonerName.Truncate(150)
-                                </a>
-                            </span>
-                        </div>
-                        <div class="kda-container">
-                            @{
-                                var kills = participant.Participant.Stats.Kills;
-                                var deaths = participant.Participant.Stats.Deaths;
-                                var assists = participant.Participant.Stats.Assists;
-
-                                var kda = Math.Round((double)(kills + assists) / deaths, 2);
-                            }
-                            @participant.Participant.Stats.Kills/@participant.Participant.Stats.Deaths/@participant.Participant.Stats.Assists<br />
-                            @(kda):1
-                        </div>
-                        <div class="damage-dealt-container">
-                            @{
-                                var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDmgDealt;
-                                var percentageDmgDealt = (int)Math.Round(raw * 100);
-                            }
-                            <div style="text-align:center;">@participant.Participant.Stats.TotalDamageDealtToChampions</div>
-                            <div class="damage-dealt-max">
-                                <div class="damage-dealt" style="width: @percentageDmgDealt%;"></div>
-                            </div>
-                        </div>
-                        <div class="wards-container">
-                            <div class="wards-tooltip">
-                                <span class="wards-tooltip-text">
-                                    @participant.Participant.Stats.VisionWardsBoughtInGame Control Wards<br />
-                                    Wards placed: @participant.Participant.Stats.WardsPlaced<br />
-                                    Wards killed: @participant.Participant.Stats.WardsKilled
-                                </span>
-                                @participant.Participant.Stats.VisionWardsBoughtInGame<br />
-                                @participant.Participant.Stats.WardsPlaced / @participant.Participant.Stats.WardsKilled
-                            </div>
-                        </div>
-                        <div class="creep-score-container">
-                            <span>@participant.Participant.Stats.TotalMinionsKilled</span><br />
-                            <span style="font-size: 12px;">@Math.Round(participant.Participant.Stats.TotalMinionsKilled / TimeSpan.FromSeconds(Model.Match.GameDuration).TotalMinutes, 1)/min</span>
-                        </div>
-                        <div class="items-container">
-                            <div style="margin-top: 5px; text-align: center; margin-left: auto; margin-right: auto;">
-                                <img class="league-item-breakdown" src="@participant.Items.Item0Url" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item1Url" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item2Url" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item3Url" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item4Url" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item5Url" height="35" width="35" />
-                                <img class="league-item-breakdown" src="@participant.Items.Item6Url" height="35" width="35" />
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-            @if (team.Key == 100)
-            {
-                <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px;">
-                    <div class="row">
-                        <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
-                            <div class="row">
-                                <div class="col-4" style="padding-left: 0;">
-                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/baron-blue.png" /> @Model.TeamsBreakdown.BlueTeamBaronKills
-                                </div>
-                                <div class="col-4" style="padding-left: 0;">
-                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/dragon-blue.png" /> @Model.TeamsBreakdown.BlueTeamDragonKills
-                                </div>
-                                <div class="col-4" style="padding-left: 0;">
-                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/tower-blue.png" /> @Model.TeamsBreakdown.BlueTeamTowerKills
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="game-kills-container">
-                                <div class="total-kills-text">Total Kills</div>
-                                <div class="blue-team-kills">@Model.TeamsBreakdown.BlueTeamChampionKills</div>
-                                <div class="game-kills-blue-team-bar" style="flex: @Model.TeamsBreakdown.BlueTeamChampionKills;"></div>
-                                <div class="game-kills-red-team-bar" style="flex: @Model.TeamsBreakdown.RedTeamChampionKills;"></div>
-                                <div class="red-team-kills"> @Model.TeamsBreakdown.RedTeamChampionKills</div>
-                            </div>
-                            <div class="game-gold-container">
-                                <div class="total-gold-text">Total gold</div>
-                                <div class="blue-team-gold">@Model.TeamsBreakdown.BlueTeamGold</div>
-                                <div class="game-gold-blue-team-bar" style="flex: @Model.TeamsBreakdown.BlueTeamGold;"></div>
-                                <div class="game-gold-red-team-bar" style="flex: @Model.TeamsBreakdown.RedTeamGold;"></div>
-                                <div class="red-team-gold">@Model.TeamsBreakdown.RedTeamGold</div>
-                            </div>
-                        </div>
-                        <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
-                            <div class="row">
-                                <div class="col-4" style="padding-left: 0;">
-                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/tower-red.png" /> @Model.TeamsBreakdown.RedTeamTowerKills
-                                </div>
-                                <div class="col-4" style="padding-left: 0;">
-                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/dragon-red.png" /> @Model.TeamsBreakdown.RedTeamDragonKills
-                                </div>
-                                <div class="col-4" style="padding-left: 0;">
-                                    <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/baron-red.png" /> @Model.TeamsBreakdown.RedTeamBaronKills
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-</div>
-
-<!--Analysis-->
-<div id="analysis_@Model.Match.GameId" style="display: none;">
-    <ul style="overflow: hidden; list-style: none; padding: 0;">
-        <!--Champion Kills-->
-        <li class="analysis-list-item">
-            <div class="analysis-item-content">
-                <h4>Champion Kills</h4>
-                <div class="analysis-table">
-                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
-                    {
-                        <div class="analysis-team">
-                            <ul style="margin: 0; padding: 0; list-style: none;">
-                                @foreach (var participant in team)
-                                {
-                                    var raw = (double)participant.Participant.Stats.Kills / Model.HighestKills;
-                                    var champKillsPercentage = Math.Round(raw * 100, 1);
-                                    <li style="margin-top: 5px;">
-                                        <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" />
-                                        </div>
-                                        <div class="analysis-progress">
-                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @champKillsPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
-                                            <span class="analysis-progress-span">@participant.Participant.Stats.Kills</span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                        if (team.Key == 100)
-                        {
-                            var totalKills = Model.TeamsBreakdown.BlueTeamChampionKills + Model.TeamsBreakdown.RedTeamChampionKills;
-                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamChampionKills / totalKills) * 100, 0);
-                            var circleBlankArea = 100 - circleCoveredArea;
-                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
-                            <div class="analysis-graph-container">
-                                <svg width="75%" height="75%" viewBox="0 0 42 42">
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
-                                </svg>
-                                <div class="analysis-graph-text-container">
-                                    <div class="analysis-graph-text-first">
-                                        @Model.TeamsBreakdown.BlueTeamChampionKills
-                                    </div>
-                                    <div class="analysis-graph-text">
-                                        @Model.TeamsBreakdown.RedTeamChampionKills
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
+@if (Model == null)
+{
+    <p>An error occured when looking through the match's data. Check back later!</p>
+}
+else
+{
+    <!--Tabs-->
+    <ul class="nav nav-tabs" style="margin-bottom: 10px;">
+        <li class="nav-item">
+            <a id="overviewLink_@Model.Match.GameId" class="nav-link active" onclick="ShowOverview(@Model.Match.GameId)">Overview</a>
         </li>
-        <!--Gold Earned-->
-        <li class="analysis-list-item">
-            <div class="analysis-item-content">
-                <h4>Gold Earned</h4>
-                <div class="analysis-table">
-                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
-                    {
-                        <div class="analysis-team">
-                            <ul style="margin: 0; padding: 0; list-style: none;">
-                                @foreach (var participant in team)
-                                {
-                                    var raw = (double)participant.Participant.Stats.GoldEarned / Model.HighestGold;
-                                    var goldEarnedPercentage = Math.Round(raw * 100, 1);
-                                    <li style="margin-top: 5px;">
-                                        <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" />
-                                        </div>
-                                        <div class="analysis-progress">
-                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @goldEarnedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
-                                            <span class="analysis-progress-span">@participant.Participant.Stats.GoldEarned</span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                        if (team.Key == 100)
-                        {
-                            var totalGold = Model.TeamsBreakdown.BlueTeamGold + Model.TeamsBreakdown.RedTeamGold;
-                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamGold / totalGold) * 100, 0);
-                            var circleBlankArea = 100 - circleCoveredArea;
-                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
-                            <div class="analysis-graph-container">
-                                <svg width="75%" height="75%" viewBox="0 0 42 42">
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
-                                </svg>
-                                <div class="analysis-graph-text-container">
-                                    <div class="analysis-graph-text-first">
-                                        @Model.TeamsBreakdown.BlueTeamGold
-                                    </div>
-                                    <div class="analysis-graph-text">
-                                        @Model.TeamsBreakdown.RedTeamGold
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
+        <li class="nav-item">
+            <a id="analysisLink_@Model.Match.GameId" class="nav-link" onclick="ShowAnalysis(@Model.Match.GameId)">Analysis</a>
         </li>
-        <!--Damage Dealt-->
-        <li class="analysis-list-item">
-            <div class="analysis-item-content">
-                <h4>Damage Dealt</h4>
-                <div class="analysis-table">
-                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
-                    {
-                        <div class="analysis-team">
-                            <ul style="margin: 0; padding: 0; list-style: none;">
-                                @foreach (var participant in team)
-                                {
-                                    var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDmgDealt;
-                                    var dmgDealtPercentage = Math.Round(raw * 100, 1);
-                                    <li style="margin-top: 5px;">
-                                        <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" />
-                                        </div>
-                                        <div class="analysis-progress">
-                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgDealtPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
-                                            <span class="analysis-progress-span">@participant.Participant.Stats.TotalDamageDealtToChampions</span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                        if (team.Key == 100)
-                        {
-                            var totalDmgDealt = Model.TeamsBreakdown.BlueTeamDmgDealt + Model.TeamsBreakdown.RedTeamDmgDealt;
-                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamDmgDealt / totalDmgDealt) * 100, 0);
-                            var circleBlankArea = 100 - circleCoveredArea;
-                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
-                            <div class="analysis-graph-container">
-                                <svg width="75%" height="75%" viewBox="0 0 42 42">
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
-                                </svg>
-                                <div class="analysis-graph-text-container">
-                                    <div class="analysis-graph-text-first">
-                                        @Model.TeamsBreakdown.BlueTeamDmgDealt
-                                    </div>
-                                    <div class="analysis-graph-text">
-                                        @Model.TeamsBreakdown.RedTeamDmgDealt
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
+        <li class="nav-item">
+            <a id="buildLink_@Model.Match.GameId" class="nav-link" onclick="ShowBuild(@Model.Match.GameId)">Build</a>
         </li>
-        <!--Damage Taken-->
-        <li class="analysis-list-item">
-            <div class="analysis-item-content">
-                <h4>Damage Taken</h4>
-                <div class="analysis-table">
-                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
-                    {
-                        <div class="analysis-team">
-                            <ul style="margin: 0; padding: 0; list-style: none;">
-                                @foreach (var participant in team)
-                                {
-                                    var raw = (double)participant.Participant.Stats.TotalDamageTaken / Model.HighestDmgTaken;
-                                    var dmgTakenPercentage = Math.Round(raw * 100, 1);
-                                    <li style="margin-top: 5px;">
-                                        <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" />
-                                        </div>
-                                        <div class="analysis-progress">
-                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgTakenPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
-                                            <span class="analysis-progress-span">@participant.Participant.Stats.TotalDamageTaken</span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                        if (team.Key == 100)
-                        {
-                            var totalDmgTaken = Model.TeamsBreakdown.BlueTeamDmgTaken + Model.TeamsBreakdown.RedTeamDmgTaken;
-                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamDmgTaken / totalDmgTaken) * 100, 0);
-                            var circleBlankArea = 100 - circleCoveredArea;
-                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
-                            <div class="analysis-graph-container">
-                                <svg width="75%" height="75%" viewBox="0 0 42 42">
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
-                                </svg>
-                                <div class="analysis-graph-text-container">
-                                    <div class="analysis-graph-text-first">
-                                        @Model.TeamsBreakdown.BlueTeamDmgTaken
-                                    </div>
-                                    <div class="analysis-graph-text">
-                                        @Model.TeamsBreakdown.RedTeamDmgTaken
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </li>
-        <!--Wards Placed-->
-        <li class="analysis-list-item">
-            <div class="analysis-item-content">
-                <h4>Wards Placed</h4>
-                <div class="analysis-table">
-                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
-                    {
-                        <div class="analysis-team">
-                            <ul style="margin: 0; padding: 0; list-style: none;">
-                                @foreach (var participant in team)
-                                {
-                                    var raw = (double)participant.Participant.Stats.WardsPlaced / Model.HighestWardsPlaced;
-                                    var wardsPlacedPercentage = Math.Round(raw * 100, 1);
-                                    <li style="margin-top: 5px;">
-                                        <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" />
-                                        </div>
-                                        <div class="analysis-progress">
-                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @wardsPlacedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
-                                            <span class="analysis-progress-span">@participant.Participant.Stats.WardsPlaced</span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                        if (team.Key == 100)
-                        {
-                            var totalWards = Model.TeamsBreakdown.BlueTeamWardsPlaced + Model.TeamsBreakdown.RedTeamWardsPlaced;
-                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamWardsPlaced / totalWards) * 100, 0);
-                            var circleBlankArea = 100 - circleCoveredArea;
-                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
-                            <div class="analysis-graph-container">
-                                <svg width="75%" height="75%" viewBox="0 0 42 42">
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
-                                </svg>
-                                <div class="analysis-graph-text-container">
-                                    <div class="analysis-graph-text-first">
-                                        @Model.TeamsBreakdown.BlueTeamWardsPlaced
-                                    </div>
-                                    <div class="analysis-graph-text">
-                                        @Model.TeamsBreakdown.RedTeamWardsPlaced
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </li>
-        <!--Minions Killed-->
-        <li class="analysis-list-item">
-            <div class="analysis-item-content">
-                <h4>Minions Killed</h4>
-                <div class="analysis-table">
-                    @foreach (var team in Model.ParticipantsForDisplayByTeam)
-                    {
-                        <div class="analysis-team">
-                            <ul style="margin: 0; padding: 0; list-style: none;">
-                                @foreach (var participant in team)
-                                {
-                                    var raw = (double)participant.Participant.Stats.TotalMinionsKilled / Model.HighestCS;
-                                    var csPercentage = Math.Round(raw * 100, 1);
-                                    <li style="margin-top: 5px;">
-                                        <div class="analysis-champion-image">
-                                            <img src="@participant.ChampionIconUrl" />
-                                        </div>
-                                        <div class="analysis-progress">
-                                            <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @csPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
-                                            <span class="analysis-progress-span">@participant.Participant.Stats.TotalMinionsKilled</span>
-                                        </div>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                        if (team.Key == 100)
-                        {
-                            var totalCS = Model.TeamsBreakdown.BlueTeamCS + Model.TeamsBreakdown.RedTeamCS;
-                            var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamCS / totalCS) * 100, 0);
-                            var circleBlankArea = 100 - circleCoveredArea;
-                            var bluePartDashOffset = 100 - circleCoveredArea + 25;
-                            <div class="analysis-graph-container">
-                                <svg width="75%" height="75%" viewBox="0 0 42 42">
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
-                                    <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
-                                </svg>
-                                <div class="analysis-graph-text-container">
-                                    <div class="analysis-graph-text-first">
-                                        @Model.TeamsBreakdown.BlueTeamCS
-                                    </div>
-                                    <div class="analysis-graph-text">
-                                        @Model.TeamsBreakdown.RedTeamCS
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
+        <li class="nav-item ml-auto">
+            <a class="nav-link nav-close-btn" id="navCloseBtn" onclick="CloseMatchBreakDown('@Model.Match.GameId')"><i class="fa fa-times fa-lg" aria-hidden="true"></i></a>
         </li>
     </ul>
-</div>
-
-<!--Build-->
-<div id="build_@Model.Match.GameId" style="display: none;">
-    <div>
-        <!--Timeline-->
-        <div style="margin-bottom: 20px;">
-            <h4>Items Purchase Timeline</h4>
-            <hr />
-        </div>
-        <div>
-            <ul>
-                @{ var firstDone = false; }
-                @foreach (var itemPurchaseEvents in Model.Timeline.ItemPurchaseEventsByTimestamp)
-                {
-                    if (itemPurchaseEvents.Value.Count == 0)
-                    {
-                        continue;
-                    }
-                    long firstTimestamp = 0;
-                    <li class="timeline-node">
-                        @if (firstDone == true)
-                        {
-                        <div class="timeline-arrow">
-                            <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
-                        </div>
-                        }
-                        <div class="timeline-items">
-                            @foreach (var itemPurchase in itemPurchaseEvents.Value)
-                            {
-                                if (firstTimestamp == 0)
-                                {
-                                    firstTimestamp = itemPurchase.Timestamp;
-                                }
-                                <img src="@itemPurchase.ItemUrl" height="40" width="40" />
-                            }
-                        </div>
-                        <div style="text-align: center; margin-right: @(firstDone == true ? "-10px" : "0");">
-                            @Math.Round(TimeSpan.FromMilliseconds(firstTimestamp).TotalMinutes, 0) min
-                        </div>
-                    </li>
-                    firstDone = true;
-                }
-            </ul>
-        </div>
-        
-    </div>
-    <!--Skill points table-->
-    <div style="margin-bottom: 20px;">
-        <h4>Skill Points Spent</h4>
-        <hr />
-    </div>
-    <div class="col-md-12">
-        <div class="row">
-            @{
-                var qUrl = "";
-                var wUrl = "";
-                var eUrl = "";
-                var rUrl = "";
-
-                foreach (var spell in Model.Spells)
-                {
-                    if (Model.Spells.IndexOf(spell) == 0) // Q
-                    {
-                        qUrl = spell.IconFullUrl;
-                    }
-                    else if (Model.Spells.IndexOf(spell) == 1) // W
-                    {
-                        wUrl = spell.IconFullUrl;
-                    }
-                    else if (Model.Spells.IndexOf(spell) == 2) // E
-                    {
-                        eUrl = spell.IconFullUrl;
-                    }
-                    else if (Model.Spells.IndexOf(spell) == 3) // R
-                    {
-                        rUrl = spell.IconFullUrl;
-                    }
-                }
-            }
-            <div class="table-responsive">
-                <table id="skillsTable_@Model.Match.GameId" class="skills-table">
-                    <tbody>
-                        <tr id="QRow_@Model.Match.GameId">
-                            <td class="skills-table-first-td">Q</td>
-                            <td class="skills-table-img-td"><img src="@qUrl" class="skills-table-img" /></td>
-                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
-                            {
-                                if (skillPoint.SkillSlot == 1)
-                                {
-                                    <td class="skills-table-skillpoint"></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            }
-                        </tr>
-                        <tr id="WRow_@Model.Match.GameId">
-                            <td class="skills-table-first-td">W</td>
-                            <td class="skills-table-img-td"><img src="@wUrl" class="skills-table-img" /></td>
-                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
-                            {
-                                if (skillPoint.SkillSlot == 2)
-                                {
-                                    <td class="skills-table-skillpoint"></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            }
-                        </tr>
-                        <tr id="ERow_@Model.Match.GameId">
-                            <td class="skills-table-first-td">E</td>
-                            <td class="skills-table-img-td"><img src="@eUrl" class="skills-table-img" /></td>
-                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
-                            {
-                                if (skillPoint.SkillSlot == 3)
-                                {
-                                    <td class="skills-table-skillpoint"></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            }
-                        </tr>
-                        <tr id="RRow_@Model.Match.GameId">
-                            <td class="skills-table-first-td">R</td>
-                            <td class="skills-table-img-td"><img src="@rUrl" class="skills-table-img" /></td>
-                            @foreach (var skillPoint in Model.Timeline.SkillEvents)
-                            {
-                                if (skillPoint.SkillSlot == 4)
-                                {
-                                    <td class="skills-table-skillpoint"></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            }
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-    </div>
-    <!--Runes layout-->
-    <div style="margin-bottom: 20px;">
-        <h4>Runes</h4>
-        <hr />
-    </div>
-    <div class="row justify-content-center">
-        @{ 
-            var lastPath = Model.Runes.Last();
-            var firstPath = Model.Runes.First();
-         }
-        @foreach (var path in Model.Runes)
+    <!--Overview-->
+    <div id="overview_@Model.Match.GameId">
+        @foreach (var team in Model.ParticipantsForDisplayByTeam)
         {
-            var skipKeystones = false;
-
-            <div class="perk-style" style="border-right: @(path != lastPath ? "1px solid #d2d2d2" : "none");">
-                @if (path != firstPath)
-                {
-                    <div class="@(path == lastPath ? "rune-offset-fragment" : "rune-offset")"><img /></div>
-                }
-                <div class="rune-path">
-                    <img src="@path.Icon"/>
-                </div>
-
-                @foreach (var slot in path.Slots)
-                {
-                    var fragmentDone = false;
-                    @*Skip keystones for sub-style*@
-                    if (path.Id == Model.Match.ParticipantForDisplay.Participant.Stats.PerkSubStyle && skipKeystones == false)
-                    {
-                        skipKeystones = true;
-                        continue;
-                    }
-                    <div class="slot">
-                        @foreach (var rune in slot.Runes)
-                        {
-                            <div class="@(slot.Runes.Count == 3 ? "rune" : "rune-four-keystones")">
-                                @if (rune.Id == Model.ObservedParticipant.Stats.Perk0)
-                                {
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk1)
-                                {
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk2)
-                                {
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk3)
-                                {
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk4)
-                                {
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.Perk5)
-                                {
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk0 && fragmentDone == false)
-                                {
-                                    fragmentDone = true;
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk1 && fragmentDone == false)
-                                {
-                                    fragmentDone = true;
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk2 && fragmentDone == false)
-                                {
-                                    fragmentDone = true;
-                                    <span><img class="selected-rune" src="@rune.Icon" /></span><br />
-                                }
-                                else
-                                {
-                                    <span><img class="unselected-rune" src="@rune.Icon" /></span>
-                                }
-                            </div>
-                        }
+            var currTeam = Model.Match.Teams.FirstOrDefault(t => t.TeamId == team.Key);
+            <div class="col-md-12">
+                <div class="@(currTeam.Win == "Win" ? "victory-team" : "defeat-team")">
+                    <div class="titles-row">
+                        <div class="title-summoner">
+                            <b class="@(currTeam.Win == "Win" ? "victory-text" : "defeat-text")">@(currTeam.Win == "Win" ? "Victory" : "Defeat") @(currTeam.TeamId == 100 ? "(Blue Team)" : "(Red Team)")</b>
+                        </div>
+                        <div class="title-kda">
+                            KDA
+                        </div>
+                        <div class="title-damage">
+                            Damage
+                        </div>
+                        <div class="title-wards">
+                            Wards
+                        </div>
+                        <div class="title-cs">
+                            CS
+                        </div>
+                        <div class="title-items">
+                            Items
+                        </div>
                     </div>
-                }
-                <div style="text-align: center;">
-                    @path.Name
+                    @foreach (var participant in team)
+                    {
+                        <div class="summoner-data-row">
+                            <div class="summoner-images-container">
+                                <div style="width: 90px; display: inline-block">
+                                    <img src="@participant.ChampionIconUrl" height="40" width="40" />
+                                    <img class="summoner-spell-one-breakdown" src="@participant.SummonerSpell1IconUrl" height="18" width="18" />
+                                    <img class="summoner-spell-two-breakdown" src="@participant.SummonerSpell2IconUrl" height="18" width="18" />
+                                    <img class="keystone-breakdown" src="@participant.RuneKeystoneIconUrl" height="18" width="18" />
+                                    <img class="secondary-path-breakdown" src="@participant.RuneSecondaryPathIconUrl" height="18" width="18" />
+                                </div>
+                                <span class="summoner-name-breakdown">
+                                    <a name="playerLink" href="/Summoner/SummonerInfo?summonerName=@participant.ParticipantIdentity.Player.SummonerName&region=@ViewBag.SelectedRegion">
+                                        @participant.ParticipantIdentity.Player.SummonerName.Truncate(150)
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="kda-container">
+                                @{
+                                    var kills = participant.Participant.Stats.Kills;
+                                    var deaths = participant.Participant.Stats.Deaths;
+                                    var assists = participant.Participant.Stats.Assists;
+
+                                    var kda = Math.Round((double)(kills + assists) / deaths, 2);
+                                }
+                                @participant.Participant.Stats.Kills/@participant.Participant.Stats.Deaths/@participant.Participant.Stats.Assists<br />
+                                @(kda):1
+                            </div>
+                            <div class="damage-dealt-container">
+                                @{
+                                    var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDmgDealt;
+                                    var percentageDmgDealt = (int)Math.Round(raw * 100);
+                                }
+                                <div style="text-align:center;">@participant.Participant.Stats.TotalDamageDealtToChampions</div>
+                                <div class="damage-dealt-max">
+                                    <div class="damage-dealt" style="width: @percentageDmgDealt%;"></div>
+                                </div>
+                            </div>
+                            <div class="wards-container">
+                                <div class="wards-tooltip">
+                                    <span class="wards-tooltip-text">
+                                        @participant.Participant.Stats.VisionWardsBoughtInGame Control Wards<br />
+                                        Wards placed: @participant.Participant.Stats.WardsPlaced<br />
+                                        Wards killed: @participant.Participant.Stats.WardsKilled
+                                    </span>
+                                    @participant.Participant.Stats.VisionWardsBoughtInGame<br />
+                                    @participant.Participant.Stats.WardsPlaced / @participant.Participant.Stats.WardsKilled
+                                </div>
+                            </div>
+                            <div class="creep-score-container">
+                                <span>@participant.Participant.Stats.TotalMinionsKilled</span><br />
+                                <span style="font-size: 12px;">@Math.Round(participant.Participant.Stats.TotalMinionsKilled / TimeSpan.FromSeconds(Model.Match.GameDuration).TotalMinutes, 1)/min</span>
+                            </div>
+                            <div class="items-container">
+                                <div style="margin-top: 5px; text-align: center; margin-left: auto; margin-right: auto;">
+                                    <img class="league-item-breakdown" src="@participant.Items.Item0Url" height="35" width="35" />
+                                    <img class="league-item-breakdown" src="@participant.Items.Item1Url" height="35" width="35" />
+                                    <img class="league-item-breakdown" src="@participant.Items.Item2Url" height="35" width="35" />
+                                    <img class="league-item-breakdown" src="@participant.Items.Item3Url" height="35" width="35" />
+                                    <img class="league-item-breakdown" src="@participant.Items.Item4Url" height="35" width="35" />
+                                    <img class="league-item-breakdown" src="@participant.Items.Item5Url" height="35" width="35" />
+                                    <img class="league-item-breakdown" src="@participant.Items.Item6Url" height="35" width="35" />
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
+                @if (team.Key == 100)
+                {
+                    if (Model.TeamsBreakdown == null)
+                    {
+                        <p>An error occured when looking for this Match's game data.</p>
+                    }
+                    else
+                    {
+                        <div class="col-md-12" style="margin-top: 20px; margin-bottom: 20px;">
+                            <div class="row">
+                                <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
+                                    <div class="row">
+                                        <div class="col-4" style="padding-left: 0;">
+                                            <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/baron-blue.png" /> @Model.TeamsBreakdown.BlueTeamBaronKills
+                                        </div>
+                                        <div class="col-4" style="padding-left: 0;">
+                                            <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/dragon-blue.png" /> @Model.TeamsBreakdown.BlueTeamDragonKills
+                                        </div>
+                                        <div class="col-4" style="padding-left: 0;">
+                                            <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/tower-blue.png" /> @Model.TeamsBreakdown.BlueTeamTowerKills
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="game-kills-container">
+                                        <div class="total-kills-text">Total Kills</div>
+                                        <div class="blue-team-kills">@Model.TeamsBreakdown.BlueTeamChampionKills</div>
+                                        <div class="game-kills-blue-team-bar" style="flex: @Model.TeamsBreakdown.BlueTeamChampionKills;"></div>
+                                        <div class="game-kills-red-team-bar" style="flex: @Model.TeamsBreakdown.RedTeamChampionKills;"></div>
+                                        <div class="red-team-kills"> @Model.TeamsBreakdown.RedTeamChampionKills</div>
+                                    </div>
+                                    <div class="game-gold-container">
+                                        <div class="total-gold-text">Total gold</div>
+                                        <div class="blue-team-gold">@Model.TeamsBreakdown.BlueTeamGold</div>
+                                        <div class="game-gold-blue-team-bar" style="flex: @Model.TeamsBreakdown.BlueTeamGold;"></div>
+                                        <div class="game-gold-red-team-bar" style="flex: @Model.TeamsBreakdown.RedTeamGold;"></div>
+                                        <div class="red-team-gold">@Model.TeamsBreakdown.RedTeamGold</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="display: flex; justify-content:center; align-items: center;">
+                                    <div class="row">
+                                        <div class="col-4" style="padding-left: 0;">
+                                            <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/tower-red.png" /> @Model.TeamsBreakdown.RedTeamTowerKills
+                                        </div>
+                                        <div class="col-4" style="padding-left: 0;">
+                                            <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/dragon-red.png" /> @Model.TeamsBreakdown.RedTeamDragonKills
+                                        </div>
+                                        <div class="col-4" style="padding-left: 0;">
+                                            <img class="objective-img" src="~/DataAccess/RiotGamesApi/Images/Misc/baron-red.png" /> @Model.TeamsBreakdown.RedTeamBaronKills
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         }
     </div>
-</div>
+
+    <!--Analysis-->
+    <div id="analysis_@Model.Match.GameId" style="display: none;">
+        @if (Model.TeamsBreakdown == null)
+        {
+        <p>An error occured when looking for this Match's game data.</p>
+        }
+        else
+        {
+        <ul style="overflow: hidden; list-style: none; padding: 0;">
+            <!--Champion Kills-->
+            <li class="analysis-list-item">
+                <div class="analysis-item-content">
+                    <h4>Champion Kills</h4>
+                    <div class="analysis-table">
+                        @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                        {
+                            <div class="analysis-team">
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    @foreach (var participant in team)
+                                    {
+                                        var raw = (double)participant.Participant.Stats.Kills / Model.HighestKills;
+                                        var champKillsPercentage = Math.Round(raw * 100, 1);
+                                        <li style="margin-top: 5px;">
+                                            <div class="analysis-champion-image">
+                                                <img src="@participant.ChampionIconUrl" />
+                                            </div>
+                                            <div class="analysis-progress">
+                                                <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @champKillsPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                                <span class="analysis-progress-span">@participant.Participant.Stats.Kills</span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            if (team.Key == 100)
+                            {
+                                var totalKills = Model.TeamsBreakdown.BlueTeamChampionKills + Model.TeamsBreakdown.RedTeamChampionKills;
+                                var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamChampionKills / totalKills) * 100, 0);
+                                var circleBlankArea = 100 - circleCoveredArea;
+                                var bluePartDashOffset = 100 - circleCoveredArea + 25;
+                                <div class="analysis-graph-container">
+                                    <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                    </svg>
+                                    <div class="analysis-graph-text-container">
+                                        <div class="analysis-graph-text-first">
+                                            @Model.TeamsBreakdown.BlueTeamChampionKills
+                                        </div>
+                                        <div class="analysis-graph-text">
+                                            @Model.TeamsBreakdown.RedTeamChampionKills
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </li>
+            <!--Gold Earned-->
+            <li class="analysis-list-item">
+                <div class="analysis-item-content">
+                    <h4>Gold Earned</h4>
+                    <div class="analysis-table">
+                        @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                        {
+                            <div class="analysis-team">
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    @foreach (var participant in team)
+                                    {
+                                        var raw = (double)participant.Participant.Stats.GoldEarned / Model.HighestGold;
+                                        var goldEarnedPercentage = Math.Round(raw * 100, 1);
+                                        <li style="margin-top: 5px;">
+                                            <div class="analysis-champion-image">
+                                                <img src="@participant.ChampionIconUrl" />
+                                            </div>
+                                            <div class="analysis-progress">
+                                                <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @goldEarnedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                                <span class="analysis-progress-span">@participant.Participant.Stats.GoldEarned</span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            if (team.Key == 100)
+                            {
+                                var totalGold = Model.TeamsBreakdown.BlueTeamGold + Model.TeamsBreakdown.RedTeamGold;
+                                var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamGold / totalGold) * 100, 0);
+                                var circleBlankArea = 100 - circleCoveredArea;
+                                var bluePartDashOffset = 100 - circleCoveredArea + 25;
+                                <div class="analysis-graph-container">
+                                    <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                    </svg>
+                                    <div class="analysis-graph-text-container">
+                                        <div class="analysis-graph-text-first">
+                                            @Model.TeamsBreakdown.BlueTeamGold
+                                        </div>
+                                        <div class="analysis-graph-text">
+                                            @Model.TeamsBreakdown.RedTeamGold
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </li>
+            <!--Damage Dealt-->
+            <li class="analysis-list-item">
+                <div class="analysis-item-content">
+                    <h4>Damage Dealt</h4>
+                    <div class="analysis-table">
+                        @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                        {
+                            <div class="analysis-team">
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    @foreach (var participant in team)
+                                    {
+                                        var raw = (double)participant.Participant.Stats.TotalDamageDealtToChampions / Model.HighestDmgDealt;
+                                        var dmgDealtPercentage = Math.Round(raw * 100, 1);
+                                        <li style="margin-top: 5px;">
+                                            <div class="analysis-champion-image">
+                                                <img src="@participant.ChampionIconUrl" />
+                                            </div>
+                                            <div class="analysis-progress">
+                                                <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgDealtPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                                <span class="analysis-progress-span">@participant.Participant.Stats.TotalDamageDealtToChampions</span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            if (team.Key == 100)
+                            {
+                                var totalDmgDealt = Model.TeamsBreakdown.BlueTeamDmgDealt + Model.TeamsBreakdown.RedTeamDmgDealt;
+                                var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamDmgDealt / totalDmgDealt) * 100, 0);
+                                var circleBlankArea = 100 - circleCoveredArea;
+                                var bluePartDashOffset = 100 - circleCoveredArea + 25;
+                                <div class="analysis-graph-container">
+                                    <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                    </svg>
+                                    <div class="analysis-graph-text-container">
+                                        <div class="analysis-graph-text-first">
+                                            @Model.TeamsBreakdown.BlueTeamDmgDealt
+                                        </div>
+                                        <div class="analysis-graph-text">
+                                            @Model.TeamsBreakdown.RedTeamDmgDealt
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </li>
+            <!--Damage Taken-->
+            <li class="analysis-list-item">
+                <div class="analysis-item-content">
+                    <h4>Damage Taken</h4>
+                    <div class="analysis-table">
+                        @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                        {
+                            <div class="analysis-team">
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    @foreach (var participant in team)
+                                    {
+                                        var raw = (double)participant.Participant.Stats.TotalDamageTaken / Model.HighestDmgTaken;
+                                        var dmgTakenPercentage = Math.Round(raw * 100, 1);
+                                        <li style="margin-top: 5px;">
+                                            <div class="analysis-champion-image">
+                                                <img src="@participant.ChampionIconUrl" />
+                                            </div>
+                                            <div class="analysis-progress">
+                                                <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @dmgTakenPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                                <span class="analysis-progress-span">@participant.Participant.Stats.TotalDamageTaken</span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            if (team.Key == 100)
+                            {
+                                var totalDmgTaken = Model.TeamsBreakdown.BlueTeamDmgTaken + Model.TeamsBreakdown.RedTeamDmgTaken;
+                                var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamDmgTaken / totalDmgTaken) * 100, 0);
+                                var circleBlankArea = 100 - circleCoveredArea;
+                                var bluePartDashOffset = 100 - circleCoveredArea + 25;
+                                <div class="analysis-graph-container">
+                                    <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                    </svg>
+                                    <div class="analysis-graph-text-container">
+                                        <div class="analysis-graph-text-first">
+                                            @Model.TeamsBreakdown.BlueTeamDmgTaken
+                                        </div>
+                                        <div class="analysis-graph-text">
+                                            @Model.TeamsBreakdown.RedTeamDmgTaken
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </li>
+            <!--Wards Placed-->
+            <li class="analysis-list-item">
+                <div class="analysis-item-content">
+                    <h4>Wards Placed</h4>
+                    <div class="analysis-table">
+                        @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                        {
+                            <div class="analysis-team">
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    @foreach (var participant in team)
+                                    {
+                                        var raw = (double)participant.Participant.Stats.WardsPlaced / Model.HighestWardsPlaced;
+                                        var wardsPlacedPercentage = Math.Round(raw * 100, 1);
+                                        <li style="margin-top: 5px;">
+                                            <div class="analysis-champion-image">
+                                                <img src="@participant.ChampionIconUrl" />
+                                            </div>
+                                            <div class="analysis-progress">
+                                                <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @wardsPlacedPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                                <span class="analysis-progress-span">@participant.Participant.Stats.WardsPlaced</span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            if (team.Key == 100)
+                            {
+                                var totalWards = Model.TeamsBreakdown.BlueTeamWardsPlaced + Model.TeamsBreakdown.RedTeamWardsPlaced;
+                                var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamWardsPlaced / totalWards) * 100, 0);
+                                var circleBlankArea = 100 - circleCoveredArea;
+                                var bluePartDashOffset = 100 - circleCoveredArea + 25;
+                                <div class="analysis-graph-container">
+                                    <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                    </svg>
+                                    <div class="analysis-graph-text-container">
+                                        <div class="analysis-graph-text-first">
+                                            @Model.TeamsBreakdown.BlueTeamWardsPlaced
+                                        </div>
+                                        <div class="analysis-graph-text">
+                                            @Model.TeamsBreakdown.RedTeamWardsPlaced
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </li>
+            <!--Minions Killed-->
+            <li class="analysis-list-item">
+                <div class="analysis-item-content">
+                    <h4>Minions Killed</h4>
+                    <div class="analysis-table">
+                        @foreach (var team in Model.ParticipantsForDisplayByTeam)
+                        {
+                            <div class="analysis-team">
+                                <ul style="margin: 0; padding: 0; list-style: none;">
+                                    @foreach (var participant in team)
+                                    {
+                                        var raw = (double)participant.Participant.Stats.TotalMinionsKilled / Model.HighestCS;
+                                        var csPercentage = Math.Round(raw * 100, 1);
+                                        <li style="margin-top: 5px;">
+                                            <div class="analysis-champion-image">
+                                                <img src="@participant.ChampionIconUrl" />
+                                            </div>
+                                            <div class="analysis-progress">
+                                                <div class="@(team.Key == 100 ? "analysis-progress-bar-blue-team" : "analysis-progress-bar-red-team")" style="width: @csPercentage.ToString(System.Globalization.CultureInfo.InvariantCulture)%;"></div>
+                                                <span class="analysis-progress-span">@participant.Participant.Stats.TotalMinionsKilled</span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            if (team.Key == 100)
+                            {
+                                var totalCS = Model.TeamsBreakdown.BlueTeamCS + Model.TeamsBreakdown.RedTeamCS;
+                                var circleCoveredArea = Math.Round(((double)Model.TeamsBreakdown.RedTeamCS / totalCS) * 100, 0);
+                                var circleBlankArea = 100 - circleCoveredArea;
+                                var bluePartDashOffset = 100 - circleCoveredArea + 25;
+                                <div class="analysis-graph-container">
+                                    <svg width="75%" height="75%" viewBox="0 0 42 42">
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d05a53" stroke-width="3" stroke-dasharray="@circleCoveredArea @circleBlankArea" stroke-dashoffset="25"></circle>
+                                        <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#548dca" stroke-width="3" stroke-dasharray="@circleBlankArea @circleCoveredArea" stroke-dashoffset="@bluePartDashOffset"></circle>
+                                    </svg>
+                                    <div class="analysis-graph-text-container">
+                                        <div class="analysis-graph-text-first">
+                                            @Model.TeamsBreakdown.BlueTeamCS
+                                        </div>
+                                        <div class="analysis-graph-text">
+                                            @Model.TeamsBreakdown.RedTeamCS
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </li>
+        </ul>
+        }
+    </div>
+
+    <!--Build-->
+    <div id="build_@Model.Match.GameId" style="display: none;">
+        <div>
+            <!--Timeline-->
+            <div style="margin-bottom: 20px;">
+                <h4>Items Purchase Timeline</h4>
+                <hr />
+            </div>
+            @if (Model.Timeline == null)
+            {
+                <p>An error occured when looking through the match's timeline for item purchases.</p>
+            }
+            else
+            {
+                <div>
+                    <ul>
+                        @{ var firstDone = false; }
+                        @foreach (var itemPurchaseEvents in Model.Timeline.ItemPurchaseEventsByTimestamp)
+                        {
+                            if (itemPurchaseEvents.Value.Count == 0)
+                            {
+                                continue;
+                            }
+                            long firstTimestamp = 0;
+                            <li class="timeline-node">
+                                @if (firstDone == true)
+                                {
+                                    <div class="timeline-arrow">
+                                        <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>
+                                    </div>
+                                }
+                                <div class="timeline-items">
+                                    @foreach (var itemPurchase in itemPurchaseEvents.Value)
+                                    {
+                                        if (firstTimestamp == 0)
+                                        {
+                                            firstTimestamp = itemPurchase.Timestamp;
+                                        }
+                                        <img src="@itemPurchase.ItemUrl" height="40" width="40" />
+                                    }
+                                </div>
+                                <div style="text-align: center; margin-right: @(firstDone == true ? "-10px" : "0");">
+                                    @Math.Round(TimeSpan.FromMilliseconds(firstTimestamp).TotalMinutes, 0) min
+                                </div>
+                            </li>
+                            firstDone = true;
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+
+        <!--Skill points table-->
+        <div style="margin-bottom: 20px;">
+            <h4>Skill Points Spent</h4>
+            <hr />
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                @if (Model.Spells == null || Model.Timeline == null)
+                {
+                    <p>An error occured when looking for the champion's spells or the match's skill points timeline.</p>
+                }
+                else
+                {
+                    var qUrl = "";
+                    var wUrl = "";
+                    var eUrl = "";
+                    var rUrl = "";
+
+                    foreach (var spell in Model.Spells)
+                    {
+                        if (Model.Spells.IndexOf(spell) == 0) // Q
+                        {
+                            qUrl = spell.IconFullUrl;
+                        }
+                        else if (Model.Spells.IndexOf(spell) == 1) // W
+                        {
+                            wUrl = spell.IconFullUrl;
+                        }
+                        else if (Model.Spells.IndexOf(spell) == 2) // E
+                        {
+                            eUrl = spell.IconFullUrl;
+                        }
+                        else if (Model.Spells.IndexOf(spell) == 3) // R
+                        {
+                            rUrl = spell.IconFullUrl;
+                        }
+                    }
+                    <div class="table-responsive">
+                        <table id="skillsTable_@Model.Match.GameId" class="skills-table">
+                            <tbody>
+                                <tr id="QRow_@Model.Match.GameId">
+                                    <td class="skills-table-first-td">Q</td>
+                                    <td class="skills-table-img-td"><img src="@qUrl" class="skills-table-img" /></td>
+                                    @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                                    {
+                                        if (skillPoint.SkillSlot == 1)
+                                        {
+                                            <td class="skills-table-skillpoint"></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="WRow_@Model.Match.GameId">
+                                    <td class="skills-table-first-td">W</td>
+                                    <td class="skills-table-img-td"><img src="@wUrl" class="skills-table-img" /></td>
+                                    @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                                    {
+                                        if (skillPoint.SkillSlot == 2)
+                                        {
+                                            <td class="skills-table-skillpoint"></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="ERow_@Model.Match.GameId">
+                                    <td class="skills-table-first-td">E</td>
+                                    <td class="skills-table-img-td"><img src="@eUrl" class="skills-table-img" /></td>
+                                    @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                                    {
+                                        if (skillPoint.SkillSlot == 3)
+                                        {
+                                            <td class="skills-table-skillpoint"></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+                                <tr id="RRow_@Model.Match.GameId">
+                                    <td class="skills-table-first-td">R</td>
+                                    <td class="skills-table-img-td"><img src="@rUrl" class="skills-table-img" /></td>
+                                    @foreach (var skillPoint in Model.Timeline.SkillEvents)
+                                    {
+                                        if (skillPoint.SkillSlot == 4)
+                                        {
+                                            <td class="skills-table-skillpoint"></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                    }
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+        <!--Runes layout-->
+        <div style="margin-bottom: 20px;">
+            <h4>Runes</h4>
+            <hr />
+        </div>
+        <div class="row justify-content-center">
+            @if (Model.Runes == null)
+            {
+                <p>An error occured when looking through the Summoner's runes for this match.</p>
+            }
+            else
+            {
+                var lastPath = Model.Runes.Last();
+                var firstPath = Model.Runes.First();
+                foreach (var path in Model.Runes)
+                {
+                    var skipKeystones = false;
+
+                    <div class="perk-style" style="border-right: @(path != lastPath ? "1px solid #d2d2d2" : "none");">
+                        @if (path != firstPath)
+                        {
+                            <div class="@(path == lastPath ? "rune-offset-fragment" : "rune-offset")"><img /></div>
+                        }
+                        <div class="rune-path">
+                            <img src="@path.Icon" />
+                        </div>
+
+                        @foreach (var slot in path.Slots)
+                        {
+                            var fragmentDone = false;
+                            @*Skip keystones for sub-style*@
+                            if (path.Id == Model.Match.ParticipantForDisplay.Participant.Stats.PerkSubStyle && skipKeystones == false)
+                            {
+                                skipKeystones = true;
+                                continue;
+                            }
+                            <div class="slot">
+                                @foreach (var rune in slot.Runes)
+                                {
+                                    <div class="@(slot.Runes.Count == 3 ? "rune" : "rune-four-keystones")">
+                                        @if (rune.Id == Model.ObservedParticipant.Stats.Perk0)
+                                        {
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.Perk1)
+                                        {
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.Perk2)
+                                        {
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.Perk3)
+                                        {
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.Perk4)
+                                        {
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.Perk5)
+                                        {
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk0 && fragmentDone == false)
+                                        {
+                                            fragmentDone = true;
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk1 && fragmentDone == false)
+                                        {
+                                            fragmentDone = true;
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else if (rune.Id == Model.ObservedParticipant.Stats.StatPerk2 && fragmentDone == false)
+                                        {
+                                            fragmentDone = true;
+                                            <span><img class="selected-rune" src="@rune.Icon" /></span><br />
+                                        }
+                                        else
+                                        {
+                                            <span><img class="unselected-rune" src="@rune.Icon" /></span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                        <div style="text-align: center;">
+                            @path.Name
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}

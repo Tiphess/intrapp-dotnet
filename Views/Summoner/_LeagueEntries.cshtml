@@ -1,27 +1,34 @@
 ﻿@model List<intrapp.Models.LeagueEntry>
 <div class="row">
-    @foreach (var leagueEntry in Model)
+    @if (Model.Count == 0 || Model == null)
     {
+        <p>This summoner has not completed his placements yet.</p>
+    }
+    else
+    {
+        foreach (var leagueEntry in Model)
+        {
 
-        <div class="col-md-6 w-50">
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
-                    <img src="~/DataAccess/RiotGamesApi/Images/Emblems/Emblem_@(leagueEntry.Tier.Substring(0, 1) + leagueEntry.Tier.Substring(1).ToLower()).png" alt="Image unavailable" height="80" width="80" />
-                </div>
-                <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5">
-                    @if (leagueEntry.QueueType == "RANKED_SOLO_5x5")
-                    {
-                        <span style="display: block;"><small>Ranked solo</small></span>
-                    }
-                    else
-                    {
-                        <span style="display: block;"><small>Ranked Flex</small></span>
-                    }
-                    <span style="display: block;"><b>@leagueEntry.Tier @leagueEntry.Rank</b></span>
-                    <span style="display: block;">@(leagueEntry.LeaguePoints)LP / @(leagueEntry.Wins)W - @(leagueEntry.Losses)L</span>
-                    <span style="display: block;">Win rate @leagueEntry.WinRate%</span>
+            <div class="col-md-6 w-50">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                        <img src="~/DataAccess/RiotGamesApi/Images/Emblems/Emblem_@(leagueEntry.Tier.Substring(0, 1) + leagueEntry.Tier.Substring(1).ToLower()).png" alt="Image unavailable" height="80" width="80" />
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5">
+                        @if (leagueEntry.QueueType == "RANKED_SOLO_5x5")
+                        {
+                            <span style="display: block;"><small>Ranked solo</small></span>
+                        }
+                        else
+                        {
+                            <span style="display: block;"><small>Ranked Flex</small></span>
+                        }
+                        <span style="display: block;"><b>@leagueEntry.Tier @leagueEntry.Rank</b></span>
+                        <span style="display: block;">@(leagueEntry.LeaguePoints)LP / @(leagueEntry.Wins)W - @(leagueEntry.Losses)L</span>
+                        <span style="display: block;">Win rate @leagueEntry.WinRate%</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     }
 </div>

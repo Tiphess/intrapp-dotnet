@@ -382,7 +382,6 @@
     <Content Include="Views\Leaderboard\_ChallengerLeague.cshtml" />
     <Content Include="Views\Leaderboard\_GrandmasterLeague.cshtml" />
     <Content Include="Views\Leaderboard\_MasterLeague.cshtml" />
-    <Content Include="Views\Leaderboard\_LeaguePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

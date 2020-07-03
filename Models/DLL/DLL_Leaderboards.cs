@@ -32,7 +32,7 @@ namespace intrapp.Models.DLL
 
                         league = JsonConvert.DeserializeObject<League>(readData.Result);
                         league.Entries = league.Entries.OrderByDescending(e => e.LeaguePoints).ToList();
-                        league.Pages = league.Entries.Count / League.PageSize;
+                        league.Pages = (league.Entries.Count >= League.PageSize ? league.Entries.Count : League.PageSize) / League.PageSize;
                     }
                 }
                 catch (Exception) { return new League(); }
@@ -61,7 +61,7 @@ namespace intrapp.Models.DLL
 
                         league = JsonConvert.DeserializeObject<League>(readData.Result);
                         league.Entries = league.Entries.OrderByDescending(e => e.LeaguePoints).ToList();
-                        league.Pages = league.Entries.Count / League.PageSize;
+                        league.Pages = (league.Entries.Count >= League.PageSize ? league.Entries.Count : League.PageSize) / League.PageSize;
                     }
                 }
                 catch (Exception) { return new League(); }
@@ -91,7 +91,7 @@ namespace intrapp.Models.DLL
 
                         league = JsonConvert.DeserializeObject<League>(readData.Result);
                         league.Entries = league.Entries.OrderByDescending(e => e.LeaguePoints).ToList();
-                        league.Pages = league.Entries.Count / League.PageSize;
+                        league.Pages = (league.Entries.Count >= League.PageSize ? league.Entries.Count : League.PageSize) / League.PageSize;
                     }
                 }
                 catch (Exception) { return new League(); }

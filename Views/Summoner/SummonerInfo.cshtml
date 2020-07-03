@@ -68,6 +68,15 @@
             SetSummonerInfoHandlers("@Model.Summoner.AccountId", "@Model.Region");
             $("#summonerName").val("");
             $("#footer").removeClass("footer-index");
+
+            $(window).scroll(function () {
+                if (window.pageYOffset > 500) {
+                    $(".go-up-btn").addClass("go-up-btn-active");
+                }
+                else {
+                    $(".go-up-btn").removeClass("go-up-btn-active");
+                }
+            });
         });
     </script>
 }
