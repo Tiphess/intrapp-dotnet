@@ -133,7 +133,7 @@ function GetPage(element) {
         $.ajax({
             url: "/Leaderboard/_ChallengerLeague",
             type: "POST",
-            data: { page: page - 1, queue: queue, region: region },
+            data: { page: page - 1, queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -148,7 +148,7 @@ function GetPage(element) {
         $.ajax({
             url: "/Leaderboard/_GrandmasterLeague",
             type: "POST",
-            data: { page: page - 1, queue: queue, region: region },
+            data: { page: page - 1, queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -163,7 +163,7 @@ function GetPage(element) {
         $.ajax({
             url: "/Leaderboard/_MasterLeague",
             type: "POST",
-            data: { page: page - 1, queue: queue, region: region },
+            data: { page: page - 1, queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -179,11 +179,11 @@ function NextPage(currPage, maxPages) {
 
     if ($("#challengerLink").hasClass("active")) {
         $("div[name='waiting-div']").show();
-        
+
         $.ajax({
             url: "/Leaderboard/_ChallengerLeague",
             type: "POST",
-            data: { page: (currPage + 1), queue: queue, region: region },
+            data: { page: (currPage + 1), queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -197,7 +197,7 @@ function NextPage(currPage, maxPages) {
         $.ajax({
             url: "/Leaderboard/_GrandmasterLeague",
             type: "POST",
-            data: { page: (currPage + 1), queue: queue, region: region },
+            data: { page: (currPage + 1), queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -211,7 +211,7 @@ function NextPage(currPage, maxPages) {
         $.ajax({
             url: "/Leaderboard/_MasterLeague",
             type: "POST",
-            data: { page: (currPage + 1), queue: queue, region: region },
+            data: { page: (currPage + 1), queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -231,7 +231,7 @@ function PreviousPage(currPage) {
         $.ajax({
             url: "/Leaderboard/_ChallengerLeague",
             type: "POST",
-            data: { page: currPage - 1, queue: queue, region: region },
+            data: { page: currPage - 1, queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -245,7 +245,7 @@ function PreviousPage(currPage) {
         $.ajax({
             url: "/Leaderboard/_GrandmasterLeague",
             type: "POST",
-            data: { page: currPage - 1, queue: queue, region: region },
+            data: { page: currPage - 1, queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();
@@ -259,7 +259,7 @@ function PreviousPage(currPage) {
         $.ajax({
             url: "/Leaderboard/_MasterLeague",
             type: "POST",
-            data: { page: currPage - 1, queue: queue, region: region },
+            data: { page: currPage - 1, queue: queue, region: region, isPagination: 1 },
             success: function (data) {
                 $("#League").html(data);
                 $("div[name='waiting-div']").hide();

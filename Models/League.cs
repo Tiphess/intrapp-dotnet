@@ -22,6 +22,17 @@ namespace intrapp.Models
         {
             Entries = new List<Entry>();
         }
+        public League(League obj)
+        {
+            Tier = obj.Tier;
+            LeagueId = obj.LeagueId;
+            Queue = obj.Queue;
+            Name = obj.Name;
+            Pages = obj.Pages;
+            CurrentPage = obj.CurrentPage;
+
+            Entries = new List<Entry>(obj.Entries);
+        }
     }
 
     public class Entry

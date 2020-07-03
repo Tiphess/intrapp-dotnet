@@ -98,5 +98,22 @@ namespace intrapp.Models.DLL
             }
             return league;
         }
+
+        public void SetLeaguePages(int page, League model)
+        {
+            if (page >= model.Pages)
+            {
+                model.Entries = model.Entries.Skip((model.Pages - 1) * League.PageSize).Take(League.PageSize).ToList();
+                model.CurrentPage = model.Pages - 1;
+            }
+            else
+            {
+                model.Entries = model.Entries.Skip(page * League.PageSize).Take(League.PageSize).ToList();
+                if (page < 0)
+                    model.CurrentPage = 0;
+                else
+                    model.CurrentPage = page;
+            }
+        }
     }
 }
